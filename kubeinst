@@ -14,18 +14,6 @@ kube_pod_subnet="10.244.0.0/16"
 kube_version="1.17.6"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 
-kube_config="apiVersion: kubeadm.k8s.io/v1beta2 \n
-kind: InitConfiguration \n
-bootstrapTokens: \n
-  - ttl: \"0\" \n
---- \n
-apiVersion: kubeadm.k8s.io/v1beta2 \n
-kind: ClusterConfiguration \n
-networking: \n
-  podSubnet: \"$kube_pod_subnet\" \n
-kubernetesVersion: \"v$kube_version\" \n
-imageRepository: \"$kube_image_server\""
-
 ###########################################################
 ##
 ##  init-env
@@ -62,8 +50,18 @@ function init-env-kubeconfig()
   if [[ ! -d "/etc/kubernetes" ]]
   then
     mkdir /etc/kubernetes
-  fi	
-  echo -e ${kube_config} > /etc/kubernetes/kubeadm.yaml
+  fi
+  echo -e "apiVersion: kubeadm.k8s.io/v1beta2" > /etc/kubernetes/kubeadm.yaml
+  echo -e "kind: InitConfiguration" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "bootstrapTokens:" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "  - ttl: \"0\"" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "---" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "apiVersion: kubeadm.k8s.io/v1beta2" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "kind: ClusterConfiguration" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "networking:" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "  podSubnet: \"${kube_pod_subnet}\"" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "kubernetesVersion: \"v${kube_version}\"" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "imageRepository: \"${kube_image_server}\"" >> /etc/kubernetes/kubeadm.yaml
 }
 
 function init-env()
@@ -81,6 +79,12 @@ function init-env()
 ##
 ##########################################################
 
+function init-kube()
+{
+  swapoff -a
+  echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
+  kubeadm init --config /etc/kubernetes/kubeadm.yaml  
+}
 
 ###########################################################
 ##
@@ -98,8 +102,8 @@ function help()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-env       :\t(Init): Start central node"
-  echo -e "  init-kube      :\t(Init): Stop  central node"
+  echo -e "  init-env       :\t(Init): simplify configuring node, such as disable selinux, install docker"
+  echo -e "  init-kube      :\t(Init): deploy Kubernetes as your want"
 }
 
 
