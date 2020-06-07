@@ -28,7 +28,7 @@ Commands:
 ```
 
 - Using the `init-env` command, you can install Docker and Kubernetes on a just installed OS.
-- Using the 'init-kube' commnad, you can install kubernetes as your want
+- Using the `init-kube` commnad, you can install kubernetes as your want
 
 Note that you can customized :
 
