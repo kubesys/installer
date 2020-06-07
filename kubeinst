@@ -11,7 +11,7 @@
 VERSION="0.1"
 
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.17.6"
+kube_version="1.17.5"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 
 ###########################################################
@@ -64,6 +64,11 @@ function init-env-kubeconfig()
   echo -e "imageRepository: \"${kube_image_server}\"" >> /etc/kubernetes/kubeadm.yaml
 }
 
+function init-env-kubecomp()
+{
+  echo -e "https://docs.projectcalico.org/archive/v3.14/manifests/calico.yaml" > /etc/kubernetes/kubeenv.list
+}
+
 function init-env()
 {
   init-env-disable-selinux
@@ -71,6 +76,7 @@ function init-env()
   init-env-repository
   init-env-software
   init-env-kubeconfig
+  init-env-kubecomp
 }
 
 ###########################################################
@@ -83,7 +89,21 @@ function init-kube()
 {
   swapoff -a
   echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
+  
   kubeadm init --config /etc/kubernetes/kubeadm.yaml  
+
+  while read line
+  do
+    if [[ ${line:0:1} -eq "#" ]]
+    then
+      kubectl apply -f $line
+    fi
+  done  < /etc/kubernetes/kubeenv.list
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  iptables -P FORWARD ACCEPT
 }
 
 ###########################################################
