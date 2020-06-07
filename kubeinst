@@ -1,0 +1,119 @@
+#! /bin/bash
+###############################################
+##
+##  Copyright (2020, ) Institute of Software
+##      Chinese Academy of Sciences
+##          wuheng@gmail.com
+##
+###############################################
+
+
+VERSION="0.1"
+
+kube_pod_subnet="10.244.0.0/16"
+kube_version="1.17.6"
+kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
+
+kube_config="apiVersion: kubeadm.k8s.io/v1beta2 \n
+kind: InitConfiguration \n
+bootstrapTokens: \n
+  - ttl: \"0\" \n
+--- \n
+apiVersion: kubeadm.k8s.io/v1beta2 \n
+kind: ClusterConfiguration \n
+networking: \n
+  podSubnet: \"$kube_pod_subnet\" \n
+kubernetesVersion: \"v$kube_version\" \n
+imageRepository: \"$kube_image_server\""
+
+###########################################################
+##
+##  init-env
+##
+##########################################################
+
+function init-env-disable-selinux()
+{
+  sed -ie 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config
+  sed -ie 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+}
+
+function init-env-disable-firewalld()
+{
+  systemctl stop firewalld
+  systemctl disable firewalld
+}
+
+function init-env-repository()
+{
+  echo -e "[docker-ce-stable]\nname=Docker CE Stable - \$basearch \nbaseurl=https://download.docker.com/linux/centos/7/\$basearch/stable\nenabled=1 \ngpgcheck=1 \ngpgkey=https://download.docker.com/linux/centos/gpg" > /etc/yum.repos.d/docker-ce.repo
+  echo -e "[kubernetes] \nname=Kubernetes - \$basearch \nbaseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-\$basearch/ \nenabled=1 \ngpgcheck=0 \nrepo_gpgcheck=0 \ngpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg" > /etc/yum.repos.d/kubernetes.repo
+}
+
+function init-env-software()
+{
+  yum install -y docker-ce kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version}
+  systemctl start docker
+  systemctl enable docker
+}
+
+function init-env-kubeconfig()
+{
+  if [[ ! -d "/etc/kubernetes" ]]
+  then
+    mkdir /etc/kubernetes
+  fi	
+  echo -e ${kube_config} > /etc/kubernetes/kubeadm.yaml
+}
+
+function init-env()
+{
+  init-env-disable-selinux
+  init-env-disable-firewalld
+  init-env-repository
+  init-env-software
+  init-env-kubeconfig
+}
+
+###########################################################
+##
+##  init-kube
+##
+##########################################################
+
+
+###########################################################
+##
+##  help
+##
+##########################################################
+
+function cmddesc()
+{
+  echo -e "Welcome to kubeinst ($VERSION), install Kubernetes-based systems from scratch.\n"
+}
+
+
+function help()
+{
+  cmddesc
+  echo -e "Commands:"
+  echo -e "  init-env       :\t(Init): Start central node"
+  echo -e "  init-kube      :\t(Init): Stop  central node"
+}
+
+
+case $1 in
+  "init-env")
+    init-env $*
+    ;;
+  "init-kube")
+    init-kube $*
+    ;;
+  "--help")
+    help
+    ;;
+  *)
+  help
+  ;;
+esac
