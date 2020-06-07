@@ -94,10 +94,7 @@ function init-kube()
 
   while read line
   do
-    if [[ ${line:0:1} -eq "#" ]]
-    then
-      kubectl apply -f $line
-    fi
+    kubectl apply -f $line
   done  < /etc/kubernetes/kubeenv.list
 
   mkdir -p $HOME/.kube
