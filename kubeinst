@@ -92,16 +92,17 @@ function init-kube()
   
   kubeadm init --config /etc/kubernetes/kubeadm.yaml  
 
-  while read line
-  do
-    kubectl apply -f $line
-  done  < /etc/kubernetes/kubeenv.list
-
   rm -rf $HOME/.kube
   mkdir -p $HOME/.kube
   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
   iptables -P FORWARD ACCEPT
+  
+  while read line
+  do
+    kubectl apply -f $line
+  done  < /etc/kubernetes/kubeenv.list
+
 }
 
 ###########################################################
