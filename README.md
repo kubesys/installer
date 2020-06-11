@@ -34,3 +34,16 @@ Note that you can customized :
 
 - Kubernetes configuration by /etc/kubernetes/kubeadm.yaml
 - Kubernetes addons by /etc/kubernetes/kubeenv.list
+
+## Roadmap
+
+- Prototype
+  - 0.1: support Kubernetes and Calico
+  - 0.2: support prometheus, grafna, loki, Jaeger
+  - 0.3: support Docker register, Helm, Rook
+  - 0.4: support istio
+  - 0.5: support volcano
+  - 0.6: support openfaas
+- Develop
+
+- Production
