@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard
+  namespace: kube-system
+  labels:
+    app: grafana-operator-dashboard
+data:
+  dashboard.yaml: |-
+    apiVersion: 1
+    providers:
+    - name: 'defalut'
+      orgId: 1
+      folderUid: ''
+      type: file
+      options:
+        path: /etc/grafana/provisioning/dashboardsJson
+    - name: 'pod'
+      orgId: 2
+      folderUid: ''
+      type: file
+      options:
+        path: /etc/grafana/provisioning/dashboardsJson
