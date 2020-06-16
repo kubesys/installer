@@ -43,6 +43,7 @@ function init-env-software()
   yum install -y docker-ce kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version}
   systemctl start docker
   systemctl enable docker
+  systemctl enable kubelet
 }
 
 function init-env-kubeconfig()
@@ -67,6 +68,12 @@ function init-env-kubeconfig()
 function init-env-kubecomp()
 {
   echo -e "https://docs.projectcalico.org/archive/v3.14/manifests/calico.yaml" > /etc/kubernetes/kubeenv.list
+  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/exportor.yaml" >> /etc/kubernetes/kubeenv.list
+  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-dashboards-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
+  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-datasources-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
+  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana.yaml" >> /etc/kubernetes/kubeenv.list
+  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/loki.yaml" >> /etc/kubernetes/kubeenv.list
+  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/prometheus.yaml" >> /etc/kubernetes/kubeenv.list
 }
 
 function init-env()
@@ -89,7 +96,8 @@ function init-kube()
 {
   swapoff -a
   echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
-  
+  echo "1" > /proc/sys/net/ipv4/ip_forward 
+ 
   kubeadm init --config /etc/kubernetes/kubeadm.yaml  
 
   rm -rf $HOME/.kube
