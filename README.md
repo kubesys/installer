@@ -39,11 +39,12 @@ Note that you can customized :
 
 - Prototype
   - 0.1: support Kubernetes and Calico
-  - 0.2: support prometheus, grafna, loki, Jaeger
-  - 0.3: support Docker register, Helm, Rook
-  - 0.4: support istio
-  - 0.5: support volcano
-  - 0.6: support openfaas
+  - 0.2: support prometheus, grafna
+  - 0.3: support loki, register
+  - 0.4: support Helm, Rook
+  - 0.5: support istio
+  - 0.6: support volcano
+  - 0.7: support openfaas
 - Develop
 
 - Production
