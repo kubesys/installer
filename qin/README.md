@@ -1,0 +1,28 @@
+- Core
+  - etcd
+    - 2379
+    - 2380
+    - 2381
+  - [OpenvsWitch](https://github.com/kubesys/kubernetes-libnvf)
+    - 6641
+	- 6642
+  - Kubernetes
+    - 6443
+    - 10250
+    - 10251
+    - 30000-32767
+- [Monitoring](prom)
+  - grafana/prometheus/loki
+    - 31001 [prometheus]
+    - 31002 [grafana]
+- [Qin]
+  - kubernetes-synchronizer
+    - 30304 [rabbit-port]
+	- 30305 [rabbit-management-port]
+    - 30306 [mariadb-port]
+    - 30307 [mariadb-management-port]
+  - [kube-orchestration](https://github.com/kubesys/kubernetes-orchestration)
+  - [kube-repository](https://github.com/kubesys/kubernetes-repository)
+  - [kube-httpserver](https://github.com/kubesys/kubernetes-httpserver)
+    - 30308 [http-port]
+	  - 30309 [https-port]
