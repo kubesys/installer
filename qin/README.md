@@ -5,7 +5,7 @@
     - 2381
   - [OpenvsWitch](https://github.com/kubesys/kubernetes-libnvf)
     - 6641
-	- 6642
+    - 6642
   - Kubernetes
     - 6443
     - 10250
@@ -18,11 +18,9 @@
 - [Qin]
   - kubernetes-synchronizer
     - 30304 [rabbit-port]
-	- 30305 [rabbit-management-port]
+    - 30305 [rabbit-management-port]
     - 30306 [mariadb-port]
     - 30307 [mariadb-management-port]
-  - [kube-orchestration](https://github.com/kubesys/kubernetes-orchestration)
-  - [kube-repository](https://github.com/kubesys/kubernetes-repository)
-  - [kube-httpserver](https://github.com/kubesys/kubernetes-httpserver)
+  - [kube-operators](https://github.com/kubesys/kubernetes-operators)
     - 30308 [http-port]
-	  - 30309 [https-port]
+    - 30309 [https-port]
