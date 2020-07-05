@@ -16,11 +16,14 @@
     - 31001 [prometheus]
     - 31002 [grafana]
 - [Qin]
-  - kubernetes-synchronizer
+  - kube-rabbitmq
     - 30304 [rabbit-port]
     - 30305 [rabbit-management-port]
+  - kube-database
     - 30306 [mariadb-port]
     - 30307 [mariadb-management-port]
+  - [kube-synchronizer](https://github.com/kubesys/kubernetes-synchronizer)
+  - [kube-orchestrator](https://github.com/kubesys/kubernetes-orchestrator)
   - [kube-operators](https://github.com/kubesys/kubernetes-operators)
     - 30308 [http-port]
     - 30309 [https-port]
