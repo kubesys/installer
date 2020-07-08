@@ -33,4 +33,5 @@
 curl -L https://raw.githubusercontent.com/werf/multiwerf/master/get.sh | bash
 mv multiwerf /usr/bin/
 multiwerf use 1.1 stable --as-file
+source /root/.multiwerf/scripts/1.1-stable/werf_source
 ```
