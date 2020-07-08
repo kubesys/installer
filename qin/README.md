@@ -27,3 +27,9 @@
   - [kube-operators](https://github.com/kubesys/kubernetes-operators)
     - 30308 [http-port]
     - 30309 [https-port]
+
+
+```
+curl -L https://raw.githubusercontent.com/werf/multiwerf/master/get.sh | bash
+mv multiwerf /usr/bin/
+```
