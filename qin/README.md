@@ -15,6 +15,9 @@
   - grafana/prometheus/loki
     - 31001 [prometheus]
     - 31002 [grafana]
+- [DevOps]
+  - wooteam
+    - 30311
 - [Qin]
   - kube-rabbitmq
     - 30304 [rabbit-port]
@@ -27,11 +30,3 @@
   - [kube-operators](https://github.com/kubesys/kubernetes-operators)
     - 30308 [http-port]
     - 30309 [https-port]
-
-
-```
-curl -L https://raw.githubusercontent.com/werf/multiwerf/master/get.sh | bash
-mv multiwerf /usr/bin/
-multiwerf use 1.1 stable --as-file
-source /root/.multiwerf/scripts/1.1-stable/werf_source
-```
