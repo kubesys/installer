@@ -1,0 +1,13 @@
+#! /bin/bash
+###############################################
+##
+##  Copyright (2020, ) Institute of Software
+##      Chinese Academy of Sciences
+##          wuheng@gmail.com
+##
+###############################################
+
+
+  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-synchronizer/master/kubernetes-synchronizer.yaml" >> /etc/kubernetes/kubeenv.list
+  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-operators/master/kubernetes-operators.yaml" >> /etc/kubernetes/kubeenv.list
+
