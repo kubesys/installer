@@ -51,6 +51,10 @@ Now you can enjoy it
 - DevOps
   - [teamwork](https://github.com/kubesys/kubernetes-tools/tree/master/dev/team)
     - 30311
+  - [gitlab](https://github.com/kubesys/kubernetes-tools/tree/master/dev/gitlab)
+    - 30312
+    - 30313
+    - 30314
 - Qin
   - kube-rabbitmq
     - 30304 [rabbit-port]
