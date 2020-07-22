@@ -46,24 +46,24 @@ Now you can enjoy it
     - 30000-32767
 - Monitoring
   - [grafana/prometheus/loki](https://github.com/kubesys/kubernetes-tools/tree/master/ops/prom)
-    - 31001 [prometheus]
-    - 31002 [grafana]
+    - 31001 [prometheus-http-port]
+    - 31002 [grafana-http-port]
 - DevOps
   - [teamwork](https://github.com/kubesys/kubernetes-tools/tree/master/dev/team)
-    - 30311
+    - 30311 [kooteam-http-port]
   - [gitlab](https://github.com/kubesys/kubernetes-tools/tree/master/dev/gitlab)
-    - 30312
-    - 30313
-    - 30314
+    - 30312 [gitlab-ssh-port]
+    - 30313 [gitlab-http-port]
+    - 30314 [gitlab-https-port]
 - Qin
   - kube-rabbitmq
     - 30304 [rabbit-port]
-    - 30305 [rabbit-management-port]
+    - 30305 [rabbit-management-http-port]
   - kube-database
     - 30306 [mariadb-port]
-    - 30307 [mariadb-management-port]
+    - 30307 [mariadb-management-http-port]
   - [kube-synchronizer](https://github.com/kubesys/kubernetes-synchronizer)
   - [kube-orchestrator](https://github.com/kubesys/kubernetes-orchestrator)
   - [kube-operators](https://github.com/kubesys/kubernetes-operators)
-    - 30308 [http-port]
-    - 30309 [https-port]
+    - 30308 [operators-http-port]
+    - 30309 [operators-https-port]
