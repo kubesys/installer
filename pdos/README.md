@@ -44,14 +44,14 @@ Now you can enjoy it
     - 10250
     - 10251
     - 30000-32767
-- [Monitoring](prom)
-  - grafana/prometheus/loki
+- Monitoring
+  - [grafana/prometheus/loki](https://github.com/kubesys/kubernetes-tools/tree/master/ops/prom)
     - 31001 [prometheus]
     - 31002 [grafana]
-- [DevOps]
-  - kooteam
+- DevOps
+  - [teamwork](https://github.com/kubesys/kubernetes-tools/tree/master/dev/team)
     - 30311
-- [Qin]
+- Qin
   - kube-rabbitmq
     - 30304 [rabbit-port]
     - 30305 [rabbit-management-port]
