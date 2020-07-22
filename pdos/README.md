@@ -1,3 +1,36 @@
+## Installation
+
+### download the `kubeinst` tool.
+
+```
+curl --url https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/kubeinst --output /usr/bin/kubeinst
+chmod 777 /usr/bin/kubeinst
+```
+
+### init Kubernetes env
+
+you can edit /usr/bin/kubeinst to config your Kubernetes version
+
+```
+kubeinst init-env
+curl https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/pdos/kubeinst-plugin | bash
+```
+
+### install Kubernetes
+
+you can  edit /etc/kubernetes/kubeadm.yaml to config Kubernetes info
+you can also edit /etc/kubernetes/kubeenv.list to add more plugins
+
+```
+kubeinst init-kube
+```
+
+
+Now you can enjoy it
+
+
+## System info
+
 - Core
   - etcd
     - 2379
