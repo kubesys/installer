@@ -19,6 +19,9 @@ download the `kubeinst` tool.
 ```
 curl --url https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/kubeinst --output /usr/bin/kubeinst
 chmod 777 /usr/bin/kubeinst
+
+kubeinst init-env
+kubeinit init-kube
 ```
 
 Now it support two commands
@@ -32,15 +35,11 @@ Commands:
 - Using the `init-env` command, you can install Docker and Kubernetes on a just installed OS.
 - Using the `init-kube` commnad, you can install kubernetes as your want
 
-```
-kubeinst init-env
-kubeinit init-kube
-```
 
 Note that you can customized :
 
-- Kubernetes configuration by /etc/kubernetes/kubeadm.yaml
-- Kubernetes addons by /etc/kubernetes/kubeenv.list
+- /etc/kubernetes/kubeadm.yaml： how to install Kubernetes
+- /etc/kubernetes/kubeenv.list: which plugins should be installed
 
 ## Roadmap
 
