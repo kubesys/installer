@@ -67,3 +67,5 @@ Now you can enjoy it
   - [kube-operators](https://github.com/kubesys/kubernetes-operators)
     - 30308 [operators-http-port]
     - 30309 [operators-https-port]
+  - [kube-dashboard](https://github.com/kubesys/kubeext-dashboard)
+    - 30310 [dashboard-http-port]
