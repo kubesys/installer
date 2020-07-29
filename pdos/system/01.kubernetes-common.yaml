@@ -1,4 +1,48 @@
 ---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kube-init
+  namespace: kube-system
+  labels:
+    app: kube-init
+spec:
+  template:
+    metadata:
+      labels:
+        app: kube-init
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+      - image: registry.cn-beijing.aliyuncs.com/kubesys/kubernetes-init:0.1-amd64
+        command:
+        - bash
+        - 'init.sh'
+        imagePullPolicy: IfNotPresent
+        name: kube-init
+        volumeMounts:
+        - name: "kubecmd"
+          mountPath: "/usr/bin/kubectl"
+        - name: "kubetoken"
+          mountPath: "/root/.kube/"
+        - name: "jsons"
+          mountPath: "/var/lib/pdos"
+      restartPolicy: Never
+      volumes:
+      - name: "kubecmd"
+        hostPath:
+          path: "/usr/bin/kubectl"
+      - name: "kubetoken"
+        hostPath:
+          path: "/root/.kube/"
+      - name: "jsons"
+        hostPath:
+          path: "/var/lib/pdos"
+---
 kind: ConfigMap
 apiVersion: v1
 metadata:

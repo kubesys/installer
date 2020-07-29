@@ -29,6 +29,12 @@ kubeinst init-kube
 Now you can enjoy it
 
 
+## Build
+
+```
+docker build . -t registry.cn-beijing.aliyuncs.com/kubesys/kubernetes-init:0.1-amd64
+```
+
 ## System info
 
 - Core
