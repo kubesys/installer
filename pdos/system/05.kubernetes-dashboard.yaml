@@ -23,8 +23,10 @@ spec:
           effect: NoSchedule
       containers:
       - name: "kube-dashboard"
-        image: "registry.cn-beijing.aliyuncs.com/cloudplus-lab/kubeext-dashboard:v1.8.2-amd64"
+        image: "registry.cn-beijing.aliyuncs.com/cloudplus-lab/kubeext-dashboard:v1.8.3-amd64"
         imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 9537
         volumeMounts: 
         - name: "config"
           mountPath: "/home/kubeext-dashboard/public/config.js"

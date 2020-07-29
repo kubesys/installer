@@ -25,6 +25,8 @@ spec:
       - name: "kube-operators"
         image: "registry.cn-beijing.aliyuncs.com/kubesys/kubernetes-operators:v0.7-amd64"
         imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 30308
         command: 
         - "java"
         - "-jar"
