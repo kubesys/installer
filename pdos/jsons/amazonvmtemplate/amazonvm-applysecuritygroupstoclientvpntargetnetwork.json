@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-applysecuritygroupstoclientvpntargetnetwork"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"applysecuritygroupstoclientvpntargetnetwork":{
+		"vpcid":"string",
+		"hvpcid":"string",
+		"hclientvpnendpointid":"string",
+		"clientvpnendpointid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

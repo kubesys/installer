@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-createimage"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createimage":{
+		"instanceid":"string",
+		"dryrun":null,
+		"forcepoweroff":"string",
+		"imagename":"string",
+		"sysprep":"string",
+		"imagedescription":"string"
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

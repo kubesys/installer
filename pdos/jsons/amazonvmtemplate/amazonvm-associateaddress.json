@@ -1,0 +1,28 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-associateaddress"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"associateaddress":{
+		"privateipaddress":"string",
+		"instanceid":"string",
+		"hinstanceid":"string",
+		"hallowreassociation":null,
+		"allowreassociation":null,
+		"allocationid":"string",
+		"hnetworkinterfaceid":"string",
+		"publicip":"string",
+		"networkinterfaceid":"string",
+		"hprivateipaddress":"string",
+		"hpublicip":"string",
+		"hallocationid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

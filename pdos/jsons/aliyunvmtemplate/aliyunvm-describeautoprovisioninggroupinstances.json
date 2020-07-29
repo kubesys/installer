@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describeautoprovisioninggroupinstances"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeautoprovisioninggroupinstances":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"pagesize":"integer",
+		"ownerid":null,
+		"pagenumber":"integer",
+		"autoprovisioninggroupid":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

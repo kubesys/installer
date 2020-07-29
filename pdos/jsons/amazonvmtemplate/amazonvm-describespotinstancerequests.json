@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-describespotinstancerequests"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describespotinstancerequests":{
+		"nexttoken":"string",
+		"hnexttoken":"string",
+		"maxresults":"integer",
+		"hmaxresults":"integer"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

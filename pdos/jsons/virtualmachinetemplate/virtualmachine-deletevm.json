@@ -1,0 +1,25 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"VirtualMachineTemplate",
+  "metadata":{
+    "additionalProperties":{},
+    "finalizers":[],
+    "managedFields":[],
+    "name":"virtualmachine-deletevm",
+    "ownerReferences":[]
+  },
+  "spec":{
+    "data":{
+      "lifecycle":{
+        "deleteVM":{
+          "snapshots_metadata":true,
+          "nvram":true,
+          "remove_all_storage":true,
+          "storage":"String"
+        }
+      },
+      "additionalProperties":{}
+    },
+    "type":"VirtualMachine"
+  }
+}

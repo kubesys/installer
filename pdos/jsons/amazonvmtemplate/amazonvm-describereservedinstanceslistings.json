@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-describereservedinstanceslistings"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describereservedinstanceslistings":{
+		"reservedinstanceslistingid":"string",
+		"reservedinstancesid":"string",
+		"hreservedinstanceslistingid":"string",
+		"hreservedinstancesid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

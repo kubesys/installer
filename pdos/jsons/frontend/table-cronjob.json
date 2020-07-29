@@ -1,0 +1,41 @@
+[{
+		"key": 1,
+		"width": "200",
+		"label": "CronJob名",
+		"row": "metadata.name",
+		"style": "width:150px;",
+		"type": "input",
+		"kind": "a",
+		"link": "/profile/taskProfile"
+	},
+	{
+		"key": 2,
+		"width": "150",
+		"label": "规则",
+		"row": "spec.schedule"
+	},
+	{
+		"key": 3,
+		"width": "150",
+		"label": "处于暂停状态",
+		"row": "spec.suspend"
+	},
+	{
+		"key": 4,
+		"width": "250",
+		"label": "执行次数",
+		"row": "spec.successfulJobsHistoryLimit"
+	},
+	{
+		"key": 5,
+		"width": "250",
+		"label": "上次执行时间",
+		"row": "status.lastScheduleTime"
+	},
+	{
+		"key": 9,
+		"width": "180",
+		"label": "创建时间",
+		"row": "metadata.creationTimestamp"
+	}
+]

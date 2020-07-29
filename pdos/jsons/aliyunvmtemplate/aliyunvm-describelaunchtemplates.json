@@ -1,0 +1,29 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describelaunchtemplates"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describelaunchtemplates":{
+		"launchtemplatenames":null,
+		"templatetags":{
+			"value":"string",
+			"key":"string"
+		},
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"templateresourcegroupid":"string",
+		"pagesize":"integer",
+		"ownerid":null,
+		"pagenumber":"integer",
+		"launchtemplateids":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

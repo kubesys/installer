@@ -1,0 +1,26 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifyinstancemaintenanceattributes"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyinstancemaintenanceattributes":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"instanceids":null,
+		"owneraccount":"string",
+		"actiononmaintenance":"string",
+		"ownerid":null,
+		"maintenancewindows":{
+			"endtime":"string",
+			"starttime":"string"
+		}
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

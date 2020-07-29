@@ -1,0 +1,21 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-cancelcopyimage"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"cancelcopyimage":{
+		"resourceownerid":null,
+		"imageid":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

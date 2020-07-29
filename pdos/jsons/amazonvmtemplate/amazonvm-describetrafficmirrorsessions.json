@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-describetrafficmirrorsessions"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describetrafficmirrorsessions":{
+		"nexttoken":"string",
+		"hnexttoken":"string",
+		"maxresults":"integer",
+		"hmaxresults":"integer"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-advertisebyoipcidr"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"advertisebyoipcidr":{
+		"hcidr":"string",
+		"cidr":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

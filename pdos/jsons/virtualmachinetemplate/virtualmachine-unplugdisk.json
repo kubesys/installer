@@ -1,0 +1,26 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"VirtualMachineTemplate",
+  "metadata":{
+    "additionalProperties":{},
+    "finalizers":[],
+    "managedFields":[],
+    "name":"virtualmachine-unplugdisk",
+    "ownerReferences":[]
+  },
+  "spec":{
+    "data":{
+      "lifecycle":{
+        "unplugDisk":{
+          "current":true,
+          "persistent":true,
+          "config":true,
+          "live":true,
+          "target":"String"
+        }
+      },
+      "additionalProperties":{}
+    },
+    "type":"VirtualMachine"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifyautosnapshotpolicy"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyautosnapshotpolicy":{
+		"datadiskpolicyenabled":null,
+		"systemdiskpolicyretentiondays":"integer",
+		"datadiskpolicytimeperiod":"integer",
+		"resourceownerid":null,
+		"datadiskpolicyretentiondays":"integer",
+		"resourceowneraccount":"string",
+		"systemdiskpolicyretentionlastweek":null,
+		"owneraccount":"string",
+		"systemdiskpolicyenabled":null,
+		"systemdiskpolicytimeperiod":"integer",
+		"ownerid":null,
+		"datadiskpolicyretentionlastweek":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

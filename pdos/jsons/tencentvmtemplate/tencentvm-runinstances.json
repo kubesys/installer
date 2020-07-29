@@ -1,0 +1,25 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-runinstances"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"runinstances":{
+		"userdata":"string",
+		"hostname":"string",
+		"instancename":"string",
+		"imageid":"string",
+		"dryrun":null,
+		"clienttoken":"string",
+		"instancecount":null,
+		"instancetype":"string",
+		"instancechargetype":"string"
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

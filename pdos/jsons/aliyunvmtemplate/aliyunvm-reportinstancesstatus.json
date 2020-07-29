@@ -1,0 +1,27 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-reportinstancesstatus"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"reportinstancesstatus":{
+		"reason":"string",
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"instanceids":null,
+		"devices":null,
+		"owneraccount":"string",
+		"description":"string",
+		"diskids":null,
+		"endtime":"string",
+		"starttime":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

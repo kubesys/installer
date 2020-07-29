@@ -1,0 +1,28 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifyrouterinterfaceattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyrouterinterfaceattribute":{
+		"oppositerouterid":"string",
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"healthchecksourceip":"string",
+		"name":"string",
+		"oppositeroutertype":"string",
+		"description":"string",
+		"healthchecktargetip":"string",
+		"ownerid":null,
+		"routerinterfaceid":"string",
+		"oppositeinterfaceid":"string",
+		"oppositeinterfaceownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

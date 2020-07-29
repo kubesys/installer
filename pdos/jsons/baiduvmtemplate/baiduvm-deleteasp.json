@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-deleteasp"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deleteasp":{
+		"haspid":"string",
+		"aspid":"string"
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

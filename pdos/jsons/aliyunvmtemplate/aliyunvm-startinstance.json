@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-startinstance"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"startinstance":{
+		"sourceregionid":"string",
+		"initlocaldisk":null,
+		"resourceownerid":null,
+		"instanceid":"string",
+		"dryrun":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

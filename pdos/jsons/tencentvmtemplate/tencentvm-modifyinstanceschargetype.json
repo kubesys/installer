@@ -1,0 +1,17 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-modifyinstanceschargetype"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyinstanceschargetype":{
+		"instancechargetype":"string"
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

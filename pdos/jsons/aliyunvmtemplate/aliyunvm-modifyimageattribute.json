@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifyimageattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyimageattribute":{
+		"resourceownerid":null,
+		"imageid":"string",
+		"resourceowneraccount":"string",
+		"imagename":"string",
+		"owneraccount":"string",
+		"description":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-modifyvolume"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyvolume":{
+		"volumetype":"string",
+		"hvolumetype":"string",
+		"size":"integer",
+		"hsize":"integer",
+		"hvolumeid":"string",
+		"volumeid":"string",
+		"iops":"integer",
+		"hiops":"integer"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

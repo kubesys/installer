@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-deletephysicalconnection"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletephysicalconnection":{
+		"resourceownerid":null,
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"physicalconnectionid":"string",
+		"owneraccount":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

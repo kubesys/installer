@@ -1,0 +1,21 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-installcloudassistant"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"installcloudassistant":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"instanceids":null,
+		"owneraccount":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-getconsolescreenshot"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"getconsolescreenshot":{
+		"instanceid":"string",
+		"hinstanceid":"string",
+		"wakeup":null,
+		"hwakeup":null
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

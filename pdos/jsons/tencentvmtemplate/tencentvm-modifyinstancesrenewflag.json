@@ -1,0 +1,17 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-modifyinstancesrenewflag"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyinstancesrenewflag":{
+		"renewflag":"string"
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

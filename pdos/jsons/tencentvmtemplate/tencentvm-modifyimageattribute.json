@@ -1,0 +1,19 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-modifyimageattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyimageattribute":{
+		"imageid":"string",
+		"imagename":"string",
+		"imagedescription":"string"
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describespotpricehistory"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describespotpricehistory":{
+		"resourceownerid":null,
+		"offset":"integer",
+		"resourceowneraccount":"string",
+		"iooptimized":"string",
+		"owneraccount":"string",
+		"endtime":"string",
+		"starttime":"string",
+		"ostype":"string",
+		"networktype":"string",
+		"ownerid":null,
+		"spotduration":"integer",
+		"zoneid":"string",
+		"instancetype":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

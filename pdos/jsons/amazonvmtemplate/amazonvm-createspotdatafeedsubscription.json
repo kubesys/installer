@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createspotdatafeedsubscription"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createspotdatafeedsubscription":{
+		"hbucket":"string",
+		"bucket":"string",
+		"hprefix":"string",
+		"prefix":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

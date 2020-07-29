@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-inquirypriceresetinstancesinternetmaxbandwidth"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"inquirypriceresetinstancesinternetmaxbandwidth":{
+		"endtime":"string",
+		"starttime":"string"
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

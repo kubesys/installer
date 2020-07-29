@@ -1,0 +1,21 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-redeploydedicatedhost"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"redeploydedicatedhost":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"dedicatedhostid":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

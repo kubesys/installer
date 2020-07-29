@@ -1,0 +1,32 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-replacesystemdisk"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"replacesystemdisk":{
+		"resourceownerid":null,
+		"imageid":"string",
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"securityenhancementstrategy":"string",
+		"keypairname":"string",
+		"ownerid":null,
+		"platform":"string",
+		"password":"string",
+		"instanceid":"string",
+		"passwordinherit":null,
+		"systemdisksize":"integer",
+		"diskid":"string",
+		"architecture":"string",
+		"useadditionalservice":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

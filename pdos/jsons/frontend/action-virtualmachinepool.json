@@ -1,0 +1,18 @@
+[
+	{
+		"key":"开机启动存储池",
+		"type":"autoStartPool"
+	},
+	{
+		"key":"启动存储池",
+		"type":"startPool"
+	},
+	{
+		"key":"停止存储池",
+		"type":"stopPool"
+	},
+	{
+		"key":"删除存储池",
+		"type":"deletePool"
+	}
+]

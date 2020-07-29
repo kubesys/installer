@@ -1,0 +1,50 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describeprice"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeprice":{
+		"datadisk2performancelevel":"string",
+		"resourceownerid":null,
+		"imageid":"string",
+		"iooptimized":"string",
+		"internetmaxbandwidthout":"integer",
+		"platform":"string",
+		"datadisk2size":"integer",
+		"capacity":"integer",
+		"datadisk4performancelevel":"string",
+		"datadisk4size":"integer",
+		"systemdiskcategory":"string",
+		"scope":"string",
+		"priceunit":"string",
+		"systemdisksize":"integer",
+		"instancetype":"string",
+		"datadisk3size":"integer",
+		"period":"integer",
+		"amount":"integer",
+		"datadisk1category":"string",
+		"resourceowneraccount":"string",
+		"datadisk2category":"string",
+		"owneraccount":"string",
+		"datadisk3performancelevel":"string",
+		"ownerid":null,
+		"datadisk1performancelevel":"string",
+		"resourcetype":"string",
+		"datadisk4category":"string",
+		"offeringtype":"string",
+		"internetchargetype":"string",
+		"systemdiskperformancelevel":"string",
+		"datadisk3category":"string",
+		"instancenetworktype":"string",
+		"datadisk1size":"integer",
+		"instanceamount":"integer"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

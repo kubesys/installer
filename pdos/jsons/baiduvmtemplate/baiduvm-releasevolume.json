@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-releasevolume"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"releasevolume":{
+		"autosnapshot":"string",
+		"hautosnapshot":"string",
+		"manualsnapshot":"string",
+		"hvolumeid":"string",
+		"volumeid":"string",
+		"hmanualsnapshot":"string"
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

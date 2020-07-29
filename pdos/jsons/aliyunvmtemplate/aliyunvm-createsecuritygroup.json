@@ -1,0 +1,30 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-createsecuritygroup"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createsecuritygroup":{
+		"securitygrouptype":"string",
+		"resourcegroupid":"string",
+		"resourceownerid":null,
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"vpcid":"string",
+		"owneraccount":"string",
+		"description":"string",
+		"ownerid":null,
+		"securitygroupname":"string",
+		"tags":{
+			"value":"string",
+			"key":"string"
+		}
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

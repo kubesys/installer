@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-unassociatehavip"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"unassociatehavip":{
+		"havipid":"string",
+		"resourceownerid":null,
+		"instanceid":"string",
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"force":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

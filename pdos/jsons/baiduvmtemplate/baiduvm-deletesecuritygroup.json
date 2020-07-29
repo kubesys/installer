@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-deletesecuritygroup"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletesecuritygroup":{
+		"hsecuritygroupid":"string",
+		"securitygroupid":"string"
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

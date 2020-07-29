@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-modifyidformat"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyidformat":{
+		"resource":"string",
+		"huselongids":null,
+		"uselongids":null,
+		"hresource":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-rebootinstance"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"rebootinstance":{
+		"instanceid":"string",
+		"hinstanceid":"string",
+		"hforcestop":null,
+		"forcestop":null
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-disassociatevpccidrblock"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"disassociatevpccidrblock":{
+		"hassociationid":"string",
+		"associationid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

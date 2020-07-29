@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deletefpgaimage"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletefpgaimage":{
+		"fpgaimageid":"string",
+		"hfpgaimageid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

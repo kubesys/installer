@@ -1,0 +1,27 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-attachdisk"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"attachdisk":{
+		"resourceownerid":null,
+		"password":"string",
+		"instanceid":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"diskid":"string",
+		"keypairname":"string",
+		"ownerid":null,
+		"device":"string",
+		"bootable":null,
+		"deletewithinstance":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

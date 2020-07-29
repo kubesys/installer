@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createsnapshot"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createsnapshot":{
+		"hdescription":"string",
+		"hvolumeid":"string",
+		"volumeid":"string",
+		"description":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

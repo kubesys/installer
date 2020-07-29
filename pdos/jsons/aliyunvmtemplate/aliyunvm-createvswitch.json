@@ -1,0 +1,26 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-createvswitch"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createvswitch":{
+		"resourceownerid":null,
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"vpcid":"string",
+		"owneraccount":"string",
+		"vswitchname":"string",
+		"cidrblock":"string",
+		"zoneid":"string",
+		"description":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

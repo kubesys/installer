@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-cancelimporttask"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"cancelimporttask":{
+		"himporttaskid":"string",
+		"cancelreason":"string",
+		"importtaskid":"string",
+		"hcancelreason":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

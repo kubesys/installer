@@ -1,0 +1,29 @@
+[{
+		"key": 1,
+		"width": "200",
+		"label": "DaemonSet名",
+		"row": "metadata.name",
+		"style": "width:150px;",
+		"type": "input",
+		"kind": "a",
+		"link": "/profile/taskProfile"
+	},
+	{
+		"key": 4,
+		"width": "150",
+		"label": "Pod数",
+		"row": "status.replicas"
+	},
+	{
+		"key": 5,
+		"width": "150",
+		"label": "正常Pod数",
+		"row": "status.readyReplicas"
+	},
+	{
+		"key": 9,
+		"width": "180",
+		"label": "创建时间",
+		"row": "metadata.creationTimestamp"
+	}
+]

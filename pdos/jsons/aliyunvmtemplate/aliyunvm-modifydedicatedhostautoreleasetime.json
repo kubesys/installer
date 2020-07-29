@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifydedicatedhostautoreleasetime"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifydedicatedhostautoreleasetime":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"autoreleasetime":"string",
+		"dedicatedhostid":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

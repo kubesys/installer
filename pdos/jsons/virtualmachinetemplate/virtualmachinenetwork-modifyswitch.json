@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"VirtualMachineTemplate",
+  "metadata":{
+    "additionalProperties":{},
+    "finalizers":[],
+    "managedFields":[],
+    "name":"virtualmachinenetwork-modifyswitch",
+    "ownerReferences":[]
+  },
+  "spec":{
+    "data":{
+      "lifecycle":{
+        "modifySwitch":{
+          "gateway":"String",
+          "mtu":"String"
+        }
+      },
+      "additionalProperties":{}
+    },
+    "type":"VirtualMachine"
+  }
+}

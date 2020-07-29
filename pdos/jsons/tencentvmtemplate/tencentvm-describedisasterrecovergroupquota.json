@@ -1,0 +1,15 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-describedisasterrecovergroupquota"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describedisasterrecovergroupquota":{}
+}
+    },
+    "type":"TencentVM"
+  }
+}

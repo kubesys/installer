@@ -1,0 +1,47 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-createautoprovisioninggroup"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createautoprovisioninggroup":{
+		"resourceownerid":null,
+		"launchtemplateconfigs":{
+			"vswitchid":"string",
+			"maxprice":"double",
+			"weightedcapacity":"double",
+			"instancetype":"string",
+			"priority":"integer"
+		},
+		"autoprovisioninggrouptype":"string",
+		"description":"string",
+		"terminateinstanceswithexpiration":null,
+		"resourcegroupid":"string",
+		"spotallocationstrategy":"string",
+		"terminateinstances":null,
+		"payasyougoallocationstrategy":"string",
+		"defaulttargetcapacitytype":"string",
+		"excesscapacityterminationpolicy":"string",
+		"validuntil":"string",
+		"spotinstanceinterruptionbehavior":"string",
+		"launchtemplateid":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"spotinstancepoolstousecount":"integer",
+		"ownerid":null,
+		"launchtemplateversion":"string",
+		"payasyougotargetcapacity":"string",
+		"totaltargetcapacity":"string",
+		"spottargetcapacity":"string",
+		"validfrom":"string",
+		"autoprovisioninggroupname":"string",
+		"maxspotprice":"float"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

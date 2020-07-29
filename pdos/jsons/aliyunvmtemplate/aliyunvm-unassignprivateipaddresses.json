@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-unassignprivateipaddresses"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"unassignprivateipaddresses":{
+		"resourceownerid":null,
+		"privateipaddresss":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"networkinterfaceid":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

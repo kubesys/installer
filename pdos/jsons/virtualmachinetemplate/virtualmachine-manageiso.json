@@ -1,0 +1,31 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"VirtualMachineTemplate",
+  "metadata":{
+    "additionalProperties":{},
+    "finalizers":[],
+    "managedFields":[],
+    "name":"virtualmachine-manageiso",
+    "ownerReferences":[]
+  },
+  "spec":{
+    "data":{
+      "lifecycle":{
+        "manageISO":{
+          "eject":true,
+          "path":"String",
+          "current":true,
+          "insert":true,
+          "update":true,
+          "block":true,
+          "force":true,
+          "source":"String",
+          "config":true,
+          "live":true
+        }
+      },
+      "additionalProperties":{}
+    },
+    "type":"VirtualMachine"
+  }
+}

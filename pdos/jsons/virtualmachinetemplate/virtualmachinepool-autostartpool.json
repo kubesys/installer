@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"VirtualMachineTemplate",
+  "metadata":{
+    "additionalProperties":{},
+    "finalizers":[],
+    "managedFields":[],
+    "name":"virtualmachinepool-autostartpool",
+    "ownerReferences":[]
+  },
+  "spec":{
+    "data":{
+      "lifecycle":{
+        "autoStartPool":{
+          "disable":true,
+          "type":"String"
+        }
+      },
+      "additionalProperties":{}
+    },
+    "type":"VirtualMachine"
+  }
+}

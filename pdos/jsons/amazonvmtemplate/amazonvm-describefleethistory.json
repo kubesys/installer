@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-describefleethistory"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describefleethistory":{
+		"hfleetid":"string",
+		"nexttoken":"string",
+		"hnexttoken":"string",
+		"heventtype":"string",
+		"maxresults":"integer",
+		"eventtype":"string",
+		"fleetid":"string",
+		"hmaxresults":"integer"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

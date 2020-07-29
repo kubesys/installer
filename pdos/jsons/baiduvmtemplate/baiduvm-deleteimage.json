@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-deleteimage"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deleteimage":{
+		"imageid":"string",
+		"himageid":"string"
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

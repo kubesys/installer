@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-deletekeypairs"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletekeypairs":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"keypairnames":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

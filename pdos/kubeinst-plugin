@@ -7,6 +7,14 @@
 ##
 ###############################################
 
+  echo -e "window.g = {" > /etc/kubernetes/config.js
+  echo -e "\tbaseURL:\"http://0.0.0.0:30310/kubesys/\"," >> /etc/kubernetes/config.js
+  echo -e "\tVUE_APP_MONITOR_HOST:\"0.0.0.0\"," >> /etc/kubernetes/config.js
+  echo -e "\tVUE_APP_MONITOR_HOST_GRAFANA:\"0.0.0.0:31002\"," >> /etc/kubernetes/config.js
+  echo -e "\tVUE_APP_CONTAINER_HOST:\"0.0.0.0\"," >> /etc/kubernetes/config.js
+  echo -e "\tVUE_APP_VNCHOST:\"0.0.0.0\"," >> /etc/kubernetes/config.js
+  echo -e "\tregistry:\"http://0.0.0.0:5000\"" >> /etc/kubernetes/config.js
+  echo -e "}" >> /etc/kubernetes/config.js
 
   echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-synchronizer/master/kubernetes-synchronizer.yaml" >> /etc/kubernetes/kubeenv.list
   echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-operators/master/kubernetes-operators.yaml" >> /etc/kubernetes/kubeenv.list

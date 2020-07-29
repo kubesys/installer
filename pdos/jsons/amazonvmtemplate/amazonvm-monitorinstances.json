@@ -1,0 +1,15 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-monitorinstances"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"monitorinstances":{}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

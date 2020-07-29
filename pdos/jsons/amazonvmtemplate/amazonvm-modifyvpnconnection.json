@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-modifyvpnconnection"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyvpnconnection":{
+		"vpnconnectionid":"string",
+		"hvpngatewayid":"string",
+		"hcustomergatewayid":"string",
+		"transitgatewayid":"string",
+		"vpngatewayid":"string",
+		"htransitgatewayid":"string",
+		"customergatewayid":"string",
+		"hvpnconnectionid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

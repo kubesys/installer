@@ -1,0 +1,25 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-removetags"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"removetags":{
+		"resourceownerid":null,
+		"resourceid":"string",
+		"resourceowneraccount":"string",
+		"ownerid":null,
+		"resourcetype":"string",
+		"tags":{
+			"value":"string",
+			"key":"string"
+		}
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

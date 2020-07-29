@@ -1,0 +1,31 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-createvirtualborderrouter"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createvirtualborderrouter":{
+		"resourceownerid":null,
+		"circuitcode":"string",
+		"vlanid":"integer",
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"description":"string",
+		"ownerid":null,
+		"peergatewayip":"string",
+		"peeringsubnetmask":"string",
+		"physicalconnectionid":"string",
+		"name":"string",
+		"localgatewayip":"string",
+		"usercidr":"string",
+		"vbrownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

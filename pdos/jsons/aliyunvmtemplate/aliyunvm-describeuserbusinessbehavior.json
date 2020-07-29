@@ -1,0 +1,21 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describeuserbusinessbehavior"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeuserbusinessbehavior":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"statuskey":"string",
+		"owneraccount":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

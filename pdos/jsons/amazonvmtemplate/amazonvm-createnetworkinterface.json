@@ -1,0 +1,28 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createnetworkinterface"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createnetworkinterface":{
+		"privateipaddress":"string",
+		"subnetid":"string",
+		"hipv6addresscount":"integer",
+		"hinterfacetype":"string",
+		"hsecondaryprivateipaddresscount":"integer",
+		"interfacetype":"string",
+		"hdescription":"string",
+		"ipv6addresscount":"integer",
+		"hsubnetid":"string",
+		"description":"string",
+		"secondaryprivateipaddresscount":"integer",
+		"hprivateipaddress":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

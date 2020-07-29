@@ -1,0 +1,27 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-createcommand"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createcommand":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"workingdir":"string",
+		"name":"string",
+		"description":"string",
+		"ownerid":null,
+		"type":"string",
+		"timeout":null,
+		"commandcontent":"string",
+		"enableparameter":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifyvpcattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyvpcattribute":{
+		"vpcname":"string",
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"vpcid":"string",
+		"owneraccount":"string",
+		"cidrblock":"string",
+		"description":"string",
+		"usercidr":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

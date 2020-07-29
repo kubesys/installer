@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-modifycdsattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifycdsattribute":{
+		"hdesc":"string",
+		"cdsname":"string",
+		"hcdsname":"string",
+		"desc":"string",
+		"hcdsid":"string",
+		"cdsid":"string"
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

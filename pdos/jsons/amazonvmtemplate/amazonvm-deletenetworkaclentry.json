@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deletenetworkaclentry"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletenetworkaclentry":{
+		"hnetworkaclid":"string",
+		"networkaclid":"string",
+		"hrulenumber":"integer",
+		"rulenumber":"integer",
+		"hegress":null,
+		"egress":null
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

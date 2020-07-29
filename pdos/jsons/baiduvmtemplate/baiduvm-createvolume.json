@@ -1,0 +1,28 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-createvolume"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createvolume":{
+		"hclienttoken":"string",
+		"purchasecount":"integer",
+		"hsnapshotid":"string",
+		"snapshotid":"string",
+		"hcdssizeingb":"integer",
+		"clienttoken":"string",
+		"hzonename":"string",
+		"cdssizeingb":"integer",
+		"hstoragetype":"string",
+		"zonename":"string",
+		"hpurchasecount":"integer",
+		"storagetype":"string"
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

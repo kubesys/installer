@@ -1,0 +1,17 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-describeimagesharepermission"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeimagesharepermission":{
+		"imageid":"string"
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifyhpcclusterattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyhpcclusterattribute":{
+		"resourceownerid":null,
+		"hpcclusterid":"string",
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"name":"string",
+		"description":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

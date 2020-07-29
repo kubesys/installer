@@ -1,0 +1,43 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describesnapshots"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describesnapshots":{
+		"resourceownerid":null,
+		"filter1value":"string",
+		"dryrun":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"usage":"string",
+		"snapshotids":"string",
+		"sourcedisktype":"string",
+		"snapshotname":"string",
+		"snapshotlinkid":"string",
+		"ownerid":null,
+		"pagenumber":"integer",
+		"tags":{
+			"value":"string",
+			"key":"string"
+		},
+		"resourcegroupid":"string",
+		"instanceid":"string",
+		"encrypted":null,
+		"snapshottype":"string",
+		"pagesize":"integer",
+		"filter1key":"string",
+		"filter2value":"string",
+		"diskid":"string",
+		"filter2key":"string",
+		"kmskeyid":"string",
+		"status":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

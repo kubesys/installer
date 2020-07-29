@@ -1,0 +1,21 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-detachkeypair"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"detachkeypair":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"instanceids":"string",
+		"keypairname":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

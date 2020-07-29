@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-associateeipaddress"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"associateeipaddress":{
+		"resourceownerid":null,
+		"instanceid":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"instancetype":"string",
+		"allocationid":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

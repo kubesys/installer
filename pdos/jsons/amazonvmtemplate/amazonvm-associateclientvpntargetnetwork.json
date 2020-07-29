@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-associateclientvpntargetnetwork"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"associateclientvpntargetnetwork":{
+		"subnetid":"string",
+		"hclienttoken":"string",
+		"clienttoken":"string",
+		"hsubnetid":"string",
+		"hclientvpnendpointid":"string",
+		"clientvpnendpointid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describephysicalconnections"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describephysicalconnections":{
+		"resourceownerid":null,
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"pagesize":"integer",
+		"usercidr":"string",
+		"filters":{
+			"values":null,
+			"key":"string"
+		},
+		"ownerid":null,
+		"pagenumber":"integer"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

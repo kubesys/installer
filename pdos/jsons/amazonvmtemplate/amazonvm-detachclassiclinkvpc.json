@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-detachclassiclinkvpc"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"detachclassiclinkvpc":{
+		"instanceid":"string",
+		"hinstanceid":"string",
+		"vpcid":"string",
+		"hvpcid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

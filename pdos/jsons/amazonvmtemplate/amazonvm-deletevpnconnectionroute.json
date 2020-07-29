@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deletevpnconnectionroute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletevpnconnectionroute":{
+		"vpnconnectionid":"string",
+		"destinationcidrblock":"string",
+		"hdestinationcidrblock":"string",
+		"hvpnconnectionid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

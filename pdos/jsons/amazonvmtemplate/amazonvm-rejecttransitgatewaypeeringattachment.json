@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-rejecttransitgatewaypeeringattachment"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"rejecttransitgatewaypeeringattachment":{
+		"transitgatewayattachmentid":"string",
+		"htransitgatewayattachmentid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

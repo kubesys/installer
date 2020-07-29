@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-allocatehosts"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"allocatehosts":{
+		"hostcount":null,
+		"clienttoken":"string",
+		"hosttype":"string",
+		"hostchargetype":"string"
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

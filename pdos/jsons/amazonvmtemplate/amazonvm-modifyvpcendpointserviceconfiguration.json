@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-modifyvpcendpointserviceconfiguration"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyvpcendpointserviceconfiguration":{
+		"privatednsname":"string",
+		"hacceptancerequired":null,
+		"acceptancerequired":null,
+		"removeprivatednsname":null,
+		"hserviceid":"string",
+		"serviceid":"string",
+		"hremoveprivatednsname":null,
+		"hprivatednsname":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

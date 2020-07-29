@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifyvrouterattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyvrouterattribute":{
+		"vroutername":"string",
+		"resourceownerid":null,
+		"vrouterid":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"description":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

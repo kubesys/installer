@@ -1,0 +1,34 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-importimage"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"importimage":{
+		"licensetype":"string",
+		"clienttoken":"string",
+		"rolename":"string",
+		"description":"string",
+		"platform":"string",
+		"hclienttoken":"string",
+		"hplatform":"string",
+		"hkmskeyid":"string",
+		"encrypted":null,
+		"hdescription":"string",
+		"hypervisor":"string",
+		"hhypervisor":"string",
+		"hlicensetype":"string",
+		"hencrypted":null,
+		"kmskeyid":"string",
+		"harchitecture":"string",
+		"hrolename":"string",
+		"architecture":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

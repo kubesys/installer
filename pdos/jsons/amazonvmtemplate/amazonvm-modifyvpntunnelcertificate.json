@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-modifyvpntunnelcertificate"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyvpntunnelcertificate":{
+		"vpntunneloutsideipaddress":"string",
+		"hvpntunneloutsideipaddress":"string",
+		"vpnconnectionid":"string",
+		"hvpnconnectionid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

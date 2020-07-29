@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deletelaunchtemplateversions"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletelaunchtemplateversions":{
+		"launchtemplatename":"string",
+		"hlaunchtemplatename":"string",
+		"launchtemplateid":"string",
+		"hlaunchtemplateid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

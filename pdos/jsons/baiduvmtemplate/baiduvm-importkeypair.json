@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-importkeypair"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"importkeypair":{
+		"hdescription":"string",
+		"name":"string",
+		"publickey":"string",
+		"description":"string",
+		"hpublickey":"string",
+		"hname":"string"
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

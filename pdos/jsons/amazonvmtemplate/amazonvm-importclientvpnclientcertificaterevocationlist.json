@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-importclientvpnclientcertificaterevocationlist"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"importclientvpnclientcertificaterevocationlist":{
+		"hclientvpnendpointid":"string",
+		"hcertificaterevocationlist":"string",
+		"clientvpnendpointid":"string",
+		"certificaterevocationlist":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

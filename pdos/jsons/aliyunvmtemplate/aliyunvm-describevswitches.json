@@ -1,0 +1,26 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describevswitches"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describevswitches":{
+		"vswitchid":"string",
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"vpcid":"string",
+		"owneraccount":"string",
+		"pagesize":"integer",
+		"zoneid":"string",
+		"isdefault":null,
+		"ownerid":null,
+		"pagenumber":"integer"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describebandwidthpackages"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describebandwidthpackages":{
+		"resourceownerid":null,
+		"bandwidthpackageid":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"pagesize":"integer",
+		"natgatewayid":"string",
+		"ownerid":null,
+		"pagenumber":"integer"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

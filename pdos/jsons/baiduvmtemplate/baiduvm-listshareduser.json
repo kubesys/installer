@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-listshareduser"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"listshareduser":{
+		"imageid":"string",
+		"himageid":"string"
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

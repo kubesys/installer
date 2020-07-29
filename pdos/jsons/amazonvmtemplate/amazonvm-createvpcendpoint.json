@@ -1,0 +1,28 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createvpcendpoint"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createvpcendpoint":{
+		"hclienttoken":"string",
+		"hvpcendpointtype":"string",
+		"hpolicydocument":"string",
+		"hprivatednsenabled":null,
+		"clienttoken":"string",
+		"vpcid":"string",
+		"hvpcid":"string",
+		"privatednsenabled":null,
+		"vpcendpointtype":"string",
+		"servicename":"string",
+		"policydocument":"string",
+		"hservicename":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

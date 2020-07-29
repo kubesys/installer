@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-inquirypriceresizeinstancedisks"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"inquirypriceresizeinstancedisks":{
+		"instanceid":"string",
+		"forcestop":null
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

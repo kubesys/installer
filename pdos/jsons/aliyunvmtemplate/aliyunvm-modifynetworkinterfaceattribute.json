@@ -1,0 +1,25 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifynetworkinterfaceattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifynetworkinterfaceattribute":{
+		"queuenumber":"integer",
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"description":"string",
+		"networkinterfaceid":"string",
+		"ownerid":null,
+		"securitygroupids":null,
+		"networkinterfacename":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

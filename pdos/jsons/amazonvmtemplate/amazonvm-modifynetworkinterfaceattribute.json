@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-modifynetworkinterfaceattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifynetworkinterfaceattribute":{
+		"sourcedestcheck":null,
+		"hdescription":"string",
+		"description":"string",
+		"hsourcedestcheck":null,
+		"hnetworkinterfaceid":"string",
+		"networkinterfaceid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

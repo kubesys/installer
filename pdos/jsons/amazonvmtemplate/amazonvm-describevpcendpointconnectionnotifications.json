@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-describevpcendpointconnectionnotifications"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describevpcendpointconnectionnotifications":{
+		"nexttoken":"string",
+		"connectionnotificationid":"string",
+		"hnexttoken":"string",
+		"maxresults":"integer",
+		"hconnectionnotificationid":"string",
+		"hmaxresults":"integer"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

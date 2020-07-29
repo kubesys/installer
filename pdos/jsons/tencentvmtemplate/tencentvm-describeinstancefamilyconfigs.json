@@ -1,0 +1,15 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-describeinstancefamilyconfigs"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeinstancefamilyconfigs":{}
+}
+    },
+    "type":"TencentVM"
+  }
+}

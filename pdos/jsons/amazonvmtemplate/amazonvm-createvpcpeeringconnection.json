@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createvpcpeeringconnection"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createvpcpeeringconnection":{
+		"peerregion":"string",
+		"hpeerregion":"string",
+		"peerownerid":"string",
+		"hpeervpcid":"string",
+		"vpcid":"string",
+		"hvpcid":"string",
+		"peervpcid":"string",
+		"hpeerownerid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createtransitgatewayroutetable"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createtransitgatewayroutetable":{
+		"transitgatewayid":"string",
+		"htransitgatewayid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

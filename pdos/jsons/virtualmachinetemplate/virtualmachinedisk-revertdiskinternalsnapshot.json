@@ -1,0 +1,25 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"VirtualMachineTemplate",
+  "metadata":{
+    "additionalProperties":{},
+    "finalizers":[],
+    "managedFields":[],
+    "name":"virtualmachinedisk-revertdiskinternalsnapshot",
+    "ownerReferences":[]
+  },
+  "spec":{
+    "data":{
+      "lifecycle":{
+        "revertDiskSnapshot":{
+          "pool":"String",
+          "snapshotname":"String",
+          "type":"String"
+        },
+        "revertDiskInternalSnapshot":{"$ref":"$.spec.data.lifecycle.revertDiskSnapshot"}
+      },
+      "additionalProperties":{}
+    },
+    "type":"VirtualMachine"
+  }
+}

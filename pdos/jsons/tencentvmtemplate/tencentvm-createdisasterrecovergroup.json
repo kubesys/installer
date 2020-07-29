@@ -1,0 +1,19 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-createdisasterrecovergroup"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createdisasterrecovergroup":{
+		"clienttoken":"string",
+		"name":"string",
+		"type":"string"
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

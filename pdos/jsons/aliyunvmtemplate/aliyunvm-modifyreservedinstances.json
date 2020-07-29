@@ -1,0 +1,28 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifyreservedinstances"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyreservedinstances":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"configurations":{
+			"scope":"string",
+			"zoneid":"string",
+			"instancetype":"string",
+			"reservedinstancename":"string",
+			"instanceamount":"integer"
+		},
+		"owneraccount":"string",
+		"ownerid":null,
+		"reservedinstanceids":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

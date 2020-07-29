@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-cancelautosnapshotpolicy"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"cancelautosnapshotpolicy":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"diskids":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deregisterimage"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deregisterimage":{
+		"imageid":"string",
+		"himageid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-describeinstanceattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeinstanceattribute":{
+		"instanceid":"string",
+		"hinstanceid":"string",
+		"hattribute":"string",
+		"attribute":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

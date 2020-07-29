@@ -1,0 +1,27 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-deleterouteentry"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deleterouteentry":{
+		"nexthoplists":{
+			"nexthopid":"string",
+			"nexthoptype":"string"
+		},
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"destinationcidrblock":"string",
+		"nexthopid":"string",
+		"ownerid":null,
+		"routetableid":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

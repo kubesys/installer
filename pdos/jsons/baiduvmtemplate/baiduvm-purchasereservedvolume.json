@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-purchasereservedvolume"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"purchasereservedvolume":{
+		"hclienttoken":"string",
+		"clienttoken":"string",
+		"hvolumeid":"string",
+		"volumeid":"string"
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-modifydisasterrecovergroupattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifydisasterrecovergroupattribute":{
+		"name":"string",
+		"disasterrecovergroupid":"string"
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

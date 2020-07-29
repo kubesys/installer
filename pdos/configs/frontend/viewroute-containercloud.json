@@ -1,0 +1,452 @@
+{
+	"metadata":{
+		"finalizers":[],
+		"managedFields":[],
+		"name":"viewroute-20200227",
+		"additionalProperties":{},
+		"ownerReferences":[]
+	},
+	"apiVersion":"cloudplus.io/v1alpha3",
+	"kind":"Frontend",
+	"spec":{
+		"data":[
+                       {
+        "path": "/",
+        "component": "Layout",
+        "redirect": "/index/general"
+      },
+			{
+				"redirect":"noRedirect",
+				"path":"/index",
+				"component":"Layout",
+				"children":[
+					{
+						"path":"general",
+						"component":"dashboard/index",
+						"meta":{
+							"title":"概况"
+						},
+						"name":"general"
+					}
+				],
+				"meta":{
+					"roles":[
+						"ladder"
+					],
+					"icon":"dashboard",
+					"title":"首页"
+				},
+				"name":"Index"
+			},
+			{
+				"redirect":"noRedirect",
+				"path":"/Cluster",
+				"component":"Layout",
+				"children":[
+					{
+						"path":"Cluster Roles",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"clusterrole",
+							"title":"集群角色（Cluster Roles）"
+						},
+						"name":"ClusterRole"
+					},
+					{
+						"path":"link",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"link",
+							"title":"命名空间（Namespaces）"
+						},
+						"name":"Namespace"
+					},
+					{
+						"path":"node-table",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"node",
+							"title":"节点（Nodes）"
+						},
+						"name":"Node"
+					},
+					{
+						"path":"Persistent Volumes",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"storage",
+							"title":"存储卷（Persistent Volumes）"
+						},
+						"name":"PersistentVolume"
+					},
+					{
+						"path":"Storage Classes",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"storageclass",
+							"title":"存储类（Storage Classes）"
+						},
+						"name":"StorageClass"
+					}
+				],
+				"meta":{
+					"roles":[
+						"ladder"
+					],
+					"icon":"component",
+					"title":"集群"
+				},
+				"name":"Cluster"
+			},
+			{
+				"redirect":"noRedirect",
+				"path":"/Workloads",
+				"component":"Layout",
+				"children":[
+					{
+						"path":"Cron Jobs",
+						"component":"charts/node-table",
+						"meta":{
+							"data":{},
+							"icon":"cronjob",
+							"title":"定时任务（Cron Jobs）"
+						},
+						"name":"CronJob"
+					},
+					{
+						"path":"Daemon Sets",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"process",
+							"title":"进程组（DaemonSets）"
+						},
+						"name":"DaemonSet"
+					},
+					{
+						"path":"Deployments",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"deployment",
+							"title":"无状态服务（Deployments）"
+						},
+						"icon":"component",
+						"name":"Deployment"
+					},
+					{
+						"path":"Jobs",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"job",
+							"title":"任务（Jobs）"
+						},
+						"name":"Job"
+					},
+					{
+						"path":"Pods",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"pod",
+							"title":"容器组（Pods）"
+						},
+						"name":"Pod"
+					},
+					{
+						"path":"Replica Sets",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"replicaset",
+							"title":"副本（ReplicaSets）"
+						},
+						"name":"ReplicaSet"
+					},
+					{
+						"path":"Replications Controllers",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"control",
+							"title":"副本控制器（Replications Controllers）"
+						},
+						"name":"ReplicationController"
+					},
+					{
+						"path":"Stateful Sets",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"statefulset",
+							"title":"有状态服务（StatefulSets）"
+						},
+						"name":"StatefulSet"
+					}
+				],
+				"meta":{
+					"roles":[
+						"ladder"
+					],
+					"icon":"chart",
+					"title":"工作量"
+				},
+				"name":" Workloads"
+			},
+			{
+				"redirect":"noRedirect",
+				"path":"/Discovery and Load Balancing key",
+				"component":"Layout",
+				"children":[
+					{
+						"path":"Ingresses",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"route",
+							"title":"路由（Ingress）"
+						},
+						"name":"Ingress"
+					},
+					{
+						"path":"Services",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"service",
+							"title":"服务（Services）"
+						},
+						"name":"Service"
+					}
+				],
+				"meta":{
+					"roles":[
+						"ladder"
+					],
+					"icon":"balance",
+					"title":"发现和负载均衡"
+				},
+				"name":"DiscoveryAndLoad Balancing key"
+			},
+			{
+				"redirect":"noRedirect",
+				"path":"/ Config and Storage",
+				"component":"Layout",
+				"children":[
+					{
+						"path":"Config Maps",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"config",
+							"title":"配置项（ConfigMaps）"
+						},
+						"name":"ConfigMap"
+					},
+					{
+						"path":"Persistent Volume Claims",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"storage",
+							"title":"存储卷声明（Persistent Volumes Claims）"
+						},
+						"name":"PersistentVolumeClaim"
+					},
+					{
+						"path":"Secrets",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"secret",
+							"title":"保密字典（Secrets）"
+						},
+						"name":"Secret"
+					}
+				],
+				"meta":{
+					"roles":[
+						"ladder"
+					],
+					"icon":"config",
+					"title":"配置和存储"
+				},
+				"name":" Config and Storage"
+			},
+			{
+				"redirect":"noRedirect",
+				"path":"/Custom Resource Definitions",
+				"component":"Layout",
+				"children":[
+					{
+						"path":"crd",
+						"component":"charts/node-table",
+						"meta":{
+							"icon":"custom",
+							"title":"定义自定义资源"
+						},
+						"name":"CustomResourceDefinition"
+					}
+				],
+				"meta":{
+					"roles":[
+						"ladder"
+					],
+					"icon":"custom",
+					"title":"定义自定义资源"
+				},
+				"name":" Custom Resource Definitions"
+			},
+			{
+				"redirect":"noRedirect",
+				"path":"/template",
+				"component":"Layout",
+				"children":[
+					{
+						"path":"styleConfig",
+						"component":"sysConfig/styleConfig",
+						"meta":{
+							"icon":"component",
+							"title":"样式布局"
+						},
+						"name":"Frontend"
+					},
+                                        {
+            "path": "interfaceAnalysis",
+            "component": "sysConfig/lifecycle",
+            "meta": {
+              "icon": "interface",
+              "title": "内部接口"
+            },
+            "name": "innerService"
+          },
+          {
+            "path": "imageHub",
+            "component": "sysConfig/imageHub",
+            "meta": {
+              "icon": "model",
+              "title": "镜像仓库"
+            },
+            "name": "imageHub"
+          },
+          {
+            "path": "overallShed",
+            "component": "echarts/schedule",
+            "meta": {
+              "icon": "schdule",
+              "title": "全局调度"
+            },
+            "name": "overallShed"
+          }
+				],
+				"meta":{
+					"roles":[
+						"ladder"
+					],
+					"icon":"list",
+					"title":"配置管理"
+				},
+				"name":"Template"
+			},
+                        {
+                                "redirect":"noRedirect",
+                                "path":"/rbac",
+                                "component":"Layout",
+                                "children":[
+                                        {
+                                                "path":"user",
+                                                "component":"rbac/roleManage",
+                                                "meta":{
+                                                        "icon":"user",
+                                                        "title":"用户管理",
+                                                        "name":"用户"
+                                                },
+                                                "name":"RBACUser"
+                                        },
+                                        {
+                                                "path":"role",
+                                                "component":"rbac/roleManage",
+                                                "meta":{
+                                                        "icon":"role",
+                                                        "title":"角色管理",
+                                                        "name":"角色"
+                                                },
+                                                "name":"RBACRole"
+                                        }
+                                ],
+                                "meta":{
+                                        "roles":[
+                                                "admin"
+                                        ],
+                                        "icon":"rbac",
+                                        "title":"权限管理"
+                                },
+                                "name":"rbac"
+                        },
+                        {
+                                "redirect":"noRedirect",
+                                "path":"/cloudplatform",
+                                "component":"Layout",
+                                "children":[
+                                        {
+                                                "path":"index",
+                                                "component":"cloudPlatform/index",
+                                                "meta":{
+                                                        "icon":"chart",
+                                                        "title":"云平台",
+                                                        "name":"cloudcontroller",
+                                                        "data":{}
+                                                },
+                                                "name":"cloudcontroller"
+                                        },
+                                        {
+                                                "path":"account",
+                                                "component":"cloudPlatform/account",
+                                                "meta":{
+                                                        "icon":"account",
+                                                        "title":"云账户",
+                                                        "name":"cloudcontroller",
+                                                        "data":{}
+                                                },
+                                                "name":"cloudaccount"
+                                        }
+                                ],
+                                "meta":{
+                                        "roles":[
+                                                "admin"
+                                        ],
+                                        "icon":"cloud",
+                                        "title":"云平台管理"
+                                },
+                                "name":"cloudplatform"
+                        },
+                        {
+                                "redirect":"noRedirect",
+                                "path":"/imagePull",
+                                "component":"Layout",
+                                "children":[
+                                        {
+                                                "path":"imageAnalysis",
+                                                "component":"graduation/imageAnalysis",
+                                                "meta":{
+                                                        "icon":"chart",
+                                                        "title":"镜像分析",
+                                                        "name":"imageAnalysis",
+                                                        "data":{}
+                                                },
+                                                "name":"imageAnalysis"
+                                        },
+                                        {
+                                                "path":"demandLoading",
+                                                "component":"graduation/demandLoading",
+                                                "meta":{
+                                                        "icon":"account",
+                                                        "title":"按需加载",
+                                                        "name":"demandLoading",
+                                                        "data":{}
+                                                },
+                                                "name":"demandLoading"
+                                         }
+                                ],
+                                "meta":{
+                                        "roles":[
+                                                "admin"
+                                        ],
+                                        "icon":"component",
+                                        "title":"镜像拉取优化"
+                                },
+                                "name":"imagePull"
+                        }
+		],
+		"type":"viewroute"
+	}
+}

@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-importvolume"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"importvolume":{
+		"hdescription":"string",
+		"havailabilityzone":"string",
+		"description":"string",
+		"availabilityzone":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

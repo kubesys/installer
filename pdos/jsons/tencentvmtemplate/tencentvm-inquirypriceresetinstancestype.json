@@ -1,0 +1,17 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-inquirypriceresetinstancestype"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"inquirypriceresetinstancestype":{
+		"instancetype":"string"
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

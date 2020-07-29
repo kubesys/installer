@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-purchasehostreservation"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"purchasehostreservation":{
+		"hclienttoken":"string",
+		"hlimitprice":"string",
+		"limitprice":"string",
+		"clienttoken":"string",
+		"hcurrencycode":"string",
+		"offeringid":"string",
+		"hofferingid":"string",
+		"currencycode":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

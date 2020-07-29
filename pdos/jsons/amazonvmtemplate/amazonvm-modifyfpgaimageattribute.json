@@ -1,0 +1,26 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-modifyfpgaimageattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyfpgaimageattribute":{
+		"fpgaimageid":"string",
+		"hdescription":"string",
+		"hfpgaimageid":"string",
+		"name":"string",
+		"description":"string",
+		"hattribute":"string",
+		"operationtype":"string",
+		"attribute":"string",
+		"hoperationtype":"string",
+		"hname":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

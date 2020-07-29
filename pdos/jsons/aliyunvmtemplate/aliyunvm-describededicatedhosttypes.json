@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describededicatedhosttypes"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describededicatedhosttypes":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"dedicatedhosttype":"string",
+		"ownerid":null,
+		"supportedinstancetypefamily":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

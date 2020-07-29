@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-describeidentityidformat"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeidentityidformat":{
+		"resource":"string",
+		"hprincipalarn":"string",
+		"hresource":"string",
+		"principalarn":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

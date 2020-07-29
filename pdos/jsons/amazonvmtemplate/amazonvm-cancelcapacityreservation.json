@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-cancelcapacityreservation"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"cancelcapacityreservation":{
+		"hcapacityreservationid":"string",
+		"capacityreservationid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describeinvocations"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeinvocations":{
+		"invokeid":"string",
+		"resourceownerid":null,
+		"invokestatus":"string",
+		"timed":null,
+		"commandname":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"includeoutput":null,
+		"ownerid":null,
+		"commandid":"string",
+		"pagenumber":null,
+		"commandtype":"string",
+		"instanceid":"string",
+		"contentencoding":"string",
+		"pagesize":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

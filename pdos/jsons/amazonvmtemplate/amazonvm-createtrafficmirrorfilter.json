@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createtrafficmirrorfilter"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createtrafficmirrorfilter":{
+		"hclienttoken":"string",
+		"hdescription":"string",
+		"clienttoken":"string",
+		"description":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

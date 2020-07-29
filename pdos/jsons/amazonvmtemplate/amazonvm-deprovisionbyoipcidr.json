@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deprovisionbyoipcidr"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deprovisionbyoipcidr":{
+		"hcidr":"string",
+		"cidr":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

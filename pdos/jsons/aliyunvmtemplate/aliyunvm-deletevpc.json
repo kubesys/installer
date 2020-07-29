@@ -1,0 +1,21 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-deletevpc"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletevpc":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"vpcid":"string",
+		"owneraccount":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

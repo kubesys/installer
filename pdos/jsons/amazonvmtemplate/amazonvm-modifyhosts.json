@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-modifyhosts"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyhosts":{
+		"hinstancefamily":"string",
+		"hinstancetype":"string",
+		"hhostrecovery":"string",
+		"instancetype":"string",
+		"instancefamily":"string",
+		"hautoplacement":"string",
+		"autoplacement":"string",
+		"hostrecovery":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

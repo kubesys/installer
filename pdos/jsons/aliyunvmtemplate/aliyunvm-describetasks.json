@@ -1,0 +1,27 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describetasks"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describetasks":{
+		"resourceownerid":null,
+		"taskstatus":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"pagesize":"integer",
+		"endtime":"string",
+		"starttime":"string",
+		"ownerid":null,
+		"taskids":"string",
+		"taskaction":"string",
+		"pagenumber":"integer"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

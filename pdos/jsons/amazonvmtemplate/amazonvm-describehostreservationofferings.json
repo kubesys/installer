@@ -1,0 +1,26 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-describehostreservationofferings"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describehostreservationofferings":{
+		"maxduration":"integer",
+		"nexttoken":"string",
+		"hnexttoken":"string",
+		"hmaxduration":"integer",
+		"hminduration":"integer",
+		"maxresults":"integer",
+		"offeringid":"string",
+		"hofferingid":"string",
+		"minduration":"integer",
+		"hmaxresults":"integer"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

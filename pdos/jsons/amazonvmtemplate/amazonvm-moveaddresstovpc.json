@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-moveaddresstovpc"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"moveaddresstovpc":{
+		"publicip":"string",
+		"hpublicip":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-describeregions"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeregions":{
+		"hallregions":null,
+		"allregions":null
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

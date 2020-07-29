@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describesnapshotmonitordata"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describesnapshotmonitordata":{
+		"resourceownerid":null,
+		"period":"integer",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"endtime":"string",
+		"starttime":"string",
+		"ownerid":null,
+		"category":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

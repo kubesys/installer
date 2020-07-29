@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deletevolume"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletevolume":{
+		"hvolumeid":"string",
+		"volumeid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

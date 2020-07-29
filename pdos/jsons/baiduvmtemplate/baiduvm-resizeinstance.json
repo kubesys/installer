@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-resizeinstance"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"resizeinstance":{
+		"hmemorycapacityingb":"integer",
+		"memorycapacityingb":"integer",
+		"hclienttoken":"string",
+		"instanceid":"string",
+		"hinstanceid":"string",
+		"clienttoken":"string",
+		"hcpucount":"integer",
+		"cpucount":"integer"
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

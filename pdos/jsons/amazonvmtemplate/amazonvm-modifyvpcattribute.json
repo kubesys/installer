@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-modifyvpcattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyvpcattribute":{
+		"vpcid":"string",
+		"hvpcid":"string",
+		"henablednssupport":null,
+		"enablednshostnames":null,
+		"henablednshostnames":null,
+		"enablednssupport":null
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

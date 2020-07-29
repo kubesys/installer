@@ -1,0 +1,45 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describeimages"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeimages":{
+		"actiontype":"string",
+		"resourceownerid":null,
+		"imageid":"string",
+		"snapshotid":"string",
+		"dryrun":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"usage":"string",
+		"showexpired":null,
+		"filters":{
+			"value":"string",
+			"key":"string"
+		},
+		"ostype":"string",
+		"ownerid":null,
+		"pagenumber":"integer",
+		"tags":{
+			"value":"string",
+			"key":"string"
+		},
+		"imageowneralias":"string",
+		"resourcegroupid":"string",
+		"issupportiooptimized":null,
+		"imagename":"string",
+		"issupportcloudinit":null,
+		"pagesize":"integer",
+		"instancetype":"string",
+		"status":"string",
+		"architecture":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

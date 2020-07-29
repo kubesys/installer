@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-purchasereservedinstance"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"purchasereservedinstance":{
+		"hclienttoken":"string",
+		"instanceid":"string",
+		"hinstanceid":"string",
+		"clienttoken":"string"
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

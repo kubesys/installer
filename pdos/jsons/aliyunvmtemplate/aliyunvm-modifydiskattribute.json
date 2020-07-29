@@ -1,0 +1,27 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifydiskattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifydiskattribute":{
+		"diskname":"string",
+		"deleteautosnapshot":null,
+		"resourceownerid":null,
+		"enableautosnapshot":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"description":"string",
+		"diskid":"string",
+		"ownerid":null,
+		"deletewithinstance":null,
+		"diskidss":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

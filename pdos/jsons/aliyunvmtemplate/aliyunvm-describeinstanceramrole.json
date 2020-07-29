@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describeinstanceramrole"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeinstanceramrole":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"instanceids":"string",
+		"pagesize":"integer",
+		"ramrolename":"string",
+		"ownerid":null,
+		"pagenumber":"integer"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

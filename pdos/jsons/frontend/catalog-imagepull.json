@@ -1,0 +1,12 @@
+{"tabMapOptions": [
+{
+	"label":"默认镜像拉取",
+        "key":"defaultImagePull"
+},
+{
+     "label":"按需镜像拉取",
+     "key":"lazyImagePull"
+}],
+	"activeName": "defaultImagePull",
+	"createdTime": 0
+}

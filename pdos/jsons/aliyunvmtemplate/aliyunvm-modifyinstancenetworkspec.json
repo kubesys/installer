@@ -1,0 +1,29 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifyinstancenetworkspec"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyinstancenetworkspec":{
+		"resourceownerid":null,
+		"autopay":null,
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"internetmaxbandwidthout":"integer",
+		"endtime":"string",
+		"starttime":"string",
+		"ownerid":null,
+		"instanceid":"string",
+		"networkchargetype":"string",
+		"internetmaxbandwidthin":"integer",
+		"allocatepublicip":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

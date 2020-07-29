@@ -1,0 +1,30 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifyinstanceattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyinstanceattribute":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"recyclable":null,
+		"owneraccount":"string",
+		"description":"string",
+		"creditspecification":"string",
+		"ownerid":null,
+		"deletionprotection":null,
+		"userdata":"string",
+		"hostname":"string",
+		"password":"string",
+		"instancename":"string",
+		"instanceid":"string",
+		"securitygroupidss":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

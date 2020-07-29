@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-removebandwidthpackageips"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"removebandwidthpackageips":{
+		"resourceownerid":null,
+		"bandwidthpackageid":"string",
+		"removedipaddressess":null,
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

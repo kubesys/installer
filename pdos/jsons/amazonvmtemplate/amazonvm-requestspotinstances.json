@@ -1,0 +1,32 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-requestspotinstances"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"requestspotinstances":{
+		"hlaunchgroup":"string",
+		"spotprice":"string",
+		"availabilityzonegroup":"string",
+		"hblockdurationminutes":"integer",
+		"hspotprice":"string",
+		"clienttoken":"string",
+		"type":"string",
+		"hclienttoken":"string",
+		"htype":"string",
+		"instancecount":"integer",
+		"launchgroup":"string",
+		"instanceinterruptionbehavior":"string",
+		"hinstancecount":"integer",
+		"havailabilityzonegroup":"string",
+		"blockdurationminutes":"integer",
+		"hinstanceinterruptionbehavior":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

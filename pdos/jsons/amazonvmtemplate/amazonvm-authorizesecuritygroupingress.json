@@ -1,0 +1,32 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-authorizesecuritygroupingress"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"authorizesecuritygroupingress":{
+		"hipprotocol":"string",
+		"ipprotocol":"string",
+		"hgroupid":"string",
+		"groupid":"string",
+		"groupname":"string",
+		"hcidrip":"string",
+		"htoport":"integer",
+		"sourcesecuritygroupownerid":"string",
+		"fromport":"integer",
+		"sourcesecuritygroupname":"string",
+		"hfromport":"integer",
+		"cidrip":"string",
+		"hsourcesecuritygroupownerid":"string",
+		"toport":"integer",
+		"hsourcesecuritygroupname":"string",
+		"hgroupname":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

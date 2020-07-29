@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-disassociateclientvpntargetnetwork"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"disassociateclientvpntargetnetwork":{
+		"hclientvpnendpointid":"string",
+		"hassociationid":"string",
+		"clientvpnendpointid":"string",
+		"associationid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

@@ -1,0 +1,14 @@
+{
+	"apiVersion": "cloudplus.io/v1alpha3",
+	"kind": "ContainerTemplate",
+	"metadata": {
+		"name": "deployment-create"
+	},
+	"spec": {
+		"data": {
+			"support": [
+				"创建应用1"
+			]
+		}
+	}
+}

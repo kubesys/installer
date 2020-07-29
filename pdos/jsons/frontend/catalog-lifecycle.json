@@ -1,0 +1,13 @@
+{"tabMapOptions": [
+	{
+		"label":"container",
+		"key":"container"
+    },
+	{
+		"label":"virtualmachine",
+		"key":"virtualmachine"
+	}
+],
+	"activeName": "container",
+	"createdTime": 0
+}

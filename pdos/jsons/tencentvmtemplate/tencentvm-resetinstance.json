@@ -1,0 +1,19 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-resetinstance"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"resetinstance":{
+		"hostname":"string",
+		"instanceid":"string",
+		"imageid":"string"
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

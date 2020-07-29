@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-cancelconversiontask"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"cancelconversiontask":{
+		"hconversiontaskid":"string",
+		"hreasonmessage":"string",
+		"reasonmessage":"string",
+		"conversiontaskid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

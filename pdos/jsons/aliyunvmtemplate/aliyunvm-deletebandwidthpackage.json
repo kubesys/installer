@@ -1,0 +1,21 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-deletebandwidthpackage"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletebandwidthpackage":{
+		"resourceownerid":null,
+		"bandwidthpackageid":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

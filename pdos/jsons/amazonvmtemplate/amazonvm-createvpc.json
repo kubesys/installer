@@ -1,0 +1,28 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createvpc"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createvpc":{
+		"hamazonprovidedipv6cidrblock":null,
+		"hipv6pool":"string",
+		"hipv6cidrblocknetworkbordergroup":"string",
+		"hipv6cidrblock":"string",
+		"amazonprovidedipv6cidrblock":null,
+		"ipv6cidrblocknetworkbordergroup":"string",
+		"hcidrblock":"string",
+		"hinstancetenancy":"string",
+		"cidrblock":"string",
+		"instancetenancy":"string",
+		"ipv6pool":"string",
+		"ipv6cidrblock":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

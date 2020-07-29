@@ -1,0 +1,15 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-describevpngateways"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describevpngateways":{}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

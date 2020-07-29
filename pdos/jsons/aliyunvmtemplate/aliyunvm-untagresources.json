@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-untagresources"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"untagresources":{
+		"all":null,
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"tagkeys":null,
+		"ownerid":null,
+		"resourcetype":"string",
+		"resourceids":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

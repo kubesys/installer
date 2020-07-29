@@ -1,0 +1,39 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describenetworkinterfaces"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describenetworkinterfaces":{
+		"resourceownerid":null,
+		"privateipaddresss":null,
+		"resourceowneraccount":"string",
+		"networkinterfaceids":null,
+		"servicemanaged":null,
+		"owneraccount":"string",
+		"securitygroupid":"string",
+		"ownerid":null,
+		"type":"string",
+		"pagenumber":"integer",
+		"tags":{
+			"value":"string",
+			"key":"string"
+		},
+		"vswitchid":"string",
+		"resourcegroupid":"string",
+		"instanceid":"string",
+		"nexttoken":"string",
+		"vpcid":"string",
+		"pagesize":"integer",
+		"primaryipaddress":"string",
+		"maxresults":"integer",
+		"networkinterfacename":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

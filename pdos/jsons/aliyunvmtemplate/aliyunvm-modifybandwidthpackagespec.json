@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifybandwidthpackagespec"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifybandwidthpackagespec":{
+		"resourceownerid":null,
+		"bandwidthpackageid":"string",
+		"resourceowneraccount":"string",
+		"bandwidth":"string",
+		"owneraccount":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

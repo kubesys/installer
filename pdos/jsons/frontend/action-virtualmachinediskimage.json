@@ -1,0 +1,10 @@
+[
+	{
+		"key":"将云盘镜像转化为云盘",
+		"type":"convertDiskImageToDisk"
+	},
+	{
+		"key":"删除云盘镜像",
+		"type":"deleteDiskImage"
+	},
+]

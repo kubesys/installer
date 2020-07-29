@@ -1,0 +1,15 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createtags"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createtags":{}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

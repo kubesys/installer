@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-modifytrafficmirrorfilternetworkservices"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifytrafficmirrorfilternetworkservices":{
+		"htrafficmirrorfilterid":"string",
+		"trafficmirrorfilterid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

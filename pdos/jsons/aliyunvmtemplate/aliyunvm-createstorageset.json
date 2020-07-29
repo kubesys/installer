@@ -1,0 +1,25 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-createstorageset"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createstorageset":{
+		"resourceownerid":null,
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"maxpartitionnumber":"integer",
+		"zoneid":"string",
+		"description":"string",
+		"ownerid":null,
+		"storagesetname":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

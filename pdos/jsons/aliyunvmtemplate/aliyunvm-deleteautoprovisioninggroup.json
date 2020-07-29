@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-deleteautoprovisioninggroup"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deleteautoprovisioninggroup":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"terminateinstances":null,
+		"ownerid":null,
+		"autoprovisioninggroupid":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

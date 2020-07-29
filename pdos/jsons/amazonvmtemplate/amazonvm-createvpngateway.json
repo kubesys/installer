@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createvpngateway"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createvpngateway":{
+		"htype":"string",
+		"havailabilityzone":"string",
+		"amazonsideasn":null,
+		"hamazonsideasn":null,
+		"type":"string",
+		"availabilityzone":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

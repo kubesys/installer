@@ -1,0 +1,15 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-syncimages"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"syncimages":{}
+}
+    },
+    "type":"TencentVM"
+  }
+}

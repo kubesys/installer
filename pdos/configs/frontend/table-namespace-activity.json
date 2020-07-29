@@ -1,0 +1,15 @@
+{
+	"metadata":{
+		"finalizers":[],
+		"managedFields":[],
+		"name":"table-namespace-activity",
+		"additionalProperties":{},
+		"ownerReferences":[]
+	},
+	"apiVersion":"cloudplus.io/v1alpha3",
+	"kind":"Frontend",
+	"spec":{
+		"data":[],
+		"type":"table"
+	}
+}

@@ -1,0 +1,21 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-describereservedinstancesofferings"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describereservedinstancesofferings":{
+		"dryrun":null,
+		"offset":null,
+		"maxduration":null,
+		"limit":null,
+		"minduration":null
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

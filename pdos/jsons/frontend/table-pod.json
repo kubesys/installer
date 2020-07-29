@@ -1,0 +1,35 @@
+[{
+		"key": 1,
+		"width": "200",
+		"label": "Pod名",
+		"row": "metadata.name",
+		"style": "width:150px;",
+		"type": "input",
+		"kind": "a",
+		"link": "/profile/taskProfile"
+	},
+	{
+		"key": 4,
+		"width": "150",
+		"label": "IP地址ַ",
+		"row": "status.podIP"
+	},
+	{
+		"key": 5,
+		"width": "150",
+		"label": "运行状态",
+		"row": "status.phase"
+	},
+	{
+		"key": 7,
+		"width": "200",
+		"label": "所在主机",
+		"row": "spec.nodeName"
+	},
+	{
+		"key": 9,
+		"width": "180",
+		"label": "创建时间",
+		"row": "metadata.creationTimestamp"
+	}
+]

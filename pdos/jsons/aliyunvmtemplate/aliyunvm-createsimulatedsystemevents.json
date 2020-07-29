@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-createsimulatedsystemevents"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createsimulatedsystemevents":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"instanceids":null,
+		"notbefore":"string",
+		"owneraccount":"string",
+		"eventtype":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

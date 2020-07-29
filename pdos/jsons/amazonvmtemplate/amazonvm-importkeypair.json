@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-importkeypair"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"importkeypair":{
+		"publickeymaterial":"string",
+		"hkeyname":"string",
+		"keyname":"string",
+		"hpublickeymaterial":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

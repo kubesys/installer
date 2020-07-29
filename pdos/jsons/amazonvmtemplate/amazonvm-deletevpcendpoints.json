@@ -1,0 +1,15 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deletevpcendpoints"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletevpcendpoints":{}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

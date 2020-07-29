@@ -1,0 +1,15 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-acceptreservedinstancesexchangequote"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"acceptreservedinstancesexchangequote":{}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

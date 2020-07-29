@@ -1,0 +1,25 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"VirtualMachineTemplate",
+  "metadata":{
+    "additionalProperties":{},
+    "finalizers":[],
+    "managedFields":[],
+    "name":"virtualmachinedisk-deletediskinternalsnapshot",
+    "ownerReferences":[]
+  },
+  "spec":{
+    "data":{
+      "lifecycle":{
+        "deleteDiskInternalSnapshot":{
+          "pool":"String",
+          "snapshotname":"String",
+          "type":"String"
+        },
+        "deleteDiskSnapshot":{"$ref":"$.spec.data.lifecycle.deleteDiskInternalSnapshot"}
+      },
+      "additionalProperties":{}
+    },
+    "type":"VirtualMachine"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-resetimageattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"resetimageattribute":{
+		"imageid":"string",
+		"hattribute":"string",
+		"attribute":"string",
+		"himageid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

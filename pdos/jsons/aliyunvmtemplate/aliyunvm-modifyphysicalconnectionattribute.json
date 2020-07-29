@@ -1,0 +1,31 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifyphysicalconnectionattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyphysicalconnectionattribute":{
+		"redundantphysicalconnectionid":"string",
+		"resourceownerid":null,
+		"peerlocation":"string",
+		"circuitcode":"string",
+		"porttype":"string",
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"bandwidth":"integer",
+		"owneraccount":"string",
+		"description":"string",
+		"ownerid":null,
+		"lineoperator":"string",
+		"physicalconnectionid":"string",
+		"name":"string",
+		"usercidr":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

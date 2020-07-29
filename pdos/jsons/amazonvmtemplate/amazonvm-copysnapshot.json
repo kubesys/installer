@@ -1,0 +1,30 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-copysnapshot"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"copysnapshot":{
+		"destinationregion":"string",
+		"presignedurl":"string",
+		"description":"string",
+		"hsourcesnapshotid":"string",
+		"hpresignedurl":"string",
+		"sourcesnapshotid":"string",
+		"hkmskeyid":"string",
+		"encrypted":null,
+		"hdescription":"string",
+		"hencrypted":null,
+		"hsourceregion":"string",
+		"hdestinationregion":"string",
+		"kmskeyid":"string",
+		"sourceregion":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

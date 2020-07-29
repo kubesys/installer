@@ -1,0 +1,14 @@
+{
+	"apiVersion": "cloudplus.io/v1alpha3",
+	"kind": "ContainerTemplate",
+	"metadata": {
+		"name": "configmap-create"
+	},
+	"spec": {
+		"data": {
+			"support": [
+				"simple"
+			]
+		}
+	}
+}

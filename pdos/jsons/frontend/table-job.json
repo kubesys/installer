@@ -1,0 +1,35 @@
+[{
+		"key": 1,
+		"width": "200",
+		"label": "Job名",
+		"row": "metadata.name",
+		"style": "width:150px;",
+		"type": "input",
+		"kind": "a",
+		"link": "/profile/taskProfile"
+	},
+	{
+		"key": 2,
+		"width": "250",
+		"label": "成功",
+		"row": "status.succeeded"
+	},
+	{
+		"key": 3,
+		"width": "250",
+		"label": "启动时间",
+		"row": "status.startTime"
+	},
+	{
+		"key": 4,
+		"width": "250",
+		"label": "完成时间",
+		"row": "status.completionTime"
+	},
+	{
+		"key": 5,
+		"width": "180",
+		"label": "创建时间",
+		"row": "metadata.creationTimestamp"
+	}
+]

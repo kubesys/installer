@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifysecuritygrouppolicy"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifysecuritygrouppolicy":{
+		"resourceownerid":null,
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"securitygroupid":"string",
+		"ownerid":null,
+		"inneraccesspolicy":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

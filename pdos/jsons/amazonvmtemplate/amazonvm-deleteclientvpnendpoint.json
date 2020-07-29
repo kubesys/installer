@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deleteclientvpnendpoint"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deleteclientvpnendpoint":{
+		"hclientvpnendpointid":"string",
+		"clientvpnendpointid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

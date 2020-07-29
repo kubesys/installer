@@ -1,0 +1,25 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-reinitdisk"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"reinitdisk":{
+		"resourceownerid":null,
+		"password":"string",
+		"resourceowneraccount":"string",
+		"autostartinstance":null,
+		"owneraccount":"string",
+		"diskid":"string",
+		"securityenhancementstrategy":"string",
+		"keypairname":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

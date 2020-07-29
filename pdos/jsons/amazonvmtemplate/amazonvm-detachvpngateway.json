@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-detachvpngateway"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"detachvpngateway":{
+		"vpcid":"string",
+		"hvpcid":"string",
+		"hvpngatewayid":"string",
+		"vpngatewayid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

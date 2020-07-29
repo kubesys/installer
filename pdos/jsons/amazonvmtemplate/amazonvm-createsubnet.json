@@ -1,0 +1,28 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createsubnet"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createsubnet":{
+		"havailabilityzoneid":"string",
+		"availabilityzoneid":"string",
+		"hipv6cidrblock":"string",
+		"havailabilityzone":"string",
+		"hcidrblock":"string",
+		"vpcid":"string",
+		"hvpcid":"string",
+		"cidrblock":"string",
+		"houtpostarn":"string",
+		"outpostarn":"string",
+		"ipv6cidrblock":"string",
+		"availabilityzone":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

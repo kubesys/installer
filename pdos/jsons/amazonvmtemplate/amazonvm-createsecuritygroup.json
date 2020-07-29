@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createsecuritygroup"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createsecuritygroup":{
+		"hdescription":"string",
+		"vpcid":"string",
+		"hvpcid":"string",
+		"description":"string",
+		"groupname":"string",
+		"hgroupname":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

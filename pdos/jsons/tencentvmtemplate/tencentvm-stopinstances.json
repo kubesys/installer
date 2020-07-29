@@ -1,0 +1,19 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-stopinstances"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"stopinstances":{
+		"stoptype":"string",
+		"stoppedmode":"string",
+		"forcestop":null
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

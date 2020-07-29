@@ -1,0 +1,27 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-createdeploymentset"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createdeploymentset":{
+		"resourceownerid":null,
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"onunabletoredeployfailedinstance":"string",
+		"granularity":"string",
+		"owneraccount":"string",
+		"domain":"string",
+		"description":"string",
+		"deploymentsetname":"string",
+		"ownerid":null,
+		"strategy":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

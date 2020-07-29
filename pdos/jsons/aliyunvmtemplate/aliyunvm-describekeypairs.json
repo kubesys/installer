@@ -1,0 +1,28 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describekeypairs"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describekeypairs":{
+		"resourcegroupid":"string",
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"keypairfingerprint":"string",
+		"pagesize":"integer",
+		"keypairname":"string",
+		"ownerid":null,
+		"pagenumber":"integer",
+		"tags":{
+			"value":"string",
+			"key":"string"
+		}
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

@@ -1,0 +1,31 @@
+{
+	"metadata":{
+		"finalizers":[],
+		"managedFields":[],
+		"name":"table-image",
+		"additionalProperties":{},
+		"ownerReferences":[]
+	},
+	"apiVersion":"cloudplus.io/v1alpha3",
+	"kind":"Frontend",
+	"spec":{
+		"data":[
+			{
+				"kind":"a",
+				"width":"500",
+				"style":"width:250px;",
+				"label":"镜像仓库",
+				"row":"metadata.name",
+				"type":"input",
+				"key":1
+			},
+			{
+				"width":"450",
+				"label":"tag",
+				"row":"unknown",
+				"key":2
+			}
+		],
+		"type":"table"
+	}
+}

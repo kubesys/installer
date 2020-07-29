@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deleteegressonlyinternetgateway"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deleteegressonlyinternetgateway":{
+		"egressonlyinternetgatewayid":"string",
+		"hegressonlyinternetgatewayid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

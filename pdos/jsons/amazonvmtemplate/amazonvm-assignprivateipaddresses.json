@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-assignprivateipaddresses"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"assignprivateipaddresses":{
+		"hsecondaryprivateipaddresscount":"integer",
+		"allowreassignment":null,
+		"hnetworkinterfaceid":"string",
+		"networkinterfaceid":"string",
+		"secondaryprivateipaddresscount":"integer",
+		"hallowreassignment":null
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

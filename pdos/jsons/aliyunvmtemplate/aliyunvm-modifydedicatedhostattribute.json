@@ -1,0 +1,27 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifydedicatedhostattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifydedicatedhostattribute":{
+		"resourceownerid":null,
+		"networkattributesslbudptimeout":"integer",
+		"dedicatedhostname":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"actiononmaintenance":"string",
+		"networkattributesudptimeout":"integer",
+		"description":"string",
+		"dedicatedhostid":"string",
+		"autoplacement":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

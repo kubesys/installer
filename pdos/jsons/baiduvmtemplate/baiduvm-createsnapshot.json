@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-createsnapshot"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createsnapshot":{
+		"hclienttoken":"string",
+		"hdesc":"string",
+		"clienttoken":"string",
+		"hvolumeid":"string",
+		"hsnapshotname":"string",
+		"volumeid":"string",
+		"snapshotname":"string",
+		"desc":"string"
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

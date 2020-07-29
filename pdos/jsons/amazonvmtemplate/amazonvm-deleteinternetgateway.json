@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deleteinternetgateway"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deleteinternetgateway":{
+		"internetgatewayid":"string",
+		"hinternetgatewayid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

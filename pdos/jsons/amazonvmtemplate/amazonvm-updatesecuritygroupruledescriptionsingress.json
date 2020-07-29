@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-updatesecuritygroupruledescriptionsingress"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"updatesecuritygroupruledescriptionsingress":{
+		"hgroupid":"string",
+		"groupid":"string",
+		"groupname":"string",
+		"hgroupname":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

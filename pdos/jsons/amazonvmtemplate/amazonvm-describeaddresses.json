@@ -1,0 +1,15 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-describeaddresses"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeaddresses":{}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

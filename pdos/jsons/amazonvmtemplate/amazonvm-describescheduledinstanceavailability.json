@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-describescheduledinstanceavailability"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describescheduledinstanceavailability":{
+		"minslotdurationinhours":"integer",
+		"hminslotdurationinhours":"integer",
+		"nexttoken":"string",
+		"maxslotdurationinhours":"integer",
+		"hnexttoken":"string",
+		"maxresults":"integer",
+		"hmaxslotdurationinhours":"integer",
+		"hmaxresults":"integer"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

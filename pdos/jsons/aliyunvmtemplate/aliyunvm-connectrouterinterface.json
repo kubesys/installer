@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-connectrouterinterface"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"connectrouterinterface":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"ownerid":null,
+		"routerinterfaceid":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

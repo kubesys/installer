@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-modifyspotfleetrequest"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyspotfleetrequest":{
+		"spotfleetrequestid":"string",
+		"hspotfleetrequestid":"string",
+		"hondemandtargetcapacity":"integer",
+		"hexcesscapacityterminationpolicy":"string",
+		"excesscapacityterminationpolicy":"string",
+		"htargetcapacity":"integer",
+		"ondemandtargetcapacity":"integer",
+		"targetcapacity":"integer"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

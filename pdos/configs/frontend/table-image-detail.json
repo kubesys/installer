@@ -1,0 +1,26 @@
+{
+	"metadata":{
+		"finalizers":[],
+		"managedFields":[],
+		"name":"table-image-detail",
+		"additionalProperties":{},
+		"ownerReferences":[]
+	},
+	"apiVersion":"cloudplus.io/v1alpha3",
+	"kind":"Frontend",
+	"spec":{
+		"data":[
+			{
+				"label":"分层",
+				"row":"digest",
+				"key":1
+			},
+			{
+				"label":"大小",
+				"row":"size",
+				"key":2
+			}
+		],
+		"type":"table"
+	}
+}

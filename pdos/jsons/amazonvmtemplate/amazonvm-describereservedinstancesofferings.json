@@ -1,0 +1,40 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-describereservedinstancesofferings"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describereservedinstancesofferings":{
+		"productdescription":"string",
+		"hinstancetype":"string",
+		"hofferingtype":"string",
+		"hmaxduration":null,
+		"hminduration":null,
+		"offeringclass":"string",
+		"minduration":null,
+		"hmaxresults":"integer",
+		"maxinstancecount":"integer",
+		"offeringtype":"string",
+		"maxduration":null,
+		"havailabilityzone":"string",
+		"hproductdescription":"string",
+		"nexttoken":"string",
+		"hinstancetenancy":"string",
+		"hnexttoken":"string",
+		"hmaxinstancecount":"integer",
+		"instancetype":"string",
+		"maxresults":"integer",
+		"instancetenancy":"string",
+		"includemarketplace":null,
+		"availabilityzone":"string",
+		"hincludemarketplace":null,
+		"hofferingclass":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

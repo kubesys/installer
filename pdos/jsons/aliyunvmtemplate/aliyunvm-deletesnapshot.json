@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-deletesnapshot"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletesnapshot":{
+		"resourceownerid":null,
+		"snapshotid":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"force":null,
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

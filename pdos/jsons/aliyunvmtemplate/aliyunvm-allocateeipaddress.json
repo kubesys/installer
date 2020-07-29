@@ -1,0 +1,25 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-allocateeipaddress"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"allocateeipaddress":{
+		"activityid":null,
+		"resourceownerid":null,
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"bandwidth":"string",
+		"internetchargetype":"string",
+		"owneraccount":"string",
+		"isp":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

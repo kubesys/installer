@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deletetransitgatewayroutetable"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletetransitgatewayroutetable":{
+		"transitgatewayroutetableid":"string",
+		"htransitgatewayroutetableid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

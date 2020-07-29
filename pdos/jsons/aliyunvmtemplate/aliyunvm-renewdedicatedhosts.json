@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-renewdedicatedhosts"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"renewdedicatedhosts":{
+		"dedicatedhostids":"string",
+		"resourceownerid":null,
+		"period":"integer",
+		"periodunit":"string",
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

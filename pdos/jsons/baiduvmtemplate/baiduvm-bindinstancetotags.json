@@ -1,0 +1,30 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-bindinstancetotags"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"bindinstancetotags":{
+		"changetags":{
+			"tagvalue":"string",
+			"tagkey":"string",
+			"htagkey":"string",
+			"htagvalue":"string"
+		},
+		"instanceid":"string",
+		"hinstanceid":"string",
+		"hchangetags":{
+			"tagvalue":"string",
+			"tagkey":"string",
+			"htagkey":"string",
+			"htagvalue":"string"
+		}
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

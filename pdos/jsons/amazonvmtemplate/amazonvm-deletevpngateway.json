@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deletevpngateway"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletevpngateway":{
+		"hvpngatewayid":"string",
+		"vpngatewayid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

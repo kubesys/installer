@@ -1,0 +1,30 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"VirtualMachineTemplate",
+  "metadata":{
+    "additionalProperties":{},
+    "finalizers":[],
+    "managedFields":[],
+    "name":"virtualmachine-tunediskqos",
+    "ownerReferences":[]
+  },
+  "spec":{
+    "data":{
+      "lifecycle":{
+        "tuneDiskQoS":{
+          "total_iops_sec":"String",
+          "total_bytes_sec":"String",
+          "write_bytes_sec":"String",
+          "write_iops_sec":"String",
+          "config":true,
+          "device":"String",
+          "live":true,
+          "read_bytes_sec":"String",
+          "read_iops_sec":"String"
+        }
+      },
+      "additionalProperties":{}
+    },
+    "type":"VirtualMachine"
+  }
+}

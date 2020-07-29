@@ -1,0 +1,36 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-revokesecuritygroupegress"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"revokesecuritygroupegress":{
+		"nictype":"string",
+		"resourceownerid":null,
+		"sourceportrange":"string",
+		"portrange":"string",
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"ipprotocol":"string",
+		"owneraccount":"string",
+		"sourcecidrip":"string",
+		"securitygroupid":"string",
+		"description":"string",
+		"destgroupid":"string",
+		"priority":"string",
+		"ownerid":null,
+		"destgroupowneraccount":"string",
+		"destcidrip":"string",
+		"destgroupownerid":null,
+		"policy":"string",
+		"ipv6destcidrip":"string",
+		"ipv6sourcecidrip":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

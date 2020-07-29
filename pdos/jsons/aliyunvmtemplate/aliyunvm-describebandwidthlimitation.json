@@ -1,0 +1,25 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describebandwidthlimitation"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describebandwidthlimitation":{
+		"spotstrategy":"string",
+		"resourceownerid":null,
+		"resourceid":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"instancetype":"string",
+		"operationtype":"string",
+		"ownerid":null,
+		"instancechargetype":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

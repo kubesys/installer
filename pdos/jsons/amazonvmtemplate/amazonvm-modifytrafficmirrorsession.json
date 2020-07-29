@@ -1,0 +1,30 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-modifytrafficmirrorsession"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifytrafficmirrorsession":{
+		"hvirtualnetworkid":"integer",
+		"trafficmirrorsessionid":"string",
+		"hpacketlength":"integer",
+		"description":"string",
+		"htrafficmirrorsessionid":"string",
+		"trafficmirrortargetid":"string",
+		"trafficmirrorfilterid":"string",
+		"htrafficmirrorfilterid":"string",
+		"hdescription":"string",
+		"hsessionnumber":"integer",
+		"packetlength":"integer",
+		"htrafficmirrortargetid":"string",
+		"sessionnumber":"integer",
+		"virtualnetworkid":"integer"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

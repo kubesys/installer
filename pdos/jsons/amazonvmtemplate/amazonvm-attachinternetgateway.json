@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-attachinternetgateway"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"attachinternetgateway":{
+		"vpcid":"string",
+		"hvpcid":"string",
+		"internetgatewayid":"string",
+		"hinternetgatewayid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

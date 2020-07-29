@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-acceptvpcendpointconnections"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"acceptvpcendpointconnections":{
+		"hserviceid":"string",
+		"serviceid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

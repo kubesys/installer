@@ -1,0 +1,17 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-describeinstancevncurl"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeinstancevncurl":{
+		"instanceid":"string"
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-replacetransitgatewayroute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"replacetransitgatewayroute":{
+		"transitgatewayattachmentid":"string",
+		"destinationcidrblock":"string",
+		"transitgatewayroutetableid":"string",
+		"htransitgatewayattachmentid":"string",
+		"hdestinationcidrblock":"string",
+		"htransitgatewayroutetableid":"string",
+		"blackhole":null,
+		"hblackhole":null
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

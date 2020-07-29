@@ -1,0 +1,40 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-replaceroute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"replaceroute":{
+		"hlocalgatewayid":"string",
+		"hgatewayid":"string",
+		"hdestinationipv6cidrblock":"string",
+		"hnatgatewayid":"string",
+		"destinationcidrblock":"string",
+		"localtarget":null,
+		"vpcpeeringconnectionid":"string",
+		"transitgatewayid":"string",
+		"destinationipv6cidrblock":"string",
+		"localgatewayid":"string",
+		"hegressonlyinternetgatewayid":"string",
+		"egressonlyinternetgatewayid":"string",
+		"hroutetableid":"string",
+		"instanceid":"string",
+		"hlocaltarget":null,
+		"hinstanceid":"string",
+		"hvpcpeeringconnectionid":"string",
+		"hnetworkinterfaceid":"string",
+		"natgatewayid":"string",
+		"networkinterfaceid":"string",
+		"hdestinationcidrblock":"string",
+		"htransitgatewayid":"string",
+		"gatewayid":"string",
+		"routetableid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

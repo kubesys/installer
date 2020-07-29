@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-exportimage"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"exportimage":{
+		"resourceownerid":null,
+		"imageid":"string",
+		"ossbucket":"string",
+		"resourceowneraccount":"string",
+		"ossprefix":"string",
+		"rolename":"string",
+		"ownerid":null,
+		"imageformat":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifyforwardentry"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyforwardentry":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"ipprotocol":"string",
+		"internalport":"string",
+		"forwardentryid":"string",
+		"owneraccount":"string",
+		"forwardtableid":"string",
+		"ownerid":null,
+		"internalip":"string",
+		"externalip":"string",
+		"externalport":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

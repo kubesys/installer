@@ -1,0 +1,17 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-renewinstances"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"renewinstances":{
+		"renewportabledatadisk":null
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

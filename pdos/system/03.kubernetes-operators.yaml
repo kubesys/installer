@@ -1,0 +1,61 @@
+--- 
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata: 
+  name: "kube-operators"
+  namespace: "kube-system"
+  labels: 
+    name: "kube-operators"
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels:
+      name: "kube-operators"
+  template: 
+    metadata: 
+      labels: 
+        name: "kube-operators"
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+      - name: "kube-operators"
+        image: "registry.cn-beijing.aliyuncs.com/kubesys/kubernetes-operators:v0.7-amd64"
+        imagePullPolicy: "IfNotPresent"
+        command: 
+        - "java"
+        - "-jar"
+        - "kubernetes-operators.jar"
+        volumeMounts: 
+        - name: "containertemplate"
+          mountPath: "/home/kubernetes-operators/jsons"
+        - name: "kubetoken"
+          mountPath: "/etc/kubernetes"
+      volumes: 
+      - name: "containertemplate"
+        hostPath:
+          path: "/var/lib/pdos"
+      - name: "kubetoken"
+        hostPath:
+          path: "/etc/kubernetes"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-operators
+  namespace: kube-system
+  labels: 
+    name: kube-operators
+spec:
+  type: NodePort
+  ports:
+  - port: 30308
+    protocol: TCP
+    targetPort: 30308
+    name: kube-operators-port
+    nodePort: 30308
+  selector:
+    name: kube-operators

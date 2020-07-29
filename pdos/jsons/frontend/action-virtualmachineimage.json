@@ -1,0 +1,10 @@
+[
+	{
+		"key":"删除虚拟机镜像",
+		"type":"deleteImage"
+	},
+	{
+		"key":"将虚拟机镜像转化为虚拟机",
+		"type":"convertImageToVM"
+	}
+]

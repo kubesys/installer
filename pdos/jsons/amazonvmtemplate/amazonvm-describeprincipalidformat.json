@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-describeprincipalidformat"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeprincipalidformat":{
+		"nexttoken":"string",
+		"hnexttoken":"string",
+		"maxresults":"integer",
+		"hmaxresults":"integer"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

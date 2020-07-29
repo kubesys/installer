@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describeautosnapshotpolicyex"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeautosnapshotpolicyex":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"autosnapshotpolicyid":"string",
+		"owneraccount":"string",
+		"pagesize":"integer",
+		"ownerid":null,
+		"pagenumber":"integer"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

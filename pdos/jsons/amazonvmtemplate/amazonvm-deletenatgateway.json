@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deletenatgateway"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletenatgateway":{
+		"hnatgatewayid":"string",
+		"natgatewayid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

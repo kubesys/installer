@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-attachasp"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"attachasp":{
+		"aspid":"string",
+		"volumeids":null
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-terminatephysicalconnection"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"terminatephysicalconnection":{
+		"resourceownerid":null,
+		"clienttoken":"string",
+		"resourceowneraccount":"string",
+		"physicalconnectionid":"string",
+		"owneraccount":"string",
+		"usercidr":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

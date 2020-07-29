@@ -1,0 +1,24 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createimage"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createimage":{
+		"instanceid":"string",
+		"hinstanceid":"string",
+		"hdescription":"string",
+		"hnoreboot":null,
+		"name":"string",
+		"description":"string",
+		"noreboot":null,
+		"hname":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

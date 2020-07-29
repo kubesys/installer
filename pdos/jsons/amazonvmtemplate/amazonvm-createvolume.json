@@ -1,0 +1,34 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createvolume"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createvolume":{
+		"hsnapshotid":"string",
+		"snapshotid":"string",
+		"multiattachenabled":null,
+		"hsize":"integer",
+		"houtpostarn":"string",
+		"volumetype":"string",
+		"hvolumetype":"string",
+		"hkmskeyid":"string",
+		"size":"integer",
+		"encrypted":null,
+		"havailabilityzone":"string",
+		"hmultiattachenabled":null,
+		"iops":"integer",
+		"hencrypted":null,
+		"outpostarn":"string",
+		"hiops":"integer",
+		"kmskeyid":"string",
+		"availabilityzone":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

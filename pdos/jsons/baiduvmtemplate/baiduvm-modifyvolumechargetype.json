@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"BaiduVMTemplate",
+  "metadata":{
+    "name":"baiduvm-modifyvolumechargetype"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyvolumechargetype":{
+		"hbillingmethod":"string",
+		"hvolumeid":"string",
+		"volumeid":"string",
+		"hreservationlength":"integer",
+		"billingmethod":"string",
+		"reservationlength":"integer"
+	}
+}
+    },
+    "type":"BaiduVM"
+  }
+}

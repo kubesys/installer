@@ -1,0 +1,26 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-modifyimageattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyimageattribute":{
+		"imageid":"string",
+		"hdescription":"string",
+		"description":"string",
+		"hattribute":"string",
+		"operationtype":"string",
+		"attribute":"string",
+		"value":"string",
+		"hoperationtype":"string",
+		"hvalue":"string",
+		"himageid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

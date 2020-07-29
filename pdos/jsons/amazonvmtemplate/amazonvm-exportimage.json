@@ -1,0 +1,26 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-exportimage"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"exportimage":{
+		"hclienttoken":"string",
+		"imageid":"string",
+		"hdescription":"string",
+		"clienttoken":"string",
+		"rolename":"string",
+		"hdiskimageformat":"string",
+		"description":"string",
+		"diskimageformat":"string",
+		"hrolename":"string",
+		"himageid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-describeimagequota"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeimagequota":{}
+}
+    },
+    "type":"TencentVM"
+  }
+}

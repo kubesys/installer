@@ -1,0 +1,30 @@
+[
+	{
+		"key":"删除云盘",
+		"type":"deleteDisk"
+	},
+	{
+		"key":"调整云盘",
+		"type":"resizeDisk"
+	},
+	{
+		"key":"转为镜像",
+		"type":"convertDiskToDiskImage"
+	},
+	{
+		"key":"克隆云盘",
+		"type":"cloneDisk"
+	},
+	{
+		"key":"内部快照",
+		"type":"createDiskInternalSnapshot"
+	},
+	{
+		"key":"内部快照恢复",
+		"type":"revertDiskInternalSnapshot"
+	},
+	{
+		"key":"删除内部快照",
+		"type":"deleteDiskInternalSnapshot"
+	}
+]

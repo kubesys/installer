@@ -1,0 +1,28 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifyinstancedeployment"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyinstancedeployment":{
+		"deploymentsetid":"string",
+		"resourceownerid":null,
+		"instanceid":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"tenancy":"string",
+		"instancetype":"string",
+		"force":null,
+		"dedicatedhostid":"string",
+		"migrationtype":"string",
+		"ownerid":null,
+		"affinity":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

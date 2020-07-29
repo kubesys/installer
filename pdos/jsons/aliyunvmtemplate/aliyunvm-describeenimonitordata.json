@@ -1,0 +1,25 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describeenimonitordata"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeenimonitordata":{
+		"resourceownerid":null,
+		"period":"integer",
+		"instanceid":"string",
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"endtime":"string",
+		"eniid":"string",
+		"starttime":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

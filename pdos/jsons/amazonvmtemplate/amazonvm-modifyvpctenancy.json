@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-modifyvpctenancy"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyvpctenancy":{
+		"vpcid":"string",
+		"hvpcid":"string",
+		"hinstancetenancy":"string",
+		"instancetenancy":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

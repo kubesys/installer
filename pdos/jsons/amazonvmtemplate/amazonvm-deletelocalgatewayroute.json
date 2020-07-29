@@ -1,0 +1,20 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deletelocalgatewayroute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletelocalgatewayroute":{
+		"localgatewayroutetableid":"string",
+		"destinationcidrblock":"string",
+		"hlocalgatewayroutetableid":"string",
+		"hdestinationcidrblock":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-createlaunchtemplate"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"createlaunchtemplate":{
+		"hclienttoken":"string",
+		"launchtemplatename":"string",
+		"hlaunchtemplatename":"string",
+		"clienttoken":"string",
+		"versiondescription":"string",
+		"hversiondescription":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

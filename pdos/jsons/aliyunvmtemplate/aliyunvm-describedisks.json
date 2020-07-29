@@ -1,0 +1,52 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describedisks"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describedisks":{
+		"resourceownerid":null,
+		"snapshotid":"string",
+		"autosnapshotpolicyid":"string",
+		"pagenumber":"integer",
+		"diskname":"string",
+		"resourcegroupid":"string",
+		"deleteautosnapshot":null,
+		"diskchargetype":"string",
+		"lockreason":"string",
+		"pagesize":"integer",
+		"filter1key":"string",
+		"filter2value":"string",
+		"diskids":"string",
+		"deletewithinstance":null,
+		"additionalattributess":null,
+		"filter1value":"string",
+		"enableautosnapshot":null,
+		"dryrun":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"portable":null,
+		"enableautomatedsnapshotpolicy":null,
+		"ownerid":null,
+		"disktype":"string",
+		"tags":{
+			"value":"string",
+			"key":"string"
+		},
+		"enableshared":null,
+		"instanceid":"string",
+		"encrypted":null,
+		"zoneid":"string",
+		"filter2key":"string",
+		"kmskeyid":"string",
+		"category":"string",
+		"status":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

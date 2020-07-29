@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-describehosts"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describehosts":{
+		"offset":null,
+		"limit":null
+	}
+}
+    },
+    "type":"TencentVM"
+  }
+}

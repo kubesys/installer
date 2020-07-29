@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifysecuritygroupattribute"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifysecuritygroupattribute":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"securitygroupid":"string",
+		"description":"string",
+		"ownerid":null,
+		"securitygroupname":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

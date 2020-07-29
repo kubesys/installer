@@ -1,0 +1,29 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describedisksfullstatus"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describedisksfullstatus":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"eventtimestart":"string",
+		"ownerid":null,
+		"eventids":null,
+		"eventtimeend":"string",
+		"pagenumber":"integer",
+		"pagesize":"integer",
+		"healthstatus":"string",
+		"diskids":null,
+		"eventtype":"string",
+		"status":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

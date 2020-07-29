@@ -1,0 +1,27 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describecommands"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describecommands":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"contentencoding":"string",
+		"owneraccount":"string",
+		"name":"string",
+		"pagesize":null,
+		"description":"string",
+		"ownerid":null,
+		"type":"string",
+		"commandid":"string",
+		"pagenumber":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

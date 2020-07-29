@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-describeregions"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"describeregions":{
+		"resourceownerid":null,
+		"resourceowneraccount":"string",
+		"owneraccount":"string",
+		"acceptlanguage":"string",
+		"ownerid":null,
+		"instancechargetype":"string",
+		"resourcetype":"string"
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

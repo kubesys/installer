@@ -1,0 +1,23 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AliyunVMTemplate",
+  "metadata":{
+    "name":"aliyunvm-modifyimagesharepermission"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"modifyimagesharepermission":{
+		"resourceownerid":null,
+		"imageid":"string",
+		"removeaccounts":null,
+		"resourceowneraccount":"string",
+		"addaccounts":null,
+		"owneraccount":"string",
+		"ownerid":null
+	}
+}
+    },
+    "type":"AliyunVM"
+  }
+}

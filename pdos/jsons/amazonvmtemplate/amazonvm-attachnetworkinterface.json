@@ -1,0 +1,22 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-attachnetworkinterface"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"attachnetworkinterface":{
+		"instanceid":"string",
+		"hinstanceid":"string",
+		"hnetworkinterfaceid":"string",
+		"hdeviceindex":"integer",
+		"networkinterfaceid":"string",
+		"deviceindex":"integer"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

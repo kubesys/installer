@@ -1,0 +1,18 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"AmazonVMTemplate",
+  "metadata":{
+    "name":"amazonvm-deletetrafficmirrorfilterrule"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletetrafficmirrorfilterrule":{
+		"htrafficmirrorfilterruleid":"string",
+		"trafficmirrorfilterruleid":"string"
+	}
+}
+    },
+    "type":"AmazonVM"
+  }
+}

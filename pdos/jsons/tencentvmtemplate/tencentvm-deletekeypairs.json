@@ -1,0 +1,15 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"TencentVMTemplate",
+  "metadata":{
+    "name":"tencentvm-deletekeypairs"
+  },
+  "spec":{
+    "data":{
+      "lifecycle": {
+	"deletekeypairs":{}
+}
+    },
+    "type":"TencentVM"
+  }
+}

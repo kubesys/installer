@@ -1,0 +1,29 @@
+[{
+		"key": 1,
+		"width": "200",
+		"label": "虚拟机快照",
+		"row": "metadata.name",
+		"style": "width:250px;",
+		"type": "input",
+		"kind": "a",
+		"link": "/profile/taskProfile"
+	},
+	{
+		"key": 5,
+		"width": "120",
+		"label": "状态",
+		"row": "spec.status.additionalProperties.conditions.state.waiting.reason"
+	},
+	{
+		"key": 6,
+		"width": "200",
+		"label": "所在主机",
+		"row": "spec.nodeName"
+	},
+	{
+		"key": 8,
+		"width": "180",
+		"label": "创建时间",
+		"row": "metadata.creationTimestamp"
+	}
+]

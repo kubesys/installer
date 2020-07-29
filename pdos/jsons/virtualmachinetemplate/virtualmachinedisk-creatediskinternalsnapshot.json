@@ -1,0 +1,25 @@
+{
+  "apiVersion":"cloudplus.io/v1alpha3",
+  "kind":"VirtualMachineTemplate",
+  "metadata":{
+    "additionalProperties":{},
+    "finalizers":[],
+    "managedFields":[],
+    "name":"virtualmachinedisk-creatediskinternalsnapshot",
+    "ownerReferences":[]
+  },
+  "spec":{
+    "data":{
+      "lifecycle":{
+        "createDiskSnapshot":{
+          "pool":"String",
+          "snapshotname":"String",
+          "type":"String"
+        },
+        "createDiskInternalSnapshot":{"$ref":"$.spec.data.lifecycle.createDiskSnapshot"}
+      },
+      "additionalProperties":{}
+    },
+    "type":"VirtualMachine"
+  }
+}
