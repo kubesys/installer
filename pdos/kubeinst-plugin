@@ -8,7 +8,7 @@
 ###############################################
 
   echo -e "window.g = {" > /etc/kubernetes/config.js
-  echo -e "\tbaseURL:\"http://0.0.0.0:30310/kubesys/\"," >> /etc/kubernetes/config.js
+  echo -e "\tbaseURL:\"http://0.0.0.0:30308/kubesys/\"," >> /etc/kubernetes/config.js
   echo -e "\tVUE_APP_MONITOR_HOST:\"0.0.0.0\"," >> /etc/kubernetes/config.js
   echo -e "\tVUE_APP_MONITOR_HOST_GRAFANA:\"0.0.0.0:31002\"," >> /etc/kubernetes/config.js
   echo -e "\tVUE_APP_CONTAINER_HOST:\"0.0.0.0\"," >> /etc/kubernetes/config.js
