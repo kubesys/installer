@@ -31,7 +31,7 @@ spec:
       volumes: 
       - name: "containertemplate"
         hostPath:
-          path: "/var/lib/pdos/config.js"
+          path: "/etc/kubernetes/config.js"
 ---
 apiVersion: v1
 kind: Service

@@ -16,6 +16,8 @@
   echo -e "\tregistry:\"http://0.0.0.0:5000\"" >> /etc/kubernetes/config.js
   echo -e "}" >> /etc/kubernetes/config.js
 
-  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-synchronizer/master/kubernetes-synchronizer.yaml" >> /etc/kubernetes/kubeenv.list
-  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-operators/master/kubernetes-operators.yaml" >> /etc/kubernetes/kubeenv.list
+  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/pdos/system/01.kubernetes-common.yaml" >> /etc/kubernetes/kubeenv.list
+  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/pdos/system/02.kubernetes-synchronizer.yaml" >> /etc/kubernetes/kubeenv.list
+  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/pdos/system/03.kubernetes-operators.yaml" >> /etc/kubernetes/kubeenv.list
+  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/pdos/system/05.kubernetes-dashboard.yaml" >> /etc/kubernetes/kubeenv.list
 

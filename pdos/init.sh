@@ -7,7 +7,13 @@
 ##
 ###############################################
 
-kubectl apply -f configs/*.yaml
-kubectl apply -f configs/frontend/*.yaml
+if [ ! -f "/var/lib/pdos/" ];
+then
+  mkdir /var/lib/pdos/
+fi
+
+kubectl apply -f configs/01.crd.yaml
+kubectl apply -f configs/02.system.yaml
+kubectl apply -f configs/frontend/
 
 cp -r jsons/* /var/lib/pdos/
