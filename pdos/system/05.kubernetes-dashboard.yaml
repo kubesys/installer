@@ -29,7 +29,7 @@ spec:
         - name: "config"
           mountPath: "/home/kubeext-dashboard/public/config.js"
       volumes: 
-      - name: "containertemplate"
+      - name: "config"
         hostPath:
           path: "/etc/kubernetes/config.js"
 ---
@@ -47,6 +47,6 @@ spec:
     protocol: TCP
     targetPort: 9537
     name: kube-dashboard-port
-    nodePort: 30311
+    nodePort: 30310
   selector:
     name: kube-dashboard
