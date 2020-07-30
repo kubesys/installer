@@ -33,7 +33,7 @@ spec:
         - "kubernetes-operators.jar"
         volumeMounts: 
         - name: "containertemplate"
-          mountPath: "/home/kubernetes-operators/jsons"
+          mountPath: "/home/jsons"
         - name: "kubetoken"
           mountPath: "/etc/kubernetes"
       volumes: 
