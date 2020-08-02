@@ -116,12 +116,29 @@ CLUSTER_NETWORK="kube-ovn"
 192.168.42.136 LB_ROLE=master EX_APISERVER_VIP=192.168.42.250 EX_APISERVER_PORT=6443
 192.168.42.133 LB_ROLE=backup EX_APISERVER_VIP=192.168.42.250 EX_APISERVER_PORT=6443
 192.168.42.134 LB_ROLE=backup EX_APISERVER_VIP=192.168.42.250 EX_APISERVER_PORT=6443
+```
+
 1. Install
+
+```
 ansible-playbook 01.prepare.yml (以最终显示状态为准，中间有红色输出可忽略)
 ansible-playbook 02.etcd.yml (以最终显示状态为准，中间有红色输出可忽略)
 ansible-playbook 04.kube-master.yml (以最终显示状态为准，中间有红色输出可忽略)
 ansible-playbook 05.kube-node.yml (以最终显示状态为准，中间有红色输出可忽略)
 ```
+
+2. ex-lb
+
+vi  roles/ex-lb/defaults/main.yml
+
+```
+# 启用 ingress NodePort服务的负载均衡 (yes/no)
+INGRESS_NODEPORT_LB: "no"
+# 启用 ingress tls NodePort服务的负载均衡 (yes/no)
+INGRESS_TLS_NODEPORT_LB: "no"
+```
+
+ansible-playbook /etc/ansible/roles/ex-lb/ex-lb.yml
 
 ## Roadmap
 
