@@ -140,6 +140,8 @@ INGRESS_TLS_NODEPORT_LB: "no"
 
 ansible-playbook /etc/ansible/roles/ex-lb/ex-lb.yml
 
+bash patch.sh
+
 ## Roadmap
 
 - Prototype
