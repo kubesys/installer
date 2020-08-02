@@ -61,7 +61,7 @@ Slave
 
 ```
 yum install epel-release -y
-yum install docker-ce git python-pip -y
+yum install docker-ce keepalived haproxy git python-pip -y
 systemctl start docker
 systemctl enable docker
 pip install pip --upgrade -i https://mirrors.aliyun.com/pypi/simple/
