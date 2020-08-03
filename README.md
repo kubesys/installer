@@ -60,7 +60,7 @@ Slave
 1.2 Ansible (Every Nodes)
 
 ```
-yum install epel-release -y
+yum install epel-release centos-release-openstack-rocky -y
 yum install docker-ce docker-ce-cli keepalived haproxy git python-pip -y
 systemctl start docker
 systemctl enable docker
