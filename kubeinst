@@ -36,11 +36,12 @@ function init-env-repository()
 {
   echo -e "[docker-ce-stable]\nname=Docker CE Stable - \$basearch \nbaseurl=https://download.docker.com/linux/centos/7/\$basearch/stable\nenabled=1 \ngpgcheck=1 \ngpgkey=https://download.docker.com/linux/centos/gpg" > /etc/yum.repos.d/docker-ce.repo
   echo -e "[kubernetes] \nname=Kubernetes - \$basearch \nbaseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-\$basearch/ \nenabled=1 \ngpgcheck=0 \nrepo_gpgcheck=0 \ngpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg" > /etc/yum.repos.d/kubernetes.repo
+  yum install centos-release-openstack-rocky -y
 }
 
 function init-env-software()
 {
-  yum install -y docker-ce kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version}
+  yum install -y docker-ce kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version} openvswitch*
   systemctl start docker
   systemctl enable docker
   systemctl enable kubelet
