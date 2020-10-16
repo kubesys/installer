@@ -11,7 +11,7 @@
 VERSION="0.2"
 
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.18.3"
+kube_version="1.18.2"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 
 ###########################################################
@@ -41,7 +41,7 @@ function init-env-repository()
 
 function init-env-software()
 {
-  yum install -y docker-ce kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version} openvswitch*
+  yum install -y docker-ce kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version} openvswitch* certbot
   systemctl start docker
   systemctl enable docker
   systemctl enable kubelet
