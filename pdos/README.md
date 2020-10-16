@@ -54,14 +54,7 @@ docker build . -t registry.cn-beijing.aliyuncs.com/kubesys/kubernetes-init:0.1-a
   - [grafana/prometheus/loki](https://github.com/kubesys/kubernetes-tools/tree/master/ops/prom)
     - 31001 [prometheus-http-port]
     - 31002 [grafana-http-port]
-- DevOps
-  - [teamwork](https://github.com/kubesys/kubernetes-tools/tree/master/dev/team)
-    - 30311 [kooteam-http-port]
-  - [gitlab](https://github.com/kubesys/kubernetes-tools/tree/master/dev/gitlab)
-    - 30312 [gitlab-ssh-port]
-    - 30313 [gitlab-http-port]
-    - 30314 [gitlab-https-port]
-- Qin
+- Common
   - kube-rabbitmq
     - 30304 [rabbit-port]
     - 30305 [rabbit-management-http-port]
@@ -69,9 +62,15 @@ docker build . -t registry.cn-beijing.aliyuncs.com/kubesys/kubernetes-init:0.1-a
     - 30306 [mariadb-port]
     - 30307 [mariadb-management-http-port]
   - [kube-synchronizer](https://github.com/kubesys/kubernetes-synchronizer)
-  - [kube-orchestrator](https://github.com/kubesys/kubernetes-orchestrator)
-  - [kube-operators](https://github.com/kubesys/kubernetes-operators)
+  - [kube-api-mapper](https://github.com/kubesys/kubernetes-api-mapper)
     - 30308 [operators-http-port]
     - 30309 [operators-https-port]
   - [kube-dashboard](https://github.com/kubesys/kubeext-dashboard)
     - 30310 [dashboard-http-port]
+ - DevOps
+  - [teamwork](https://github.com/kubesys/kubernetes-tools/tree/master/dev/team)
+    - 30311 [kooteam-http-port]
+  - [gitlab](https://github.com/kubesys/kubernetes-tools/tree/master/dev/gitlab)
+    - 30312 [gitlab-ssh-port]
+    - 30313 [gitlab-http-port]
+    - 30314 [gitlab-https-port]

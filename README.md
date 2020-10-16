@@ -21,7 +21,7 @@ curl --url https://raw.githubusercontent.com/kubesys/kubernetes-installer/master
 chmod 777 /usr/bin/kubeinst
 
 kubeinst init-env
-kubeinit init-kube
+kubeinst init-kube
 ```
 
 Now it support two commands
