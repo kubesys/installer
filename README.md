@@ -42,6 +42,10 @@ Note that you can customized :
 - /etc/kubernetes/kubeenv.list: which plugins should be installed
 
 
+## Note
+
+kubectl -n kube-public edit configmaps cluster-info -o yaml
+
 ## Install Kubernetes with HA
 
 ### . Prepare
