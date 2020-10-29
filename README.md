@@ -44,7 +44,25 @@ Note that you can customized :
 
 ## Note
 
-kubectl -n kube-public edit configmaps cluster-info -o yaml
+```
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: InitConfiguration
+bootstrapTokens:
+  - ttl: "0"
+---
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: ClusterConfiguration
+apiServer:
+  certSANs:
+    - 127.0.0.1
+    - 172.17.110.156
+    - 39.106.40.190
+networking:
+  podSubnet: "10.244.0.0/16"
+kubernetesVersion: "v1.18.3"
+imageRepository: "registry.cn-hangzhou.aliyuncs.com/google_containers"
+```
+
 
 ## Install Kubernetes with HA
 
