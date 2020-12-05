@@ -57,6 +57,7 @@ function init-containerd-software()
     mkdir -p /etc/containerd
   fi
 
+  cd /home
   wget $crictl_url$crictl_name
   tar zxvf $crictl_name
   cp -r etc/ /etc/
