@@ -68,7 +68,7 @@ function init-env-kubeconfig()
 
 function init-env-kubecomp()
 {
-  echo -e "https://docs.projectcalico.org/archive/v3.14/manifests/calico.yaml" > /etc/kubernetes/kubeenv.list
+  echo -e "https://docs.projectcalico.org/archive/v3.17/manifests/calico.yaml" > /etc/kubernetes/kubeenv.list
 #  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/exportor.yaml" >> /etc/kubernetes/kubeenv.list
 #  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-dashboards-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
 #  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-datasources-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
