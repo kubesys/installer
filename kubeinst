@@ -39,12 +39,70 @@ function init-env-repository()
   yum install centos-release-openstack-rocky -y
 }
 
-function init-env-software()
+function init-docker-software()
 {
   yum install -y docker-ce kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version} openvswitch* certbot
   systemctl start docker
   systemctl enable docker
   systemctl enable kubelet
+}
+
+function init-containerd-software()
+{
+  yum install -y containerd.io kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version} openvswitch* certbot
+  if [[ ! -d "/etc/kubernetes" ]]
+  then
+    mkdir -p /etc/containerd
+  fi
+
+#cat <<EOF | sudo tee /etc/modules-load.d/containerd.conf
+#overlay
+#br_netfilter
+#EOF
+ 
+  echo "overlay" > /etc/modules-load.d/containerd.conf  
+  echo "br_netfilter" >> /etc/modules-load.d/containerd.conf  
+
+  modprobe overlay
+  modprobe br_netfilter
+
+#cat <<EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+#net.bridge.bridge-nf-call-iptables  = 1
+#net.ipv4.ip_forward                 = 1
+#net.bridge.bridge-nf-call-ip6tables = 1
+#EOF
+
+  echo "net.bridge.bridge-nf-call-iptables  = 1" > /etc/sysctl.d/99-kubernetes-cri.conf 
+  echo "net.ipv4.ip_forward                 = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf 
+  echo "net.bridge.bridge-nf-call-ip6tables = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf 
+ 
+  sysctl --system
+
+  containerd config default > /etc/containerd/config.toml
+
+  systemctl start containerd
+  systemctl enable containerd
+
+#  cat > /etc/default/kubelet <<EOF   
+#KUBELET_EXTRA_ARGS=--cgroup-driver=systemd 
+#EOF
+ 
+  echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet 
+
+#cat > /etc/crictl.yaml <<EOF  
+#runtime-endpoint: unix:///run/containerd/containerd.sock 
+#image-endpoint: unix:///run/containerd/containerd.sock   
+#timeout: 10  
+#debug: false  
+#EOF
+
+  echo "runtime-endpoint: unix:///run/containerd/containerd.sock" > /etc/crictl.yaml
+  echo "image-endpoint: unix:///run/containerd/containerd.sock" >> /etc/crictl.yaml
+  echo "timeout: 10" >> /etc/crictl.yaml
+  echo "debug: false" >> /etc/crictl.yaml
+
+  systemctl enable kubelet
+  
 }
 
 function init-env-kubeconfig()
@@ -82,7 +140,19 @@ function init-env()
   init-env-disable-selinux
   init-env-disable-firewalld
   init-env-repository
-  init-env-software
+  if [[ -z $2 ]]
+  then
+    init-containerd-software
+  elif [[ $2 == "docker" ]]
+  then
+    init-docker-software
+  elif [[ $2 == "containerd" ]]
+  then
+    init-containerd-software
+  else
+    echo "only support docker or containerd"
+    exit 1
+  fi
   init-env-kubeconfig
   init-env-kubecomp
 }
