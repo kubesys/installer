@@ -58,12 +58,12 @@ function init-containerd-software()
   fi
 
   wget $crictl_url$crictl_name
-  tar zxvf $crictl_url$crictl_name
+  tar zxvf $crictl_name
   cp -r etc/ /etc/
   cp -r opt/ /opt/
   cp -r usr/ /usr/
 
-  rm -rf $crictl_url$crictl_name
+  rm -rf $crictl_name
   rm -rf etc
   rm -rf opt
   rm -rf usr
