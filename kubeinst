@@ -80,6 +80,8 @@ function init-containerd-software()
 
   containerd config default > /etc/containerd/config.toml
 
+  sed -i 's/k8s.gcr.io\/pause:3.1/registry.cn-hangzhou.aliyuncs.com\/google_containers\/pause:3.2/g' /etc/containerd/config.toml
+
   systemctl start containerd
   systemctl enable containerd
 
