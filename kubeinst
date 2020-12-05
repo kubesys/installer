@@ -13,6 +13,8 @@ VERSION="0.3"
 kube_pod_subnet="10.244.0.0/16"
 kube_version="1.19.4"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
+crictl_url="http://39.106.40.190/cmds/"
+crictl_name="cri-containerd-1.3.3.linux-amd64.tar.gz"
 
 ###########################################################
 ##
@@ -41,7 +43,7 @@ function init-env-repository()
 
 function init-docker-software()
 {
-  yum install -y docker-ce kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version} openvswitch* certbot
+  yum install -y wget docker-ce kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version} openvswitch* certbot
   systemctl start docker
   systemctl enable docker
   systemctl enable kubelet
@@ -49,11 +51,22 @@ function init-docker-software()
 
 function init-containerd-software()
 {
-  yum install -y containerd.io kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version} openvswitch* certbot
+  yum install -y wget containerd.io kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version} openvswitch* certbot
   if [[ ! -d "/etc/kubernetes" ]]
   then
     mkdir -p /etc/containerd
   fi
+
+  wget $crictl_url$crictl_name
+  tar zxvf $crictl_url$crictl_name
+  cp -r etc/ /etc/
+  cp -r opt/ /opt/
+  cp -r usr/ /usr/
+
+  rm -rf $crictl_url$crictl_name
+  rm -rf etc
+  rm -rf opt
+  rm -rf usr
 
 #cat <<EOF | sudo tee /etc/modules-load.d/containerd.conf
 #overlay
