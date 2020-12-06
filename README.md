@@ -9,8 +9,7 @@ Now this script can only work in CentOS/RHEL 7.x with various CPU arch.
 | Docker      | Container-based virtualization | 19.03   | [redhat](https://docs.docker.com/install/linux/docker-ee/rhel/), [openSUSE/SUSE](https://docs.docker.com/install/linux/docker-ee/suse/), [centos](https://docs.docker.com/install/linux/docker-ce/centos/), [debian](https://docs.docker.com/install/linux/docker-ce/debian/), [fedora](https://docs.docker.com/install/linux/docker-ce/fedora/), [ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/) |
 | Containerd  | Container-based virtualization | 1.3.9   |[Linux](https://containerd.io/docs/getting-started/)|
 | Kubernetes  | Virtual compute resource pool  | 1.19.4  | [Linux](https://docs.kubernetes.io/) |
-| Calico      | Network solution        | 3.17  | [Linux](https://docs.projectcalico.org/v3.14/getting-started/kubernetes/) |
-| Prometheus  | Monitor tool            | 2.20  | [Linux](https://github.com/prometheus/prometheus/) |
+| Calico      | Network solution        | 3.17  | [Linux](https://docs.projectcalico.org/v3.17/getting-started/kubernetes/) |
 
 
 ## Installation
