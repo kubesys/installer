@@ -52,10 +52,11 @@ Note that you can customized :
   - 0.1: support Kubernetes and Calico
   - 0.2: support prometheus, grafna
   - 0.3: support loki, register
-  - 0.4: support Helm, Rook
-  - 0.5: support istio
-  - 0.6: support volcano
-  - 0.7: support openfaas
 - Develop
 
 - Production
+
+```
+kubectl proxy --address=0.0.0.0 --port=31888 --accept-hosts=
+39.106.40.190
+```
