@@ -60,3 +60,7 @@ Note that you can customized :
 kubectl proxy --address=0.0.0.0 --port=31888 --accept-hosts=
 39.106.40.190
 ```
+
+```
+kubectl taint nodes --all node-role.kubernetes.io/master-
+```
