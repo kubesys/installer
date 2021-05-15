@@ -159,32 +159,11 @@ function init-kube()
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
   iptables -P FORWARD ACCEPT
  
-  kubectl label node $(hostname) kube-ovn/role=master
-  kubectl apply -f crd.yaml
-  ip=$(ifconfig eth0 | grep inet | head -1 | awk '{print$2}')
-  sed -i "s/\$addresses/$ip/g" ovn.yaml
-  kubectl apply -f ovn.yaml
-  sed -i "s/\$pod_cidr/${kube_pod_subnet/\//\\/}/g" kube-ovn.yaml
-  kubectl apply -f kube-ovn.yaml
- 
   while read line
   do
     kubectl apply -f $line
   done  < /etc/kubernetes/kubeenv.list
 
-}
-
-###########################################################
-##
-##  download
-##
-##########################################################
-
-function download-ovn()
-{
-  wget https://raw.githubusercontent.com/kubeovn/kube-ovn/${ovn_version}/yamls/crd.yaml
-  wget https://raw.githubusercontent.com/kubeovn/kube-ovn/${ovn_version}/yamls/ovn.yaml
-  wget https://raw.githubusercontent.com/kubeovn/kube-ovn/${ovn_version}/yamls/kube-ovn.yaml
 }
 
 ###########################################################
@@ -205,7 +184,6 @@ function help()
   echo -e "Commands:"
   echo -e "  init-env       :\t(Init): simplify configuring node, such as disable selinux, install docker"
   echo -e "  init-kube      :\t(Init): deploy Kubernetes as your want by editing /etc/kubernetes/kubeenv.list. Now it includes calico, prometheus, grafna"
-  echo -e "  download-ovn   :\t(Init): download kube-ovn yamls"
 }
 
 
@@ -215,9 +193,6 @@ case $1 in
     ;;
   "init-kube")
     init-kube $*
-    ;;
-  "download-ovn")
-    download-ovn $*
     ;;
   "--help")
     help

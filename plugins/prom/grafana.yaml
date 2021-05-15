@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-core
+  namespace: kube-system
+  labels:
+    app: grafana
+    component: core
+spec:
+  selector:
+    matchLabels:
+      app: grafana
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grafana
+        component: core
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+      - image: grafana/grafana:7.5.6
+        name: grafana-core
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:
+          - name: GF_AUTH_BASIC_ENABLED
+            value: "false"
+          - name: GF_AUTH_ANONYMOUS_ENABLED
+            value: "true"
+          - name: GF_PROVISIONING
+            value: "conf/provisioning"
+          - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+            value: Admin
+          - name: GF_SECURITY_ALLOW_EMBEDDING
+            value: "true"
+        readinessProbe:
+          httpGet:
+            path: /login
+            port: 3000
+        volumeMounts:
+           - name: sc-dashboards-volume
+             mountPath: /etc/grafana/provisioning/dashboards
+           - name: sc-datasources-volume
+             mountPath: /etc/grafana/provisioning/datasources
+           - name: sc-dashboards-provider
+             mountPath: /etc/grafana/provisioning/dashboardsJson
+      volumes:
+      - name: sc-dashboards-provider
+        hostPath:
+          path: /var/lib/doslab/grafana/dashboards/
+      - name: sc-datasources-volume
+        configMap:
+          name: grafana-datasource
+      - name: sc-dashboards-volume
+        configMap:
+          name: grafana-dashboard
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-service
+  namespace: kube-system
+  labels:
+    app: grafana
+    component: core
+spec:
+  type: NodePort
+  ports:
+    - port: 3000
+      nodePort: 31002
+  selector:
+    app: grafana
