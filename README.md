@@ -15,10 +15,15 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 | Name        | Type      | Version |  Packages  |   
 | ------      | ------    | ------  | ------      |
 | Docker      | Container-based virtualization | 20.10   | [redhat](https://docs.docker.com/install/linux/docker-ee/rhel/), [openSUSE/SUSE](https://docs.docker.com/install/linux/docker-ee/suse/), [centos](https://docs.docker.com/install/linux/docker-ce/centos/), [debian](https://docs.docker.com/install/linux/docker-ce/debian/), [fedora](https://docs.docker.com/install/linux/docker-ce/fedora/), [ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/) |
-| Containerd  | Container-based virtualization | 1.3.9   |[Linux](https://containerd.io/docs/getting-started/)|
 | Kubernetes  | Virtual compute resource pool  | 1.20.6  | [Linux](https://docs.kubernetes.io/) |
-| Calico      | Network solution        | 3.17  | [Linux](https://docs.projectcalico.org/v3.17/getting-started/kubernetes/) |
 | OVN         | Network solution        | 1.6.2 | [Linux](https://github.com/alauda/kube-ovn) |
+
+**Optional**
+
+| Name        | Type      | Version |  Packages  |
+| ------      | ------    | ------  | ------      |
+| Containerd  | Container-based virtualization | 1.3.9   |[Linux](https://containerd.io/docs/getting-started/)|
+| Calico      | Network solution        | 3.19  | [Linux](https://docs.projectcalico.org/v3.17/getting-started/kubernetes/) |
 
 ## Structure
 
@@ -67,6 +72,7 @@ Note that you can customized :
 
 ## Roadmap
 
+```
 - Prototype
   - 0.6: use kube-ovn
 ```

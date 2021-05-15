@@ -3,15 +3,16 @@
 ##
 ##  Copyright (2020, ) Institute of Software
 ##      Chinese Academy of Sciences
-##          wuheng@gmail.com
+##          wuheng@iscas.ac.cn
 ##
 ###############################################
 
 
-VERSION="0.5"
+VERSION="0.6"
 
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.21.0"
+docker_version="20.10.6"
+kube_version="1.20.6"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 
 ###########################################################
@@ -41,7 +42,7 @@ function init-env-repository()
 
 function init-docker-software()
 {
-  yum install -y wget docker-ce kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version} openvswitch* certbot
+  yum install -y wget docker-ce-${docker_version} kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version}
   systemctl start docker
   systemctl enable docker
   systemctl enable kubelet
@@ -49,7 +50,7 @@ function init-docker-software()
 
 function init-containerd-software()
 {
-  yum install -y wget containerd.io kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version} openvswitch* certbot
+  yum install -y wget containerd.io kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version}
 
   echo "overlay" > /etc/modules-load.d/containerd.conf  
   echo "br_netfilter" >> /etc/modules-load.d/containerd.conf  
@@ -102,7 +103,7 @@ function init-env-kubeconfig()
 
 function init-env-kubecomp()
 {
-  echo -e "https://docs.projectcalico.org/archive/v3.17/manifests/calico.yaml" > /etc/kubernetes/kubeenv.list
+  echo -e "https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml" > /etc/kubernetes/kubeenv.list
 #  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/exportor.yaml" >> /etc/kubernetes/kubeenv.list
 #  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-dashboards-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
 #  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-datasources-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
