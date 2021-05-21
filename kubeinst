@@ -50,15 +50,27 @@ function disable-ubuntu-security()
 
 function add-apt-repository()
 {
+  arch=""
+  if [[ $(arch) == "x86_64" ]]
+  then
+    arch="amd64"
+  elif [[ $(arch) == "aarch64" ]]
+  then
+    arch="arm64"
+  else
+    echo "only support x86_64(amd64) and aarch64(arm64)"
+    exit 1
+  fi
+
   apt-get install apt-transport-https ca-certificates curl gnupg lsb-release lrzsz -y
 
   rm -rf /usr/share/keyrings/docker-archive-keyring.gpg
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-  echo  "deb [arch=arm64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  echo  "deb [arch=$arch signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
   rm -rf /usr/share/keyrings/kubernetes-archive-keyring.gpg
   curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/kubernetes-archive-keyring.gpg
-  echo  "deb [arch=arm64 signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
+  echo  "deb [arch=$arch signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
 }
 
 function init-docker-k8s()
@@ -215,6 +227,7 @@ function init-kube()
 ##  help
 ##
 ##########################################################
+
 
 function cmddesc()
 {
