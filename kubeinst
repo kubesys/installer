@@ -84,7 +84,7 @@ function yum-docker-k8s()
 function apt-docker-k8s()
 {
   dVer=$(apt-cache madison docker-ce | grep $docker_version | awk -F"|" '{print$2}' | sed 's/ //g')
-  kVer==$(apt-cache madison kubelet | grep kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
+  kVer=$(apt-cache madison kubelet | grep $kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
   apt-get update
   apt-get install docker-ce=$dVer kubectl=$kVer  kubelet=$kVer kubeadm=$kVer
   systemctl start docker
