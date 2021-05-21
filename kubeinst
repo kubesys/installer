@@ -73,7 +73,7 @@ function add-apt-repository()
   echo  "deb [arch=$arch signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
 }
 
-function init-docker-k8s()
+function yum-docker-k8s()
 {
   yum install -y wget docker-ce-${docker_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
   systemctl start docker
@@ -81,6 +81,14 @@ function init-docker-k8s()
   systemctl enable kubelet
 }
 
+function apt-docker-k8s()
+{
+  apt-get update
+  apt-get install docker-ce=$docker_version kubectl=$ukube_version kubelet=$ukube_version kubeadm=$ukube_version
+  systemctl start docker
+  systemctl enable docker
+  systemctl enable kubelet
+}
 
 function init-kubeadm-kubeconfig()
 {
@@ -118,15 +126,16 @@ function init-env()
   then
     disable-centos-security
     add-yum-repository
+    yum-docker-k8s
   elif [[ -n $(cat /etc/os-release | grep ubuntu) ]]
   then
     disable-ubuntu-security
     add-apt-repository
+    apt-docker-k8s
   else
     echo "only support centos and ubuntu."
     exit 1
   fi
-  init-docker-k8s
   init-kubeadm-kubeconfig
   init-k8s-plugins
 }
