@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="1.0"
+VERSION="1.1"
 
 # Prod
 kube_pod_subnet="10.244.0.0/16"
@@ -19,7 +19,8 @@ kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 # Dev
 ovn_version="v1.6.2"
 iface_name="eth0"
-
+#fip="119.8.188.235:6443"
+fip=""
 
 ###########################################################
 ##
@@ -105,6 +106,10 @@ function init-kubeadm-kubeconfig()
   echo -e "---" >> /etc/kubernetes/kubeadm.yaml
   echo -e "apiVersion: kubeadm.k8s.io/v1beta2" >> /etc/kubernetes/kubeadm.yaml
   echo -e "kind: ClusterConfiguration" >> /etc/kubernetes/kubeadm.yaml
+  if [[ -n $fip ]]
+  then
+  echo -e "controlPlaneEndpoint: \"$fip\"" >> /etc/kubernetes/kubeadm.yaml
+  fi
   echo -e "networking:" >> /etc/kubernetes/kubeadm.yaml
   echo -e "  podSubnet: \"${kube_pod_subnet}\"" >> /etc/kubernetes/kubeadm.yaml
   echo -e "kubernetesVersion: \"v${kube_version}\"" >> /etc/kubernetes/kubeadm.yaml
