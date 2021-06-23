@@ -38,7 +38,7 @@ kubeinst: main install file
 download the `kubeinst` tool.
 
 ```
-curl --url https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/kubeinst --output /usr/bin/kubeinst
+curl --url https://raw.githubusercontent.com/kubesys/installer/master/kubeinst --output /usr/bin/kubeinst
 chmod 777 /usr/bin/kubeinst
 ```
 
