@@ -17,7 +17,7 @@ spec:
     - --kubeconfig=/etc/kubernetes/scheduler.conf
     - --leader-elect=false
     - --scheduler-name=iscas-scheduler
-    image: registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler:v1.15.12
+    image: registry.cn-beijing.aliyuncs.com/doslab/iscas-scheduler:v1.17.2
     imagePullPolicy: IfNotPresent
     livenessProbe:
       failureThreshold: 8
