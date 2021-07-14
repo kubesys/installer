@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="1.1"
+VERSION="1.2"
 
 # Prod
 kube_pod_subnet="10.244.0.0/16"
@@ -18,7 +18,7 @@ kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 
 # Dev
 ovn_version="v1.6.2"
-iface_name="eth0"
+iface_name="ens33"
 #fip="119.8.188.235:6443"
 fip=""
 
@@ -177,7 +177,6 @@ function init-env-exp()
 
 function init-containerd-software()
 {
-  yum install -y wget containerd.io kubeadm-${kube_version} kubectl-${kube_version} kubelet-${kube_version}
 
   echo "overlay" > /etc/modules-load.d/containerd.conf
   echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
