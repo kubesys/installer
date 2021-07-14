@@ -10,17 +10,20 @@
 
 VERSION="1.2"
 
-# Prod
+# Required
 kube_pod_subnet="10.244.0.0/16"
-docker_version="20.10.6"
 kube_version="1.20.6"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 
-# Dev
-ovn_version="v1.6.2"
-iface_name="ens33"
+# Optional
 #fip="119.8.188.235:6443"
 fip=""
+# cnt_type="containerd"
+cnt_type="docker"
+
+# Deprecated
+# docker_version="20.10.6"
+
 
 ###########################################################
 ##
@@ -36,18 +39,18 @@ function disable-centos-security()
   systemctl disable firewalld
 }
 
+function disable-ubuntu-security()
+{
+  sudo ufw disable
+}
 
 function add-yum-repository()
 {
   echo -e "[docker-ce-stable]\nname=Docker CE Stable - \$basearch \nbaseurl=https://download.docker.com/linux/centos/7/\$basearch/stable\nenabled=1 \ngpgcheck=1 \ngpgkey=https://download.docker.com/linux/centos/gpg" > /etc/yum.repos.d/docker-ce.repo
   echo -e "[kubernetes] \nname=Kubernetes - \$basearch \nbaseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-\$basearch/ \nenabled=1 \ngpgcheck=0 \nrepo_gpgcheck=0 \ngpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg" > /etc/yum.repos.d/kubernetes.repo
-  yum install centos-release-openstack-rocky -y
+  yum install centos-release-openstack-rocky lrzsz -y
 }
 
-function disable-ubuntu-security()
-{
-  sudo ufw disable
-}
 
 function add-apt-repository()
 {
@@ -76,7 +79,8 @@ function add-apt-repository()
 
 function yum-docker-k8s()
 {
-  yum install -y wget docker-ce-${docker_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
+  #yum install -y wget docker-ce-${docker_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
+  yum install -y wget docker-ce kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
   systemctl start docker
   systemctl enable docker
   systemctl enable kubelet
@@ -84,12 +88,83 @@ function yum-docker-k8s()
 
 function apt-docker-k8s()
 {
-  dVer=$(apt-cache madison docker-ce | grep $docker_version | awk -F"|" '{print$2}' | sed 's/ //g')
+  #dVer=$(apt-cache madison docker-ce | grep $docker_version | awk -F"|" '{print$2}' | sed 's/ //g')
   kVer=$(apt-cache madison kubelet | grep $kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
   apt-get update
-  apt-get install docker-ce=$dVer kubectl=$kVer  kubelet=$kVer kubeadm=$kVer
+  #apt-get install docker-ce=$dVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer
+  apt-get install docker-ce kubectl=$kVer kubelet=$kVer kubeadm=$kVer
   systemctl start docker
   systemctl enable docker
+  systemctl enable kubelet
+}
+
+function yum-containerd-k8s()
+{
+
+  yum install -y wget containerd.io kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
+  
+  echo "overlay" > /etc/modules-load.d/containerd.conf
+  echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
+
+  modprobe overlay
+  modprobe br_netfilter
+
+  echo "net.bridge.bridge-nf-call-iptables  = 1" > /etc/sysctl.d/99-kubernetes-cri.conf
+  echo "net.ipv4.ip_forward                 = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
+  echo "net.bridge.bridge-nf-call-ip6tables = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
+
+  sysctl --system
+
+  containerd config default > /etc/containerd/config.toml
+
+  sed -i 's/k8s.gcr.io\/pause:3.2/registry.cn-hangzhou.aliyuncs.com\/google_containers\/pause:3.2/g' /etc/containerd/config.toml
+
+  systemctl start containerd
+  systemctl enable containerd
+
+  echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
+
+  echo "runtime-endpoint: unix:///run/containerd/containerd.sock" > /etc/crictl.yaml
+  echo "image-endpoint: unix:///run/containerd/containerd.sock" >> /etc/crictl.yaml
+  echo "timeout: 10" >> /etc/crictl.yaml
+  echo "debug: false" >> /etc/crictl.yaml
+
+  systemctl enable kubelet
+}
+
+function apt-containerd-k8s()
+{
+
+  kVer=$(apt-cache madison kubelet | grep $kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
+  apt-get update
+  apt-get install containerd.io kubectl=$kVer kubelet=$kVer kubeadm=$kVer
+  
+  echo "overlay" > /etc/modules-load.d/containerd.conf
+  echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
+
+  modprobe overlay
+  modprobe br_netfilter
+
+  echo "net.bridge.bridge-nf-call-iptables  = 1" > /etc/sysctl.d/99-kubernetes-cri.conf
+  echo "net.ipv4.ip_forward                 = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
+  echo "net.bridge.bridge-nf-call-ip6tables = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
+
+  sysctl --system
+
+  containerd config default > /etc/containerd/config.toml
+
+  sed -i 's/k8s.gcr.io\/pause:3.2/registry.cn-hangzhou.aliyuncs.com\/google_containers\/pause:3.2/g' /etc/containerd/config.toml
+
+  systemctl start containerd
+  systemctl enable containerd
+
+  echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
+
+  echo "runtime-endpoint: unix:///run/containerd/containerd.sock" > /etc/crictl.yaml
+  echo "image-endpoint: unix:///run/containerd/containerd.sock" >> /etc/crictl.yaml
+  echo "timeout: 10" >> /etc/crictl.yaml
+  echo "debug: false" >> /etc/crictl.yaml
+
   systemctl enable kubelet
 }
 
@@ -103,6 +178,11 @@ function init-kubeadm-kubeconfig()
   echo -e "kind: InitConfiguration" >> /etc/kubernetes/kubeadm.yaml
   echo -e "bootstrapTokens:" >> /etc/kubernetes/kubeadm.yaml
   echo -e "  - ttl: \"0\"" >> /etc/kubernetes/kubeadm.yaml
+  if [[ $cnt_type=="containerd" ]]
+  then
+    echo -e "nodeRegistration:" >> /etc/kubernetes/kubeadm.yaml
+    echo -e "  criSocket: /run/containerd/containerd.sock" >> /etc/kubernetes/kubeadm.yaml
+  fi
   echo -e "---" >> /etc/kubernetes/kubeadm.yaml
   echo -e "apiVersion: kubeadm.k8s.io/v1beta2" >> /etc/kubernetes/kubeadm.yaml
   echo -e "kind: ClusterConfiguration" >> /etc/kubernetes/kubeadm.yaml
@@ -119,12 +199,12 @@ function init-kubeadm-kubeconfig()
 function init-k8s-plugins()
 {
    echo -e "https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml" > /etc/kubernetes/kubeenv.list
-#  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/exportor.yaml" >> /etc/kubernetes/kubeenv.list
-#  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-dashboards-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
-#  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-datasources-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
-#  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana.yaml" >> /etc/kubernetes/kubeenv.list
-#  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/loki.yaml" >> /etc/kubernetes/kubeenv.list
-#  echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/prometheus.yaml" >> /etc/kubernetes/kubeenv.list
+   echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/exportor.yaml" >> /etc/kubernetes/kubeenv.list
+   echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-dashboards-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
+   echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-datasources-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
+   echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana.yaml" >> /etc/kubernetes/kubeenv.list
+   echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/loki.yaml" >> /etc/kubernetes/kubeenv.list
+   echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/prometheus.yaml" >> /etc/kubernetes/kubeenv.list
 }
 
 function init-env()
@@ -133,12 +213,30 @@ function init-env()
   then
     disable-centos-security
     add-yum-repository
-    yum-docker-k8s
+    if [[ $cnt_type == "docker" ]]
+    then
+      yum-docker-k8s
+    elif [[ $cnt_type == "containerd" ]]
+    then
+      yum-containerd-k8s
+    else
+      echo "only support docker and containerd"
+      exit 1
+    fi
   elif [[ -n $(cat /etc/os-release | grep ubuntu) ]]
   then
     disable-ubuntu-security
     add-apt-repository
-    apt-docker-k8s
+    if [[ $cnt_type=="docker" ]]
+    then
+      apt-docker-k8s
+    elif [[ $cnt_type=="containerd" ]]
+    then
+      apt-containerd-k8s
+    else
+      echo "only support docker and containerd"
+      exit 1
+    fi
   else
     echo "only support centos and ubuntu."
     exit 1
@@ -175,38 +273,6 @@ function init-env-exp()
   init-env-kubecomp
 }
 
-function init-containerd-software()
-{
-
-  echo "overlay" > /etc/modules-load.d/containerd.conf
-  echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
-
-  modprobe overlay
-  modprobe br_netfilter
-
-  echo "net.bridge.bridge-nf-call-iptables  = 1" > /etc/sysctl.d/99-kubernetes-cri.conf
-  echo "net.ipv4.ip_forward                 = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
-  echo "net.bridge.bridge-nf-call-ip6tables = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
-
-  sysctl --system
-
-  containerd config default > /etc/containerd/config.toml
-
-  sed -i 's/k8s.gcr.io\/pause:3.2/registry.cn-hangzhou.aliyuncs.com\/google_containers\/pause:3.2/g' /etc/containerd/config.toml
-
-  systemctl start containerd
-  systemctl enable containerd
-
-  echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
-
-  echo "runtime-endpoint: unix:///run/containerd/containerd.sock" > /etc/crictl.yaml
-  echo "image-endpoint: unix:///run/containerd/containerd.sock" >> /etc/crictl.yaml
-  echo "timeout: 10" >> /etc/crictl.yaml
-  echo "debug: false" >> /etc/crictl.yaml
-
-  systemctl enable kubelet
-
-}
 
 ###########################################################
 ##
