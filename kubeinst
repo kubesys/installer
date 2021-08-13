@@ -8,18 +8,20 @@
 ###############################################
 
 
-VERSION="1.2"
+VERSION="1.3"
 
 # Required
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.20.6"
+kube_version="1.22.0"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 
 # Optional
 #fip="119.8.188.235:6443"
 fip=""
-# cnt_type="containerd"
-cnt_type="docker"
+
+# Kubernetes >= 1.22, only support containerd
+cnt_type="containerd"
+#cnt_type="docker"
 
 # Deprecated
 # docker_version="20.10.6"
@@ -115,9 +117,9 @@ function yum-containerd-k8s()
 
   sysctl --system
 
-  containerd config default > /etc/containerd/config.toml
-
-  sed -i 's/k8s.gcr.io\/pause:3.2/registry.cn-hangzhou.aliyuncs.com\/google_containers\/pause:3.2/g' /etc/containerd/config.toml
+  rm -rf /etc/containerd/config.toml
+  #containerd config default > /etc/containerd/config.toml
+  #sed -i 's/k8s.gcr.io\/pause:3.2/registry.cn-hangzhou.aliyuncs.com\/google_containers\/pause:3.2/g' /etc/containerd/config.toml
 
   systemctl start containerd
   systemctl enable containerd
