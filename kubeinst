@@ -26,6 +26,7 @@ cnt_type="containerd"
 # Deprecated
 # docker_version="20.10.6"
 
+openstack="victoria"
 
 ###########################################################
 ##
@@ -50,7 +51,6 @@ function add-yum-repository()
 {
   echo -e "[docker-ce-stable]\nname=Docker CE Stable - \$basearch \nbaseurl=https://download.docker.com/linux/centos/\$releasever/\$basearch/stable\nenabled=1 \ngpgcheck=1 \ngpgkey=https://download.docker.com/linux/centos/gpg" > /etc/yum.repos.d/docker-ce.repo
   echo -e "[kubernetes] \nname=Kubernetes - \$basearch \nbaseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-\$basearch/ \nenabled=1 \ngpgcheck=0 \nrepo_gpgcheck=0 \ngpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg" > /etc/yum.repos.d/kubernetes.repo
-  yum install centos-release-openstack-rocky lrzsz -y
 }
 
 
@@ -249,6 +249,40 @@ function init-env()
 
 ###########################################################
 ##
+##  init-kvm-env
+##
+##########################################################
+
+function init-kvm-env()
+{
+  if [[ -n $(cat /etc/os-release | grep centos) ]]
+  then
+    disable-centos-security
+    add-kvm-yum-repository
+    yum install qemu-kvm libvirt libvirt-python virt-install virt-manager -y
+  elif [[ -n $(cat /etc/os-release | grep ubuntu) ]]
+  then
+    disable-ubuntu-security
+    add-kvm-apt-repository
+    apt-get install qemu-kvm libvirt libvirt-python virt-install virt-manager -y
+  else
+    echo "only support centos and ubuntu."
+    exit 1
+  fi
+}
+
+function add-kvm-yum-repository()
+{
+  yum install centos-release-openstack-$openstack lrzsz -y
+}
+
+function add-kvm-apt-repository
+{
+  add-apt-repository cloud-archive:$openstack
+}
+
+###########################################################
+##
 ##  Experimental
 ##
 ##########################################################
@@ -324,6 +358,7 @@ function help()
   echo -e "Commands:"
   echo -e "  init-env       :\t(Init): simplify configuring node, such as disable selinux, install docker"
   echo -e "  init-kube      :\t(Init): deploy Kubernetes as your want by editing /etc/kubernetes/kubeenv.list. Now it includes calico, prometheus, grafna"
+  echo -e "  init-kvm-env   :\t(Init): install kvm and libvirt
 }
 
 
@@ -333,6 +368,9 @@ case $1 in
     ;;
   "init-kube")
     init-kube $*
+    ;;
+  "init-kvm-env")
+    init-kvm-env $*
     ;;
   "--help")
     help
