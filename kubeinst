@@ -180,7 +180,7 @@ function init-kubeadm-kubeconfig()
   echo -e "kind: InitConfiguration" >> /etc/kubernetes/kubeadm.yaml
   echo -e "bootstrapTokens:" >> /etc/kubernetes/kubeadm.yaml
   echo -e "  - ttl: \"0\"" >> /etc/kubernetes/kubeadm.yaml
-  if [[ $cnt_type=="containerd" ]]
+  if [[ $cnt_type = "containerd" ]]
   then
     echo -e "nodeRegistration:" >> /etc/kubernetes/kubeadm.yaml
     echo -e "  criSocket: /run/containerd/containerd.sock" >> /etc/kubernetes/kubeadm.yaml
