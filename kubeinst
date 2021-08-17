@@ -269,6 +269,7 @@ function init-kvm-env()
     echo "only support centos and ubuntu."
     exit 1
   fi
+  systemctl start libvirtd
 }
 
 function add-kvm-yum-repository()
