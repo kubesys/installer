@@ -270,6 +270,7 @@ function init-kvm-env()
     exit 1
   fi
   systemctl start libvirtd
+  systemctl enable libvirtd
 }
 
 function add-kvm-yum-repository()
