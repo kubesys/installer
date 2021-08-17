@@ -358,7 +358,7 @@ function help()
   echo -e "Commands:"
   echo -e "  init-env       :\t(Init): simplify configuring node, such as disable selinux, install docker"
   echo -e "  init-kube      :\t(Init): deploy Kubernetes as your want by editing /etc/kubernetes/kubeenv.list. Now it includes calico, prometheus, grafna"
-  echo -e "  init-kvm-env   :\t(Init): install kvm and libvirt
+  echo -e "  init-kvm-env   :\t(Init): install kvm and libvirt"
 }
 
 
