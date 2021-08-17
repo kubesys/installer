@@ -47,6 +47,7 @@ chmod 777 /usr/bin/kubeinst
 ```
 kubeinst init-env
 kubeinst init-kube
+kubeinst init-kvm-env
 ```
 
 Now it support two commands
@@ -55,6 +56,7 @@ Now it support two commands
 Commands:
   init-env       :	(Init): simplify configuring node, such as disable selinux, install docker
   init-kube      :	(Init): deploy Kubernetes as your want
+  init-kvm-env   :  (Init): deploy qemu-kvm and libvirt
 ```
 
 - Using the `init-env` command, you can install Docker and Kubernetes on a just installed OS.
