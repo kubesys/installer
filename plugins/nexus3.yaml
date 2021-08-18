@@ -1,0 +1,52 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "kube-nexus3"
+  namespace: "kube-system"
+  labels:
+    name: "kube-nexus3"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: "kube-nexus3"
+  template:
+    metadata:
+      labels:
+        name: "kube-nexus3"
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+      - name: "kube-nexus3"
+        image: "sonatype/nexus3"
+        imagePullPolicy: "IfNotPresent"
+        volumeMounts:
+        - name: "data"
+          mountPath: "/nexus-data"
+      volumes:
+      - name: "data"
+        hostPath:
+          path: "/var/lib/doslab/nexus3"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-nexus3
+  namespace: kube-system
+  labels:
+    name: kube-nexus3
+spec:
+  type: NodePort
+  ports:
+  - port: 8081
+    protocol: TCP
+    targetPort: 8081
+    name: kube-nexus3
+    nodePort: 31021
+  selector:
+    name: kube-nexus3
