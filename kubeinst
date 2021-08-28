@@ -12,7 +12,7 @@ VERSION="1.3"
 
 # Required
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.20.10"
+kube_version="1.22.0"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 
 # Optional
@@ -20,8 +20,8 @@ kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 fip=""
 
 # Kubernetes >= 1.22, only support containerd
-cnt_type="containerd"
-#cnt_type="docker"
+#cnt_type="containerd"
+cnt_type="docker"
 
 # Deprecated
 # docker_version="20.10.6"
@@ -83,6 +83,13 @@ function yum-docker-k8s()
 {
   #yum install -y wget docker-ce-${docker_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
   yum install -y wget docker-ce kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
+
+  ## kubernetes >= 1.22 only supports systemd
+  echo "{" > /etc/docker/daemon.json
+  echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
+  echo "}" >> /etc/docker/daemon.json
+  systemctl daemon-reload
+
   systemctl start docker
   systemctl enable docker
   systemctl enable kubelet
@@ -198,15 +205,32 @@ function init-kubeadm-kubeconfig()
   echo -e "imageRepository: \"${kube_image_server}\"" >> /etc/kubernetes/kubeadm.yaml
 }
 
+
+yamlUrl="https://gitee.com/syswu/yamls/raw/master/"
+plugins="collector/list"
+network="https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml"
+
 function init-k8s-plugins()
 {
-   echo -e "https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml" > /etc/kubernetes/kubeenv.list
-   echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/exportor.yaml" >> /etc/kubernetes/kubeenv.list
-   echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-dashboards-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
-   echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-datasources-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
-   echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana.yaml" >> /etc/kubernetes/kubeenv.list
-   echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/loki.yaml" >> /etc/kubernetes/kubeenv.list
-   echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/prometheus.yaml" >> /etc/kubernetes/kubeenv.list
+   rm -rf /etc/kubernetes/kubeenv.list
+   echo -e "$network" > /etc/kubernetes/kubeenv.list 
+ 
+   array=(${plugins//,/ }) 
+   for var in ${array[@]}
+   do
+     curl $yamlUrl$var > /tmp/list
+     for line in `cat /tmp/list` 
+     do 
+       echo ${line} >> /etc/kubernetes/kubeenv.list
+     done
+   done
+   #echo -e "https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml" > /etc/kubernetes/kubeenv.list
+   #echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/exportor.yaml" >> /etc/kubernetes/kubeenv.list
+   #echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-dashboards-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
+   #echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-datasources-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
+   #echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana.yaml" >> /etc/kubernetes/kubeenv.list
+   #echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/loki.yaml" >> /etc/kubernetes/kubeenv.list
+   #echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/prometheus.yaml" >> /etc/kubernetes/kubeenv.list
 }
 
 function init-env()
