@@ -10,4 +10,5 @@ version="1.8.4"
 
 docker pull coredns/coredns:$version
 
-docker tag coredns/coredns:$version registry.cn-hangzhou.aliyuncs.com/google_containers/coredns:$version
+echo "docker tag coredns/coredns:$version registry.cn-hangzhou.aliyuncs.com/google_containers/coredns:v$version"
+docker tag coredns/coredns:$version registry.cn-hangzhou.aliyuncs.com/google_containers/coredns:v$version
