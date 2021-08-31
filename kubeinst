@@ -449,6 +449,7 @@ frontendUrl="https://gitee.com/syswu/yamls/raw/master/frontend"
 
 function init-frontend()
 {
+   rm -rf /tmp/list
    wget -P /tmp/ $frontendUrl/list
    
    for name in `cat /tmp/list`
@@ -456,7 +457,8 @@ function init-frontend()
      kubectl apply -f $name
    done
    
-   wget -P /tmp/user-admin.json $frontendUrl/users/user-admin.json
+   rm -rf /tmp/user-admin.json
+   wget -P /tmp/ $frontendUrl/users/user-admin.json
    token=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
    sed -i "s/#token#/$token/g" /tmp/user-admin.json
    kubectl apply -f /tmp/user-admin.json
