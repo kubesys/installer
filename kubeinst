@@ -124,7 +124,6 @@ function yum-containerd-k8s()
 
   sysctl --system
 
-  #rm -rf /etc/containerd/config.toml
   containerd config default > /etc/containerd/config.toml
   sed -i 's/k8s.gcr.io\/pause:3.2/registry.cn-hangzhou.aliyuncs.com\/google_containers\/pause:3.2/g' /etc/containerd/config.toml
 
@@ -132,11 +131,6 @@ function yum-containerd-k8s()
   systemctl enable containerd
 
   echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
-
-  #echo "runtime-endpoint: unix:///run/containerd/containerd.sock" > /etc/crictl.yaml
-  #echo "image-endpoint: unix:///run/containerd/containerd.sock" >> /etc/crictl.yaml
-  #echo "timeout: 10" >> /etc/crictl.yaml
-  #echo "debug: false" >> /etc/crictl.yaml
 
   systemctl enable kubelet
 }
@@ -161,18 +155,11 @@ function apt-containerd-k8s()
   sysctl --system
 
   rm -rf /etc/containerd/config.toml
-  #containerd config default > /etc/containerd/config.toml
-  #sed -i 's/k8s.gcr.io\/pause:3.2/registry.cn-hangzhou.aliyuncs.com\/google_containers\/pause:3.2/g' /etc/containerd/config.toml
 
   systemctl start containerd
   systemctl enable containerd
 
   echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
-
-  #echo "runtime-endpoint: unix:///run/containerd/containerd.sock" > /etc/crictl.yaml
-  #echo "image-endpoint: unix:///run/containerd/containerd.sock" >> /etc/crictl.yaml
-  #echo "timeout: 10" >> /etc/crictl.yaml
-  #echo "debug: false" >> /etc/crictl.yaml
 
   systemctl enable kubelet
 }
@@ -365,27 +352,90 @@ function init-kube()
 ##########################################################
 
 backendUrl="https://gitee.com/syswu/yamls/raw/master/backend"
-token="kube-token.yaml"
-database="kube-database-postgres.yaml"
-message="kube-message-rabbitmq.yaml"
-mirror="kube-runtime-mirror.yaml"
-mapper="kube-api-mapper.yaml"
+tokenFile="kube-token.yaml"
+databaseFile="kube-database-postgres.yaml"
+messageFile="kube-message-rabbitmq.yaml"
+mirrorFile="kube-runtime-mirror.yaml"
+mapperFile="kube-api-mapper.yaml"
+dir="/opt/yamls"
+type="postgres"
 
 function init-backend()
 {
-  rm -rf /tmp/$token
-  rm -rf /tmp/$database
-  rm -rf /tmp/$message
-  rm -rf /tmp/$mirror
-  rm -rf /tmp/$mapper
+  mkdir -p $dir
   
-  wget -P /tmp/$token $backendUrl/$token
-  wget -P /tmp/$database $backendUrl/$database
-  wget -P /tmp/$message $backendUrl/$message
-  wget -P /tmp/$mirror $backendUrl/$mirror
-  wget -P /tmp/$mapper $backendUrl/$mapper
+  rm -rf /$dir/$tokenFile
+  rm -rf /$dir/$databaseFile
+  rm -rf /$dir/$messageFile
+  rm -rf /$dir/$mirrorFile
+  rm -rf /$dir/$mapperFile
   
-  kubectl apply -f /tmp/$token $backendUrl/$token
+  wget -P /$dir/$token $backendUrl/$tokenFile
+  wget -P /$dir/$database $backendUrl/$databaseFile
+  wget -P /$dir/$message $backendUrl/$messageFile
+  wget -P /$dir/$mirror $backendUrl/$mirrorFile
+  wget -P /$dir/$mapper $backendUrl/$mapperFile
+  
+  kubectl apply -f /$dir/$tokenFile
+  kubectl apply -f /$dir/$databaseFile
+  kubectl apply -f /$dir/$messageFile
+  
+  while TRUE
+  do
+    res=$(kubectl get po -A | grep -v Running | grep -v NAMESPACE)
+    if [[ -z "$res" ]]
+    then
+      break
+    fi
+    sleep 5s
+  done
+  
+  token=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
+
+
+  ## arch
+  arch=""
+
+  if [[ $(arch) == "x86_64" ]]
+  then
+    arch="amd64"
+  elif [[ $(arch) == "aarch64" ]]
+  then
+    arch="arm64"
+  else
+    echo "only support x86_64(amd64) and aarch64(arm64)"
+    exit 1
+  fi
+
+  ## version
+  version=$(cat $mirror/pom.xml | grep version | head -1 | awk -F">" '{print$2}' | awk -F"<" '{print$1}')
+
+  # host and url
+  name=$(hostname | tr '[A-Z]' '[a-z]')
+  host=$(kubectl get no $name -o yaml | grep "\- address:" | head -1 | awk -F":" '{print$2}' | sed  's/^[ \t]*//g')
+  url="https:\/\/"$host":6443"
+
+  #@ port
+  port="30306"
+
+  sed -i "s/#type#/$type/g" $dir/$mirrorFile
+  sed -i "s/#host#/$host/g" $dir/$mirrorFile
+  sed -i "s/#port#/$port/g" $dir/$mirrorFile
+  sed -i "s/#url#/$url/g" $dir/$mirrorFile
+  sed -i "s/#token#/$token/g" $dir/$mirrorFile
+  sed -i "s/#version#/$version/g" $dir/$mirrorFile
+  sed -i "s/#arch#/$arch/g" $dir/$mirrorFile
+
+  sed -i "s/#type#/$type/g" $dir/$mapperFile
+  sed -i "s/#host#/$host/g" $dir/$mapperFile
+  sed -i "s/#port#/$port/g" $dir/$mapperFile
+  sed -i "s/#url#/$url/g" $dir/$mapperFile
+  sed -i "s/#token#/$token/g" $dir/$mapperFile
+  sed -i "s/#version#/$version/g" $dir/$mapperFile
+  sed -i "s/#arch#/$arch/g" $dir/$mapperFile
+
+  kubectl apply -f $dir/$mirrorFile
+  kubectl apply -f $dir/$mapperFile
 }
 
 
