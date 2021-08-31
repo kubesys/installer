@@ -42,11 +42,13 @@ curl --url https://raw.githubusercontent.com/kubesys/installer/master/kubeinst -
 chmod 777 /usr/bin/kubeinst
 ```
 
-## Command
+## Commands
 
 ```
 kubeinst init-env
 kubeinst init-kube
+kubeinst init-backend
+kubeinst init-frontend
 kubeinst init-kvm-env
 ```
 
@@ -56,6 +58,8 @@ Now it support two commands
 Commands:
   init-env       :	(Init): simplify configuring node, such as disable selinux, install docker
   init-kube      :	(Init): deploy Kubernetes as your want
+  init-backend   :  (Init): install backend services"
+  init-frontend  :  (Init): install dashboard (current only install all required files by frontend)"
   init-kvm-env   :  (Init): deploy qemu-kvm and libvirt
 ```
 
@@ -63,8 +67,10 @@ Commands:
 - Using the `init-kube` commnad, you can install kubernetes as your want
 
 ```
-kubeinst init-env [containerd/docker]
+kubeinst init-env 
 kubeinst init-kube
+kubeinst init-backend   
+kubeinstinit-frontend  
 ```
 
 Note that you can customized :
