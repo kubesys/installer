@@ -70,7 +70,7 @@ Commands:
 kubeinst init-env 
 kubeinst init-kube
 kubeinst init-backend   
-kubeinstinit-frontend  
+kubeinst init-frontend  
 ```
 
 Note that you can customized :
