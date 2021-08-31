@@ -380,7 +380,7 @@ function init-backend()
   kubectl apply -f /$dir/$databaseFile
   kubectl apply -f /$dir/$messageFile
   
-  while TRUE
+  while true
   do
     res=$(kubectl get po -A | grep -v Running | grep -v NAMESPACE)
     if [[ -z "$res" ]]
