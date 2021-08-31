@@ -15,6 +15,9 @@ kube_pod_subnet="10.244.0.0/16"
 kube_version="1.22.0"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 
+## version
+kube_backend_version="2.0.1"
+
 # Optional
 #fip="119.8.188.235:6443"
 fip=""
@@ -407,9 +410,6 @@ function init-backend()
     exit 1
   fi
 
-  ## version
-  version=$(cat $mirror/pom.xml | grep version | head -1 | awk -F">" '{print$2}' | awk -F"<" '{print$1}')
-
   # host and url
   name=$(hostname | tr '[A-Z]' '[a-z]')
   host=$(kubectl get no $name -o yaml | grep "\- address:" | head -1 | awk -F":" '{print$2}' | sed  's/^[ \t]*//g')
@@ -423,7 +423,7 @@ function init-backend()
   sed -i "s/#port#/$port/g" $dir/$mirrorFile
   sed -i "s/#url#/$url/g" $dir/$mirrorFile
   sed -i "s/#token#/$token/g" $dir/$mirrorFile
-  sed -i "s/#version#/$version/g" $dir/$mirrorFile
+  sed -i "s/#kube_backend_version#/$version/g" $dir/$mirrorFile
   sed -i "s/#arch#/$arch/g" $dir/$mirrorFile
 
   sed -i "s/#type#/$type/g" $dir/$mapperFile
@@ -431,7 +431,7 @@ function init-backend()
   sed -i "s/#port#/$port/g" $dir/$mapperFile
   sed -i "s/#url#/$url/g" $dir/$mapperFile
   sed -i "s/#token#/$token/g" $dir/$mapperFile
-  sed -i "s/#version#/$version/g" $dir/$mapperFile
+  sed -i "s/#kube_backend_version#/$version/g" $dir/$mapperFile
   sed -i "s/#arch#/$arch/g" $dir/$mapperFile
 
   kubectl apply -f $dir/$mirrorFile
