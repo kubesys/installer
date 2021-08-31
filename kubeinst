@@ -449,7 +449,7 @@ frontendUrl="https://gitee.com/syswu/yamls/raw/master/frontend"
 
 function init-frontend()
 {
-   wget -P /tmp/list $frontendUrl/list
+   wget -P /tmp/ $frontendUrl/list
    
    for name in `cat /tmp/list`
    do
