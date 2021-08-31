@@ -441,6 +441,29 @@ function init-backend()
 
 ###########################################################
 ##
+##  kube-frontend
+##
+##########################################################
+
+frontendUrl="https://gitee.com/syswu/yamls/raw/master/frontend"
+
+function init-frontend()
+{
+   wget -P /tmp/list $frontendUrl/list
+   
+   for name in `cat /tmp/list`
+   do
+     kubectl apply -f $name
+   done
+   
+   wget -P /tmp/user-admin.json $frontendUrl/users/user-admin.json
+   token=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
+   sed -i "s/#token#/$token/g" /tmp/user-admin.json
+   kubectl apply -f /tmp/user-admin.json
+}
+
+###########################################################
+##
 ##  help
 ##
 ##########################################################
@@ -459,6 +482,7 @@ function help()
   echo -e "  init-env       :\t(Init): simplify configuring node, such as disable selinux, install docker"
   echo -e "  init-kube      :\t(Init): deploy Kubernetes as your want by editing /etc/kubernetes/kubeenv.list. Now it includes calico, prometheus, grafna"
   echo -e "  init-backend   :\t(Init): install backend services, see project https://github.com/kubesys/kube-backend"
+  echo -e "  init-frontend  :\t(Init): install Kuberetes-based dashboard, see project https://github.com/kubesys/kube-frontend"
   echo -e "  init-kvm-env   :\t(Init): install kvm and libvirt"
 }
 
@@ -472,6 +496,9 @@ case $1 in
     ;;
   "init-backend")
     init-backend $*
+    ;;
+  "init-frontend")
+    init-frontend $*
     ;;
   "init-kvm-env")
     init-kvm-env $*
