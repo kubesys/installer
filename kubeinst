@@ -378,7 +378,7 @@ function init-backend()
   
   kubectl apply -f /$dir/$tokenFile
   kubectl apply -f /$dir/$databaseFile
-  kubectl apply -f /$dir/$messageFile
+  #kubectl apply -f /$dir/$messageFile
   
   while true
   do
