@@ -224,13 +224,6 @@ function init-k8s-plugins()
        echo ${line} >> /etc/kubernetes/kubeenv.list
      done
    done
-   #echo -e "https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml" > /etc/kubernetes/kubeenv.list
-   #echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/exportor.yaml" >> /etc/kubernetes/kubeenv.list
-   #echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-dashboards-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
-   #echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana-datasources-configmaps.yaml" >> /etc/kubernetes/kubeenv.list
-   #echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/grafana.yaml" >> /etc/kubernetes/kubeenv.list
-   #echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/loki.yaml" >> /etc/kubernetes/kubeenv.list
-   #echo -e "https://raw.githubusercontent.com/kubesys/kubernetes-installer/master/prom/prometheus.yaml" >> /etc/kubernetes/kubeenv.list
 }
 
 function init-env()
@@ -364,6 +357,37 @@ function init-kube()
   done  < /etc/kubernetes/kubeenv.list
 
 }
+
+###########################################################
+##
+##  kube-backend
+##
+##########################################################
+
+backendUrl="https://gitee.com/syswu/yamls/raw/master/backend"
+token="kube-token.yaml"
+database="kube-database-postgres.yaml"
+message="kube-message-rabbitmq.yaml"
+mirror="kube-runtime-mirror.yaml"
+mapper="kube-api-mapper.yaml"
+
+function init-backend()
+{
+  rm -rf /tmp/$token
+  rm -rf /tmp/$database
+  rm -rf /tmp/$message
+  rm -rf /tmp/$mirror
+  rm -rf /tmp/$mapper
+  
+  wget -P /tmp/$token $backendUrl/$token
+  wget -P /tmp/$database $backendUrl/$database
+  wget -P /tmp/$message $backendUrl/$message
+  wget -P /tmp/$mirror $backendUrl/$mirror
+  wget -P /tmp/$mapper $backendUrl/$mapper
+  
+  kubectl apply -f /tmp/$token $backendUrl/$token
+}
+
 
 ###########################################################
 ##
