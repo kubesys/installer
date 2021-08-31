@@ -423,7 +423,7 @@ function init-backend()
   sed -i "s/#port#/$port/g" $dir/$mirrorFile
   sed -i "s/#url#/$url/g" $dir/$mirrorFile
   sed -i "s/#token#/$token/g" $dir/$mirrorFile
-  sed -i "s/#kube_backend_version#/$version/g" $dir/$mirrorFile
+  sed -i "s/#version#/$kube_backend_version/g" $dir/$mirrorFile
   sed -i "s/#arch#/$arch/g" $dir/$mirrorFile
 
   sed -i "s/#type#/$type/g" $dir/$mapperFile
@@ -431,7 +431,7 @@ function init-backend()
   sed -i "s/#port#/$port/g" $dir/$mapperFile
   sed -i "s/#url#/$url/g" $dir/$mapperFile
   sed -i "s/#token#/$token/g" $dir/$mapperFile
-  sed -i "s/#kube_backend_version#/$version/g" $dir/$mapperFile
+  sed -i "s/#version#/$kube_backend_version/g" $dir/$mapperFile
   sed -i "s/#arch#/$arch/g" $dir/$mapperFile
 
   kubectl apply -f $dir/$mirrorFile
