@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="1.3"
+VERSION="1.5"
 
 # Required
 kube_pod_subnet="10.244.0.0/16"
@@ -457,11 +457,11 @@ function init-frontend()
      kubectl apply -f $name
    done
    
-   rm -rf /tmp/user-admin.json
-   wget -P /tmp/ $frontendUrl/users/user-admin.json
+   rm -rf /tmp/user-1001-admin.json
+   wget -P /tmp/ $frontendUrl/users/user-1001-admin.json
    token=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
-   sed -i "s/#token#/$token/g" /tmp/user-admin.json
-   kubectl apply -f /tmp/user-admin.json
+   sed -i "s/#token#/$token/g" /tmp/user-1001-admin.json
+   kubectl apply -f /tmp/user-1001-admin.json
 }
 
 ###########################################################
