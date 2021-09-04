@@ -348,6 +348,11 @@ function init-kube()
 
 }
 
+function reset-kube()
+{
+  kubeadm reset
+}
+
 ###########################################################
 ##
 ##  kube-backend
@@ -483,6 +488,7 @@ function help()
   echo -e "Commands:"
   echo -e "  init-env       :\t(Init): simplify configuring node, such as disable selinux, install docker"
   echo -e "  init-kube      :\t(Init): deploy Kubernetes as your want by editing /etc/kubernetes/kubeenv.list. Now it includes calico, prometheus, grafna"
+  echo -e "  reset-kube     :\t(Init): uninstall Kubernetes"
   echo -e "  init-backend   :\t(Init): install backend services, see project https://github.com/kubesys/kube-backend"
   echo -e "  init-frontend  :\t(Init): install Kuberetes-based dashboard, see project https://github.com/kubesys/kube-frontend"
   echo -e "  init-kvm-env   :\t(Init): install kvm and libvirt"
@@ -495,6 +501,9 @@ case $1 in
     ;;
   "init-kube")
     init-kube $*
+    ;;
+  "reset-kube")
+    reset-kube $*
     ;;
   "init-backend")
     init-backend $*
