@@ -135,13 +135,7 @@ function yum-docker-k8s()
   #yum install -y wget docker-ce-${docker_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
   yum install -y wget docker-ce kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
 
-  ## kubernetes >= 1.22 only supports systemd
-  echo "{" > /etc/docker/daemon.json
-  echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
-  echo "}" >> /etc/docker/daemon.json
-  systemctl daemon-reload
-
-  start-service docker kubelet
+  config-docker 
 }
 
 function apt-docker-k8s()
@@ -152,6 +146,18 @@ function apt-docker-k8s()
   #apt-get install docker-ce=$dVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer
   apt-get install docker-ce kubectl=$kVer kubelet=$kVer kubeadm=$kVer
   
+  config-docker
+}
+
+function config-docker()
+{
+  ## kubernetes >= 1.22 only supports systemd
+  mkdir -p /etc/docker
+  echo "{" > /etc/docker/daemon.json
+  echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
+  echo "}" >> /etc/docker/daemon.json
+  systemctl daemon-reload
+
   start-service docker kubelet
 }
 
