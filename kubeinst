@@ -372,20 +372,24 @@ function init-env-exp()
 
 function init-kube()
 {
+  // [optional] just consider performance
+  swapoff -a      
+  
+  // [required] prerequires
   systemctl restart kubelet
-
-  swapoff -a
   echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
   echo "1" > /proc/sys/net/ipv4/ip_forward
 
+  // [required], see https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta2/
   kubeadm init --config /etc/kubernetes/kubeadm.yaml
-
   rm -rf $HOME/.kube
   mkdir -p $HOME/.kube
   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
   iptables -P FORWARD ACCEPT
 
+  // [required] see https://github.com/projectcalico/cni-plugin/issues/749
+  mkdir -p /var/lib/cni/networks/k8s-pod-network
   while read line
   do
     kubectl apply -f $line
