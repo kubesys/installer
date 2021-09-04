@@ -195,7 +195,7 @@ function init-kubeadm-kubeconfig()
   echo -e "kind: ClusterConfiguration" >> /etc/kubernetes/kubeadm.yaml
   if [[ -n $fip ]]
   then
-  echo -e "controlPlaneEndpoint: \"$fip\"" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "controlPlaneEndpoint: \"$fip:6443\"" >> /etc/kubernetes/kubeadm.yaml
   fi
   echo -e "networking:" >> /etc/kubernetes/kubeadm.yaml
   echo -e "  podSubnet: \"${kube_pod_subnet}\"" >> /etc/kubernetes/kubeadm.yaml
@@ -507,6 +507,10 @@ function init-frontend-yaml()
   wget -P $dir/ $frontendUrl/$frontendFile
   sed -i "s/#arch#/`get-arch`/g" $dir/$frontendFile
   sed -i "s/#version#/$kube_frontend_version/g" $dir/$frontendFile
+
+
+  // apply yaml
+  kubectl apply -f /$dir/$frontendFile
 }
 
 function get-arch()
