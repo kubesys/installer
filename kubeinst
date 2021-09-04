@@ -39,6 +39,51 @@ cnt_type="docker"
 
 openstack="victoria"
 
+
+###############################################
+##
+## Do not modify the below codes youself
+## Create a issue if you need new features,
+## or find a bug
+##
+###############################################
+function get-token
+{
+  echo $(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
+}
+
+function get-arch()
+{
+  if [[ $(arch) == "x86_64" ]]
+  then
+    echo "amd64"
+  elif [[ $(arch) == "aarch64" ]]
+  then
+    echo "arm64"
+  else
+    echo "only support x86_64(amd64) and aarch64(arm64)"
+    exit 1
+  fi
+}
+
+function get-ip()
+{
+  name=$(hostname | tr '[A-Z]' '[a-z]')
+  echo $(kubectl get no $name -o yaml | grep "\- address:" | head -1 | awk -F":" '{print$2}' | sed  's/^[ \t]*//g')
+}
+
+function stop-service()
+{
+  systemctl stop $1
+  systemctl disable $1
+}
+
+function start-service()
+{
+  systemctl start $1
+  systemctl enable $1
+}
+
 ###########################################################
 ##
 ##  init-env
@@ -67,17 +112,7 @@ function add-yum-repository()
 
 function add-apt-repository()
 {
-  arch=""
-  if [[ $(arch) == "x86_64" ]]
-  then
-    arch="amd64"
-  elif [[ $(arch) == "aarch64" ]]
-  then
-    arch="arm64"
-  else
-    echo "only support x86_64(amd64) and aarch64(arm64)"
-    exit 1
-  fi
+  arch=`get-arch`
 
   apt-get install apt-transport-https ca-certificates curl gnupg lsb-release lrzsz -y
 
@@ -406,26 +441,14 @@ function init-backend()
     sleep 5s
   done
   
-  token=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
+  token=`get-token`
 
 
   ## arch
-  arch=""
-
-  if [[ $(arch) == "x86_64" ]]
-  then
-    arch="amd64"
-  elif [[ $(arch) == "aarch64" ]]
-  then
-    arch="arm64"
-  else
-    echo "only support x86_64(amd64) and aarch64(arm64)"
-    exit 1
-  fi
+  arch=`get-arch`
 
   # host and url
-  name=$(hostname | tr '[A-Z]' '[a-z]')
-  host=$(kubectl get no $name -o yaml | grep "\- address:" | head -1 | awk -F":" '{print$2}' | sed  's/^[ \t]*//g')
+  host=`get-ip`
   url="https:\/\/"$host":6443"
 
   #@ port
@@ -513,26 +536,6 @@ function init-frontend-yaml()
   kubectl apply -f /$dir/$frontendFile
 }
 
-function get-arch()
-{
-  if [[ $(arch) == "x86_64" ]]
-  then
-    echo "amd64"
-  elif [[ $(arch) == "aarch64" ]]
-  then
-    echo "arm64"
-  else
-    echo "only support x86_64(amd64) and aarch64(arm64)"
-    exit 1
-  fi
-}
-
-function get-ip()
-{
-  name=$(hostname | tr '[A-Z]' '[a-z]')
-  echo $(kubectl get no $name -o yaml | grep "\- address:" | head -1 | awk -F":" '{print$2}' | sed  's/^[ \t]*//g')
-
-}
 
 ###########################################################
 ##
