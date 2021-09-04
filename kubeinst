@@ -85,7 +85,7 @@ function start-service()
 {
   for ser in "$@"
   do
-    systemctl stop $ser
+    systemctl start $ser
     systemctl enable $ser
   done 
 }
