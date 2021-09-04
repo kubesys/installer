@@ -389,7 +389,7 @@ function init-kube()
   iptables -P FORWARD ACCEPT
 
   // [required] see https://github.com/projectcalico/cni-plugin/issues/749
-  mkdir -p /var/lib/cni/networks/k8s-pod-network
+  // mkdir -p /var/lib/cni/networks/k8s-pod-network
   while read line
   do
     kubectl apply -f $line
