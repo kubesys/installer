@@ -74,14 +74,20 @@ function get-ip()
 
 function stop-service()
 {
-  systemctl stop $1
-  systemctl disable $1
+  for ser in "$@"
+  do
+    systemctl stop $ser
+    systemctl disable $ser
+  done 
 }
 
 function start-service()
 {
-  systemctl start $1
-  systemctl enable $1
+  for ser in "$@"
+  do
+    systemctl stop $ser
+    systemctl enable $ser
+  done 
 }
 
 ###########################################################
@@ -94,8 +100,7 @@ function disable-centos-security()
 {
   sed -ie 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config
   sed -ie 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
-  systemctl stop firewalld
-  systemctl disable firewalld
+  stop-service firewalld
 }
 
 function disable-ubuntu-security()
@@ -136,9 +141,7 @@ function yum-docker-k8s()
   echo "}" >> /etc/docker/daemon.json
   systemctl daemon-reload
 
-  systemctl start docker
-  systemctl enable docker
-  systemctl enable kubelet
+  start-service docker kubelet
 }
 
 function apt-docker-k8s()
@@ -148,9 +151,8 @@ function apt-docker-k8s()
   apt-get update
   #apt-get install docker-ce=$dVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer
   apt-get install docker-ce kubectl=$kVer kubelet=$kVer kubeadm=$kVer
-  systemctl start docker
-  systemctl enable docker
-  systemctl enable kubelet
+  
+  start-service docker kubelet
 }
 
 function yum-containerd-k8s()
@@ -173,12 +175,9 @@ function yum-containerd-k8s()
   containerd config default > /etc/containerd/config.toml
   sed -i 's/k8s.gcr.io\/pause:3.2/registry.cn-hangzhou.aliyuncs.com\/google_containers\/pause:3.2/g' /etc/containerd/config.toml
 
-  systemctl start containerd
-  systemctl enable containerd
-
   echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
 
-  systemctl enable kubelet
+  start-service containerd kubelet
 }
 
 function apt-containerd-k8s()
@@ -202,12 +201,9 @@ function apt-containerd-k8s()
 
   rm -rf /etc/containerd/config.toml
 
-  systemctl start containerd
-  systemctl enable containerd
-
   echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
 
-  systemctl enable kubelet
+  start-service containerd kubelet
 }
 
 function init-kubeadm-kubeconfig()
@@ -319,8 +315,8 @@ function init-kvm-env()
     echo "only support centos and ubuntu."
     exit 1
   fi
-  systemctl start libvirtd
-  systemctl enable libvirtd
+  
+  start-service libvirtd 
 }
 
 function add-kvm-yum-repository()
