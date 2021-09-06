@@ -439,7 +439,7 @@ function init-backend()
   
   while true
   do
-    res=$(kubectl get po -A | grep -v Running | grep -v NAMESPACE)
+    res=$(kubectl get po -A | grep coredns |  grep -v Running | grep -v NAMESPACE)
     if [[ -z "$res" ]]
     then
       break
@@ -480,6 +480,12 @@ function init-backend()
   kubectl apply -f $dir/$mapperFile
 }
 
+function reset-backend()
+{
+  kubectl delete deploy kube-runtime-mirror -n kube-system
+  kubectl delete deploy kube-api-mapper -n kube-system
+  kubectl delete svc kube-api-mapper -n kube-system
+}
 
 ###########################################################
 ##
@@ -543,6 +549,12 @@ function init-frontend-yaml()
 }
 
 
+function reset-frontend()
+{
+  kubectl delete deploy kube-frontend -n kube-system
+  kubectl delete svc kube-frontend -n kube-system
+}
+
 ###########################################################
 ##
 ##  help
@@ -562,11 +574,13 @@ function help()
   echo -e "Commands:"
   echo -e "  init-env             :\t(Init): simplify configuring node, such as disable selinux, install docker"
   echo -e "  init-kube            :\t(Init): deploy Kubernetes as your want by editing /etc/kubernetes/kubeenv.list. Now it includes calico, prometheus, grafna"
-  echo -e "  reset-kube           :\t(Init): uninstall Kubernetes"
   echo -e "  init-backend         :\t(Init): install backend services, see project https://github.com/kubesys/kube-backend"
   echo -e "  init-frontend        :\t(Init): install Kuberetes-based dashboard, includes all crd and jsons, see project https://github.com/kubesys/kube-frontend"
   echo -e "  init-frontend-simple :\t(Init): install Kuberetes-based dashboard without crd and jsons, see project https://github.com/kubesys/kube-frontend"
   echo -e "  init-kvm-env         :\t(Init): install kvm and libvirt"
+  echo -e "  reset-kube           :\t(Init): uninstall Kubernetes"
+  echo -e "  reset-backend        :\t(Init): just uninstall deployment and svc"
+  echo -e "  reset-frontend       :\t(Init): just uninstall deployment and svc"
 }
 
 
@@ -576,9 +590,6 @@ case $1 in
     ;;
   "init-kube")
     init-kube $*
-    ;;
-  "reset-kube")
-    reset-kube $*
     ;;
   "init-backend")
     init-backend $*
@@ -591,6 +602,15 @@ case $1 in
     ;;
   "init-kvm-env")
     init-kvm-env $*
+    ;;
+  "reset-kube")
+    reset-kube $*
+    ;;
+  "reset-backend")
+    reset-backend $*
+    ;;
+  "reset-frontend")
+    reset-frontend $*
     ;;
   "--help")
     help
