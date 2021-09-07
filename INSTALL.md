@@ -2,6 +2,7 @@
 
 - [istio](#istio)
 - [keptn](#keptn)
+- [superset](#superset)
 
 
 ## istio
@@ -59,4 +60,11 @@ keptn install --platform=kubernetes --endpoint-service-type=NodePort --use-case=
 
 ```
 keptn uninstall -y
+```
+
+
+## superset
+
+```
+docker build . -t registry.cn-beijing.aliyuncs.com/dosproj/superset:v$version-$arch
 ```
