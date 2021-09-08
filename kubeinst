@@ -336,15 +336,15 @@ function add-kvm-apt-repository
 
 function init-kube()
 {
-  // [optional] just consider performance
+  # [optional] just consider performance
   swapoff -a      
   
-  // [required] prerequires
+  # [required] prerequires
   systemctl restart kubelet
   echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
   echo "1" > /proc/sys/net/ipv4/ip_forward
 
-  // [required], see https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta2/
+  # [required], see https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta2/
   kubeadm init --config /etc/kubernetes/kubeadm.yaml
   rm -rf $HOME/.kube
   mkdir -p $HOME/.kube
@@ -352,8 +352,8 @@ function init-kube()
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
   iptables -P FORWARD ACCEPT
 
-  // [required] see https://github.com/projectcalico/cni-plugin/issues/749
-  // mkdir -p /var/lib/cni/networks/k8s-pod-network
+  # [required] see https://github.com/projectcalico/cni-plugin/issues/749
+  # mkdir -p /var/lib/cni/networks/k8s-pod-network
   while read line
   do
     kubectl apply -f $line
