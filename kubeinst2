@@ -8,92 +8,28 @@
 ###############################################
 
 
-VERSION="1.5"
-
-###############################################
-##
-##  System Config, you can modify it
-##
-###############################################
-
-########      You can modify them      ########
+VERSION="1.3"
 
 # Required
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.20.10"
+kube_version="1.22.0"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 
 ## version
 kube_backend_version="2.0.2"
-kube_frontend_version="2.0.2"
 
 # Optional
-#fip="119.8.188.235"
+#fip="119.8.188.235:6443"
 fip=""
 
-# Kubernetes >= 1.22, containerd would be better
+# Kubernetes >= 1.22, only support containerd
 #cnt_type="containerd"
 cnt_type="docker"
-
-
-########    Do not modify them       ########
-
 
 # Deprecated
 # docker_version="20.10.6"
 
 openstack="victoria"
-
-
-###############################################
-##
-## Do not modify the below codes youself
-## Create a issue if you need new features,
-## or find a bug
-##
-###############################################
-function get-token
-{
-  echo $(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
-}
-
-function get-arch()
-{
-  if [[ $(arch) == "x86_64" ]]
-  then
-    echo "amd64"
-  elif [[ $(arch) == "aarch64" ]]
-  then
-    echo "arm64"
-  else
-    echo "only support x86_64(amd64) and aarch64(arm64)"
-    exit 1
-  fi
-}
-
-function get-ip()
-{
-  name=$(hostname | tr '[A-Z]' '[a-z]')
-  echo $(kubectl get no $name -o yaml | grep "\- address:" | head -1 | awk -F":" '{print$2}' | sed  's/^[ \t]*//g')
-}
-
-function stop-service()
-{
-  for ser in "$@"
-  do
-    systemctl stop $ser
-    systemctl disable $ser
-  done 
-}
-
-function start-service()
-{
-  for ser in "$@"
-  do
-    systemctl start $ser
-    systemctl enable $ser
-  done 
-}
 
 ###########################################################
 ##
@@ -105,7 +41,8 @@ function disable-centos-security()
 {
   sed -ie 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config
   sed -ie 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
-  stop-service firewalld
+  systemctl stop firewalld
+  systemctl disable firewalld
 }
 
 function disable-ubuntu-security()
@@ -122,7 +59,17 @@ function add-yum-repository()
 
 function add-apt-repository()
 {
-  arch=`get-arch`
+  arch=""
+  if [[ $(arch) == "x86_64" ]]
+  then
+    arch="amd64"
+  elif [[ $(arch) == "aarch64" ]]
+  then
+    arch="arm64"
+  else
+    echo "only support x86_64(amd64) and aarch64(arm64)"
+    exit 1
+  fi
 
   apt-get install apt-transport-https ca-certificates curl gnupg lsb-release lrzsz -y
 
@@ -140,7 +87,15 @@ function yum-docker-k8s()
   #yum install -y wget docker-ce-${docker_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
   yum install -y wget docker-ce kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
 
-  config-docker 
+  ## kubernetes >= 1.22 only supports systemd
+  echo "{" > /etc/docker/daemon.json
+  echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
+  echo "}" >> /etc/docker/daemon.json
+  systemctl daemon-reload
+
+  systemctl start docker
+  systemctl enable docker
+  systemctl enable kubelet
 }
 
 function apt-docker-k8s()
@@ -150,20 +105,9 @@ function apt-docker-k8s()
   apt-get update
   #apt-get install docker-ce=$dVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer
   apt-get install docker-ce kubectl=$kVer kubelet=$kVer kubeadm=$kVer
-  
-  config-docker
-}
-
-function config-docker()
-{
-  ## kubernetes >= 1.22 only supports systemd
-  mkdir -p /etc/docker
-  echo "{" > /etc/docker/daemon.json
-  echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
-  echo "}" >> /etc/docker/daemon.json
-  systemctl daemon-reload
-
-  start-service docker kubelet
+  systemctl start docker
+  systemctl enable docker
+  systemctl enable kubelet
 }
 
 function yum-containerd-k8s()
@@ -186,9 +130,12 @@ function yum-containerd-k8s()
   containerd config default > /etc/containerd/config.toml
   sed -i 's/k8s.gcr.io\/pause:3.2/registry.cn-hangzhou.aliyuncs.com\/google_containers\/pause:3.2/g' /etc/containerd/config.toml
 
+  systemctl start containerd
+  systemctl enable containerd
+
   echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
 
-  start-service containerd kubelet
+  systemctl enable kubelet
 }
 
 function apt-containerd-k8s()
@@ -212,9 +159,12 @@ function apt-containerd-k8s()
 
   rm -rf /etc/containerd/config.toml
 
+  systemctl start containerd
+  systemctl enable containerd
+
   echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
 
-  start-service containerd kubelet
+  systemctl enable kubelet
 }
 
 function init-kubeadm-kubeconfig()
@@ -237,7 +187,7 @@ function init-kubeadm-kubeconfig()
   echo -e "kind: ClusterConfiguration" >> /etc/kubernetes/kubeadm.yaml
   if [[ -n $fip ]]
   then
-  echo -e "controlPlaneEndpoint: \"$fip:6443\"" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "controlPlaneEndpoint: \"$fip\"" >> /etc/kubernetes/kubeadm.yaml
   fi
   echo -e "networking:" >> /etc/kubernetes/kubeadm.yaml
   echo -e "  podSubnet: \"${kube_pod_subnet}\"" >> /etc/kubernetes/kubeadm.yaml
@@ -326,8 +276,8 @@ function init-kvm-env()
     echo "only support centos and ubuntu."
     exit 1
   fi
-  
-  start-service libvirtd 
+  systemctl start libvirtd
+  systemctl enable libvirtd
 }
 
 function add-kvm-yum-repository()
@@ -377,34 +327,25 @@ function init-env-exp()
 
 function init-kube()
 {
-  // [optional] just consider performance
-  swapoff -a      
-  
-  // [required] prerequires
   systemctl restart kubelet
+
+  swapoff -a
   echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
   echo "1" > /proc/sys/net/ipv4/ip_forward
 
-  // [required], see https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta2/
   kubeadm init --config /etc/kubernetes/kubeadm.yaml
+
   rm -rf $HOME/.kube
   mkdir -p $HOME/.kube
   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
   iptables -P FORWARD ACCEPT
 
-  // [required] see https://github.com/projectcalico/cni-plugin/issues/749
-  // mkdir -p /var/lib/cni/networks/k8s-pod-network
   while read line
   do
     kubectl apply -f $line
   done  < /etc/kubernetes/kubeenv.list
 
-}
-
-function reset-kube()
-{
-  kubeadm reset
 }
 
 ###########################################################
@@ -440,26 +381,28 @@ function init-backend()
   
   kubectl apply -f /$dir/$tokenFile
   kubectl apply -f /$dir/$databaseFile
-  kubectl apply -f /$dir/$messageFile
+  #kubectl apply -f /$dir/$messageFile
   
-  while true
-  do
-    res=$(kubectl get po -A | grep coredns |  grep -v Running | grep -v NAMESPACE)
-    if [[ -z "$res" ]]
-    then
-      break
-    fi
-    sleep 5s
-  done
-  
-  token=`get-token`
+  token=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
 
 
   ## arch
-  arch=`get-arch`
+  arch=""
+
+  if [[ $(arch) == "x86_64" ]]
+  then
+    arch="amd64"
+  elif [[ $(arch) == "aarch64" ]]
+  then
+    arch="arm64"
+  else
+    echo "only support x86_64(amd64) and aarch64(arm64)"
+    exit 1
+  fi
 
   # host and url
-  host=`get-ip`
+  name=$(hostname | tr '[A-Z]' '[a-z]')
+  host=$(kubectl get no $name -o yaml | grep "\- address:" | head -1 | awk -F":" '{print$2}' | sed  's/^[ \t]*//g')
   url="https:\/\/"$host":6443"
 
   #@ port
@@ -485,12 +428,6 @@ function init-backend()
   kubectl apply -f $dir/$mapperFile
 }
 
-function reset-backend()
-{
-  kubectl delete deploy kube-runtime-mirror -n kube-system
-  kubectl delete deploy kube-api-mapper -n kube-system
-  kubectl delete svc kube-api-mapper -n kube-system
-}
 
 ###########################################################
 ##
@@ -499,17 +436,8 @@ function reset-backend()
 ##########################################################
 
 frontendUrl="https://gitee.com/syswu/yamls/raw/master/frontend"
-config_dir="/var/lib/doslab/frontend"
-config_name="config.js"
-frontendFile="kube-frontend.yaml"
 
 function init-frontend()
-{
-  init-frontend-prerequire
-  init-frontend-yaml
-}
-
-function init-frontend-prerequire()
 {
    rm -rf /tmp/list
    wget -P /tmp/ $frontendUrl/list
@@ -519,44 +447,11 @@ function init-frontend-prerequire()
      kubectl apply -f $name
    done
    
-   rm -rf /tmp/user-1001-admin.json
-   wget -P /tmp/ $frontendUrl/users/user-1001-admin.json
-   
+   rm -rf /tmp/user-admin.json
+   wget -P /tmp/ $frontendUrl/users/user-admin.json
    token=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
-   sed -i "s/#token#/$token/g" /tmp/user-1001-admin.json
-   
-   kubectl apply -f /tmp/user-1001-admin.json
-}
-
-function init-frontend-yaml()
-{
-  // make and config config.js 
-  rm -rf $config_dir
-  mkdir -p $config_dir
-  echo "window.g = {" > $config_dir/$config_name
-  if [[ -n $fip ]]
-  then
-    echo "    baseURL: 'http://$fip:30308/kubesys'" >> $config_dir/$config_name
-  else
-    echo "    baseURL: 'http://`get-ip`:30308/kubesys'" >> $config_dir/$config_name
-  fi
-  echo "}" >> $config_dir/$config_name
-  
-  // make and config yaml
-  rm -rf /$dir/$frontendFile 
-  wget -P $dir/ $frontendUrl/$frontendFile
-  sed -i "s/#arch#/`get-arch`/g" $dir/$frontendFile
-  sed -i "s/#version#/$kube_frontend_version/g" $dir/$frontendFile
-
-  // apply yaml
-  kubectl apply -f /$dir/$frontendFile
-}
-
-
-function reset-frontend()
-{
-  kubectl delete deploy kube-frontend -n kube-system
-  kubectl delete svc kube-frontend -n kube-system
+   sed -i "s/#token#/$token/g" /tmp/user-admin.json
+   kubectl apply -f /tmp/user-admin.json
 }
 
 ###########################################################
@@ -576,15 +471,11 @@ function help()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-env             :\t(Init): simplify configuring node, such as disable selinux, install docker"
-  echo -e "  init-kube            :\t(Init): deploy Kubernetes as your want by editing /etc/kubernetes/kubeenv.list. Now it includes calico, prometheus, grafna"
-  echo -e "  init-backend         :\t(Init): install backend services, see project https://github.com/kubesys/kube-backend"
-  echo -e "  init-frontend        :\t(Init): install Kuberetes-based dashboard, includes all crd and jsons, see project https://github.com/kubesys/kube-frontend"
-  echo -e "  init-frontend-simple :\t(Init): install Kuberetes-based dashboard without crd and jsons, see project https://github.com/kubesys/kube-frontend"
-  echo -e "  init-kvm-env         :\t(Init): install kvm and libvirt"
-  echo -e "  reset-kube           :\t(Init): uninstall Kubernetes"
-  echo -e "  reset-backend        :\t(Init): just uninstall deployment and svc"
-  echo -e "  reset-frontend       :\t(Init): just uninstall deployment and svc"
+  echo -e "  init-env       :\t(Init): simplify configuring node, such as disable selinux, install docker"
+  echo -e "  init-kube      :\t(Init): deploy Kubernetes as your want by editing /etc/kubernetes/kubeenv.list. Now it includes calico, prometheus, grafna"
+  echo -e "  init-backend   :\t(Init): install backend services, see project https://github.com/kubesys/kube-backend"
+  echo -e "  init-frontend  :\t(Init): install Kuberetes-based dashboard, see project https://github.com/kubesys/kube-frontend"
+  echo -e "  init-kvm-env   :\t(Init): install kvm and libvirt"
 }
 
 
@@ -601,20 +492,8 @@ case $1 in
   "init-frontend")
     init-frontend $*
     ;;
-  "init-frontend-simple")
-    init-frontend-yaml $*
-    ;;
   "init-kvm-env")
     init-kvm-env $*
-    ;;
-  "reset-kube")
-    reset-kube $*
-    ;;
-  "reset-backend")
-    reset-backend $*
-    ;;
-  "reset-frontend")
-    reset-frontend $*
     ;;
   "--help")
     help
