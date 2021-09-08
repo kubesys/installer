@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="1.5"
+VERSION="1.6"
 
 ###############################################
 ##
@@ -35,6 +35,7 @@ fip=""
 #cnt_type="containerd"
 cnt_type="docker"
 
+network="https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml"
 
 ########    Do not modify them       ########
 
@@ -171,24 +172,7 @@ function yum-containerd-k8s()
 
   yum install -y wget containerd.io kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
   
-  echo "overlay" > /etc/modules-load.d/containerd.conf
-  echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
-
-  modprobe overlay
-  modprobe br_netfilter
-
-  echo "net.bridge.bridge-nf-call-iptables  = 1" > /etc/sysctl.d/99-kubernetes-cri.conf
-  echo "net.ipv4.ip_forward                 = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
-  echo "net.bridge.bridge-nf-call-ip6tables = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
-
-  sysctl --system
-
-  containerd config default > /etc/containerd/config.toml
-  sed -i 's/k8s.gcr.io\/pause:3.2/registry.cn-hangzhou.aliyuncs.com\/google_containers\/pause:3.2/g' /etc/containerd/config.toml
-
-  echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
-
-  start-service containerd kubelet
+  config-containerd
 }
 
 function apt-containerd-k8s()
@@ -198,9 +182,15 @@ function apt-containerd-k8s()
   apt-get update
   apt-get install containerd.io kubectl=$kVer kubelet=$kVer kubeadm=$kVer
   
+  config-containerd
+}
+
+
+function config-containerd()
+{
   echo "overlay" > /etc/modules-load.d/containerd.conf
   echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
-
+  
   modprobe overlay
   modprobe br_netfilter
 
@@ -209,8 +199,6 @@ function apt-containerd-k8s()
   echo "net.bridge.bridge-nf-call-ip6tables = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
 
   sysctl --system
-
-  rm -rf /etc/containerd/config.toml
 
   echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
 
@@ -248,7 +236,6 @@ function init-kubeadm-kubeconfig()
 
 yamlUrl="https://gitee.com/syswu/yamls/raw/master/"
 plugins="collector/list"
-network="https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml"
 
 function init-k8s-plugins()
 {
@@ -338,34 +325,6 @@ function add-kvm-yum-repository()
 function add-kvm-apt-repository
 {
   add-apt-repository cloud-archive:$openstack
-}
-
-###########################################################
-##
-##  Experimental
-##
-##########################################################
-
-function init-env-exp()
-{
-  init-env-disable-selinux
-  init-env-disable-firewalld
-  init-env-repository
-  if [[ -z $2 ]]
-  then
-    init-containerd-software
-  elif [[ $2 == "docker" ]]
-  then
-    init-docker-software
-  elif [[ $2 == "containerd" ]]
-  then
-    init-containerd-software
-  else
-    echo "only support docker or containerd"
-    exit 1
-  fi
-  init-env-kubeconfig
-  init-env-kubecomp
 }
 
 
