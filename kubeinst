@@ -381,29 +381,34 @@ mapperFile="kube-api-mapper.yaml"
 dir="/opt/yamls"
 type="postgres"
 
+function config-dir()
+{
+   rm -rf $1
+   mkdir -p $1
+   chmod 777 $1
+}
+
+function apply-yaml()
+{
+  rm -rf $1/$2
+  wget -P $1/$2 $3/$2
+  kubectl apply -f $3/$2
+}
+
 function init-backend()
 {
-  mkdir -p $dir
 
-  rm -rf /var/lib/doslab/yamls
-  mkdir -p /var/lib/doslab/yamls
-  chmod 777 /var/lib/doslab/yamls/
-  
-  rm -rf /$dir/$tokenFile
-  rm -rf /$dir/$databaseFile
-  rm -rf /$dir/$messageFile
-  rm -rf /$dir/$mirrorFile
-  rm -rf /$dir/$mapperFile
-  
-  wget -P /$dir/$token $backendUrl/$tokenFile
-  wget -P /$dir/$database $backendUrl/$databaseFile
-  wget -P /$dir/$message $backendUrl/$messageFile
+  config-dir $dir
+  config-dir /var/lib/doslab/yamls
+ 
+  apply-yaml $dir $tokenFile    $backendUrl
+  apply-yaml $dir $databaseFile $backendUrl
+  apply-yaml $dir $messageFile  $backendUrl
+
+  rm -rf $backendUrl/$mirrorFile
+  rm -rf $backendUrl/$mapperFile 
   wget -P /$dir/$mirror $backendUrl/$mirrorFile
   wget -P /$dir/$mapper $backendUrl/$mapperFile
-  
-  kubectl apply -f /$dir/$tokenFile
-  kubectl apply -f /$dir/$databaseFile
-  kubectl apply -f /$dir/$messageFile
   
   while true
   do
