@@ -425,6 +425,10 @@ type="postgres"
 function init-backend()
 {
   mkdir -p $dir
+
+  rm -rf /var/lib/doslab/yamls
+  mkdir -p /var/lib/doslab/yamls
+  chmod 777 /var/lib/doslab/yamls/
   
   rm -rf /$dir/$tokenFile
   rm -rf /$dir/$databaseFile
@@ -444,7 +448,7 @@ function init-backend()
   
   while true
   do
-    res=$(kubectl get po -A | grep coredns |  grep -v Running | grep -v NAMESPACE)
+    res=$(kubectl get po -A | grep kube-database |  grep -v Running | grep -v NAMESPACE)
     if [[ -z "$res" ]]
     then
       break
@@ -463,11 +467,14 @@ function init-backend()
   url="https:\/\/"$host":6443"
 
   #@ port
-  port="30306"
+  dbport="30306"
+  mqport="30304"
 
   sed -i "s/#type#/$type/g" $dir/$mirrorFile
   sed -i "s/#host#/$host/g" $dir/$mirrorFile
-  sed -i "s/#port#/$port/g" $dir/$mirrorFile
+  sed -i "s/#ahost#/$host/g" $dir/$mirrorFile
+  sed -i "s/#port#/$dbport/g" $dir/$mirrorFile
+  sed -i "s/#aport#/$mqport/g" $dir/$mirrorFile
   sed -i "s/#url#/$url/g" $dir/$mirrorFile
   sed -i "s/#token#/$token/g" $dir/$mirrorFile
   sed -i "s/#version#/$kube_backend_version/g" $dir/$mirrorFile
