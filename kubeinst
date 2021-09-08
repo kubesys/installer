@@ -446,7 +446,7 @@ function init-backend()
 
   sed -i "s/#type#/$type/g" $dir/$mapperFile
   sed -i "s/#host#/$host/g" $dir/$mapperFile
-  sed -i "s/#port#/$port/g" $dir/$mapperFile
+  sed -i "s/#port#/$dbport/g" $dir/$mapperFile
   sed -i "s/#url#/$url/g" $dir/$mapperFile
   sed -i "s/#token#/$token/g" $dir/$mapperFile
   sed -i "s/#version#/$kube_backend_version/g" $dir/$mapperFile
