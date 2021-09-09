@@ -144,6 +144,8 @@ Note that you can customized :
   - 1.2: support init-kvm-env
   - 1.3: support init-backend
   - 1.4: support init-frontend
+  - 1.5: support common for backend and frontend
+  - 1.6: support message in backend
 ```
 
 ## Useage
