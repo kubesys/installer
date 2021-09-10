@@ -24,8 +24,8 @@ kube_version="1.20.10"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 
 ## version
-kube_backend_version="2.0.2"
-kube_frontend_version="2.0.2"
+kube_backend_version="2.0.3"
+kube_frontend_version="2.0.3"
 
 # Optional
 #fip="119.8.188.235"
