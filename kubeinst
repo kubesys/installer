@@ -20,7 +20,7 @@ VERSION="1.6"
 
 # Required
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.20.10"
+kube_version="1.22.2"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 
 ## version
@@ -32,8 +32,8 @@ kube_frontend_version="2.0.3"
 fip=""
 
 # Kubernetes >= 1.22, containerd would be better
-#cnt_type="containerd"
-cnt_type="docker"
+cnt_type="containerd"
+#cnt_type="docker"
 
 network="https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml"
 
@@ -94,14 +94,6 @@ function start-service()
     systemctl start $ser
     systemctl enable $ser
   done 
-}
-
-function create-namespace()
-{
-  for ser in "$@"
-  do
-    kubectl create ns $ser
-  done
 }
 
 ###########################################################
