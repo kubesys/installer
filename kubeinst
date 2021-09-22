@@ -391,8 +391,8 @@ function config-dir()
 function apply-yaml()
 {
   rm -rf $1/$2
-  wget -P $1/$2 $3/$2
-  kubectl apply -f $3/$2
+  wget -P $1/ $3/$2
+  kubectl apply -f $1/$2
 }
 
 function init-backend()
@@ -404,21 +404,9 @@ function init-backend()
   apply-yaml $dir $tokenFile    $backendUrl
   apply-yaml $dir $databaseFile $backendUrl
   apply-yaml $dir $messageFile  $backendUrl
+  apply-yaml $dir $mirrorFile   $backendUrl
+  apply-yaml $dir $mapperFile   $backendUrl
 
-  rm -rf $backendUrl/$mirrorFile
-  rm -rf $backendUrl/$mapperFile 
-  wget -P $dir/$mirror $backendUrl/$mirrorFile
-  wget -P $dir/$mapper $backendUrl/$mapperFile
-  
-  while true
-  do
-    res=$(kubectl get po -A | grep kube-database |  grep -v Running | grep -v NAMESPACE)
-    if [[ -z "$res" ]]
-    then
-      break
-    fi
-    sleep 5s
-  done
   
   token=`get-token`
 
@@ -451,6 +439,16 @@ function init-backend()
   sed -i "s/#token#/$token/g" $dir/$mapperFile
   sed -i "s/#version#/$kube_backend_version/g" $dir/$mapperFile
   sed -i "s/#arch#/$arch/g" $dir/$mapperFile
+
+  while true
+  do
+    res=$(kubectl get po -A | grep kube-database |  grep -v Running | grep -v NAMESPACE)
+    if [[ -z "$res" ]]
+    then
+      break
+    fi
+    sleep 5s
+  done
 
   kubectl apply -f $dir/$mirrorFile
   kubectl apply -f $dir/$mapperFile
