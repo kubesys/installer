@@ -407,8 +407,8 @@ function init-backend()
 
   rm -rf $backendUrl/$mirrorFile
   rm -rf $backendUrl/$mapperFile 
-  wget -P /$dir/$mirror $backendUrl/$mirrorFile
-  wget -P /$dir/$mapper $backendUrl/$mapperFile
+  wget -P $dir/$mirror $backendUrl/$mirrorFile
+  wget -P $dir/$mapper $backendUrl/$mapperFile
   
   while true
   do
