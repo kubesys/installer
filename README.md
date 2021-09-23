@@ -14,6 +14,7 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 
 | Name        | Type      | Version |  Packages  |   
 | ------      | ------    | ------  | ------      |
+| Containerd  | Container-based virtualization | 1.3.9   | [Linux](https://containerd.io) |
 | Docker      | Container-based virtualization | 20.10   | [redhat](https://docs.docker.com/install/linux/docker-ee/rhel/), [openSUSE/SUSE](https://docs.docker.com/install/linux/docker-ee/suse/), [centos](https://docs.docker.com/install/linux/docker-ce/centos/), [debian](https://docs.docker.com/install/linux/docker-ce/debian/), [fedora](https://docs.docker.com/install/linux/docker-ce/fedora/), [ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/) |
 | Kubernetes  | Virtual compute resource pool  | 1.20.6  | [Linux](https://docs.kubernetes.io/) |
 | OVN         | Network solution        | 1.6.2 | [Linux](https://github.com/alauda/kube-ovn) |
