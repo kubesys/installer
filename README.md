@@ -19,7 +19,8 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 | ------      | ------    | ------  | ------      |   -----   |
 | Containerd  | Container        | 1.4.9    | [Linux](https://containerd.io/docs/getting-started/)|            NA                |
 | Kubernetes  | Orchestrator     | 1.21.5   | [Linux](https://docs.kubernetes.io/)                | 6443,12500,12501,30000-32000 |  
-| OVN         | SDNController    | 1.8.0    | [Linux](https://github.com/alauda/kube-ovn)         |            NA                | 
+| OVN         | SDNController    | 1.8.0    | [Linux](https://github.com/alauda/kube-ovn)         |            NA                |
+| Helm        | PackageManager   | 3.7.0    | [Linux](https://helm.sh/docs/intro/quickstart/)     |            NA                |
 | Loki        | LogCollector     | 1.6.1    | [Linux](https://grafana.com/oss/loki/)              |            NA                |  
 | Prometheus  | Monitor          | 2.23.0   | [Linux](https://github.com/prometheus/prometheus/)  |            NA                |
 | Dex         | Authentication   | 2.23.0   | [Linux](https://dexidp.io/)                         |           31000              |
