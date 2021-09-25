@@ -1,7 +1,10 @@
 ## kube-installer
 
 Install Kubernetes-based systems with a simple and comprehensible way.
-Now this script can only work on CentOS/RHEL 7.x.
+** Note **
+- this script can work well on CentOS/RHEL 7.x and Ubuntu 16.x/18.x.
+- we test this script on Kubernetes >=1.16 and < 1.22
+
 
 ## Architecture
 
