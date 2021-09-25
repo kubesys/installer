@@ -20,20 +20,14 @@ VERSION="1.7"
 
 # Required
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.22.2"
+kube_version="1.21.5"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
-
-## version
-kube_backend_version="2.0.3"
-kube_frontend_version="2.0.3"
+kube_runtime="containerd"     # containerd or docker
 
 # Optional
 #fip="119.8.188.235"
 fip=""
 
-# Kubernetes >= 1.22, containerd would be better
-cnt_type="containerd"
-#cnt_type="docker"
 
 network="https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml"
 
@@ -41,10 +35,12 @@ network="https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml"
 
 
 # Deprecated
-# docker_version="20.10.6"
 
 openstack="victoria"
 
+## version
+kube_backend_version="2.0.3"
+kube_frontend_version="2.0.3"
 
 ###############################################
 ##
@@ -215,7 +211,7 @@ function init-kubeadm-kubeconfig()
   echo -e "kind: InitConfiguration" >> /etc/kubernetes/kubeadm.yaml
   echo -e "bootstrapTokens:" >> /etc/kubernetes/kubeadm.yaml
   echo -e "  - ttl: \"0\"" >> /etc/kubernetes/kubeadm.yaml
-  if [[ $cnt_type = "containerd" ]]
+  if [[ $kube_runtime = "containerd" ]]
   then
     echo -e "nodeRegistration:" >> /etc/kubernetes/kubeadm.yaml
     echo -e "  criSocket: /run/containerd/containerd.sock" >> /etc/kubernetes/kubeadm.yaml
@@ -259,10 +255,10 @@ function init-env()
   then
     disable-centos-security
     add-yum-repository
-    if [[ $cnt_type == "docker" ]]
+    if [[ $kube_runtime == "docker" ]]
     then
       yum-docker-k8s
-    elif [[ $cnt_type == "containerd" ]]
+    elif [[ $kube_runtime == "containerd" ]]
     then
       yum-containerd-k8s
     else
@@ -273,10 +269,10 @@ function init-env()
   then
     disable-ubuntu-security
     add-apt-repository
-    if [[ $cnt_type=="docker" ]]
+    if [[ $kube_runtime == "docker" ]]
     then
       apt-docker-k8s
-    elif [[ $cnt_type=="containerd" ]]
+    elif [[ $kube_runtime == "containerd" ]]
     then
       apt-containerd-k8s
     else
@@ -364,6 +360,10 @@ function init-kube()
 function reset-kube()
 {
   kubeadm reset
+  rm -rf /usr/bin/helm
+  rm -rf /root/.kube/
+  rm -rf /var/lib/docker/
+  rm -rf /var/lib/containerd/
 }
 
 ###########################################################
