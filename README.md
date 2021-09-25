@@ -17,24 +17,28 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 
 | Name        | Type      | Version |  Packages  |   
 | ------      | ------    | ------  | ------      |
-| Containerd  | Container-based virtualization | 1.3.9   | [Linux](https://containerd.io) |
-| Docker      | Container-based virtualization | 20.10   | [redhat](https://docs.docker.com/install/linux/docker-ee/rhel/), [openSUSE/SUSE](https://docs.docker.com/install/linux/docker-ee/suse/), [centos](https://docs.docker.com/install/linux/docker-ce/centos/), [debian](https://docs.docker.com/install/linux/docker-ce/debian/), [fedora](https://docs.docker.com/install/linux/docker-ce/fedora/), [ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/) |
-| Kubernetes  | Virtual compute resource pool  | 1.20.6  | [Linux](https://docs.kubernetes.io/) |
+| Containerd  | Container-based virtualization | 1.3.9   |[Linux](https://containerd.io/docs/getting-started/)|
+| Kubernetes  | Virtual compute resource pool  | 1.21.5  | [Linux](https://docs.kubernetes.io/) |
 | OVN         | Network solution        | 1.6.2 | [Linux](https://github.com/alauda/kube-ovn) |
+| Loki        | log                  | 1.6.1   | [Linux](https://grafana.com/oss/loki/)             |            NA                |
+| Prometheus  | utilization          | 2.23.0  | [Linux](https://github.com/prometheus/prometheus/) |           31001              |
+| grafana     | Dashboard            | 7.3.4   | [Linux](https://community.grafana.com/)            |           31002              |
+| superset    | Dashboard            | 1.0.0   | [Linux](https://superset.apache.org//)             |           31003             |
+
 
 **Optional**
 
 | Name        | Type      | Version |  Packages  |
 | ------      | ------    | ------  | ------      |
-| Containerd  | Container-based virtualization | 1.3.9   |[Linux](https://containerd.io/docs/getting-started/)|
+| Docker      | Container-based virtualization | 20.10   | [redhat](https://docs.docker.com/install/linux/docker-ee/rhel/), [openSUSE/SUSE](https://docs.docker.com/install/linux/docker-ee/suse/), [centos](https://docs.docker.com/install/linux/docker-ce/centos/), [debian](https://docs.docker.com/install/linux/docker-ce/debian/), [fedora](https://docs.docker.com/install/linux/docker-ce/fedora/), [ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/) |
 | Calico      | Network solution        | 3.19  | [Linux](https://docs.projectcalico.org/v3.17/getting-started/kubernetes/) |
 
 ## Structure
 
 ```
 kubeinst: main install file
-  -- init.sh: initialize kubernetes master node.
-  -- join.sh: initialize kubernetes node node.
+-- init.sh: initialize kubernetes master node.
+-- join.sh: initialize kubernetes node node.
 ```
 
 ## Install
@@ -60,8 +64,8 @@ Now it support two commands
 
 ```
 Commands:
-  init-env       :	(Init): simplify configuring node, such as disable selinux, install docker
-  init-kube      :	(Init): deploy Kubernetes as your want
+  init-env       :  (Init): simplify configuring node, such as disable selinux, install docker
+  init-kube      :  (Init): deploy Kubernetes as your want
   init-backend   :  (Init): install backend services"
   init-frontend  :  (Init): install dashboard (current only install all required files by frontend)"
   init-kvm-env   :  (Init): deploy qemu-kvm and libvirt
@@ -90,8 +94,6 @@ Note that you can customized :
 | Name        | Type      | Version |  Packages  |   Port |
 | ------      | ------    | ------  | ------      | ------ |
 | helm        | Package Mgr          | 3.5.2   | [Linux](https://helm.sh/docs/intro/quickstart/)      |                 NA           |
-| kind        | Kubernetes IN Docker | 0.10.0   | [Linux](https://github.com/kubernetes-sigs/kind)    |                 NA           |
-| krew        | Find and install kubectl plugins | 0.10.0   | [Linux](https://github.com/kubernetes-sigs/kind)    |                 NA           |
 
 ## 2. DevOps tools
 
@@ -116,10 +118,6 @@ Note that you can customized :
 | Name        | Type      | Version |  Packages  |   Port |
 | ------      | ------    | ------  | ------      | ------ |      
 | kube-eventer| alert                | 1.2.0   | [Linux](https://github.com/AliyunContainerService/kube-eventer)      |   NA       |
-| Loki        | log                  | 1.6.1   | [Linux](https://grafana.com/oss/loki/)             |            NA                |
-| Prometheus  | utilization          | 2.23.0  | [Linux](https://github.com/prometheus/prometheus/) |           31001              |    
-| grafana     | Dashboard            | 7.3.4   | [Linux](https://community.grafana.com/)            |           31002              |
-| superset    | Dashboard            | 1.0.0   | [Linux](https://superset.apache.org//)             |           31003             |
 
 
 ## 3. Runtime
