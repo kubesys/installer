@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="1.6"
+VERSION="1.7"
 
 ###############################################
 ##
@@ -570,15 +570,17 @@ function help()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-env             :\t(Init): simplify configuring node, such as disable selinux, install docker"
-  echo -e "  init-kube            :\t(Init): deploy Kubernetes as your want by editing /etc/kubernetes/kubeenv.list. Now it includes calico, prometheus, grafna"
-  echo -e "  init-backend         :\t(Init): install backend services, see project https://github.com/kubesys/kube-backend"
-  echo -e "  init-frontend        :\t(Init): install Kuberetes-based dashboard, includes all crd and jsons, see project https://github.com/kubesys/kube-frontend"
-  echo -e "  init-frontend-simple :\t(Init): install Kuberetes-based dashboard without crd and jsons, see project https://github.com/kubesys/kube-frontend"
-  echo -e "  init-kvm-env         :\t(Init): install kvm and libvirt"
-  echo -e "  reset-kube           :\t(Init): uninstall Kubernetes"
-  echo -e "  reset-backend        :\t(Init): just uninstall deployment and svc"
-  echo -e "  reset-frontend       :\t(Init): just uninstall deployment and svc"
+  echo -e "  init-env             :\t(Init): install conatiner/docker, kubeadm, kubelet, kubectl and helm"
+  echo -e "  init-kube            :\t(Init): initialize kubernetes and deploy dex openldap"
+  echo -e "  init-cni             :\t(Init): deploy calico or kubeovn"
+  echo -e "  init-addon           :\t(Init): deploy loki, prometheus, grafana and superset"
+#  echo -e "  init-backend         :\t(Init): deploy backend services, see project https://github.com/kubesys/kube-backend"
+#  echo -e "  init-frontend        :\t(Init): deploy Kuberetes-based dashboard, includes all crd and jsons, see project https://github.com/kubesys/kube-frontend"
+#  echo -e "  init-frontend-simple :\t(Init): deploy Kuberetes-based dashboard without crd and jsons, see project https://github.com/kubesys/kube-frontend"
+#  echo -e "  init-kvm-env         :\t(Init): install kvm and libvirt"
+  echo -e "  reset-kube           :\t(Init): uninstall Kubernetes and all running addons"
+#  echo -e "  reset-backend        :\t(Init): just uninstall deployment and svc"
+#  echo -e "  reset-frontend       :\t(Init): just uninstall deployment and svc"
 }
 
 
@@ -588,6 +590,12 @@ case $1 in
     ;;
   "init-kube")
     init-kube $*
+    ;;
+  "init-cni")
+    init-cni $*
+    ;;
+  "init-addon")
+    init-addon $*
     ;;
   "init-backend")
     init-backend $*
