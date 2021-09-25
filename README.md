@@ -93,15 +93,9 @@ Note that you can customized :
 
 ## Port Info
 
-## 1. Tools
+## 1. DevOps tools
 
-| Name        | Type      | Version |  Packages  |   Port |
-| ------      | ------    | ------  | ------      | ------ |
-| helm        | Package Mgr          | 3.5.2   | [Linux](https://helm.sh/docs/intro/quickstart/)      |                 NA           |
-
-## 2. DevOps tools
-
-### 2.1 Dev tools
+### 1.1 Dev tools
 
 | Name        | Type      | Version |  Packages  |   Port |
 | ------      | ------    | ------  | ------      | ------ |
@@ -116,7 +110,7 @@ Note that you can customized :
 | registry    | -          |  -  | [Linux](https://github.com/ent-projects/registries-operator)               |  31025       |
 
 
-### 2.2 Ops tools
+### 1.2 Ops tools
 
 
 | Name        | Type      | Version |  Packages  |   Port |
@@ -124,9 +118,9 @@ Note that you can customized :
 | kube-eventer| alert                | 1.2.0   | [Linux](https://github.com/AliyunContainerService/kube-eventer)      |   NA       |
 
 
-## 3. Runtime
+## 2. Runtime
 
-### 3.1 Compute
+### 2.1 Compute
 
 | Name        | Type      | Version |  Packages  |   Port |
 | ------      | ------    | ------  | ------      | ------ |
@@ -136,7 +130,7 @@ Note that you can customized :
 | volcano     | analysis-based       | 1.1.0   | [Linux](https://github.com/volcano-sh/volcano)      |   NA       |
 
 
-### 3.3 Storage
+### 2.2 Storage
 
 | Name        | Type      | Version |  Packages  |   Port |
 | ------      | ------    | ------  | ------      | ------ |
@@ -153,6 +147,7 @@ Note that you can customized :
   - 1.4: support init-frontend
   - 1.5: support common for backend and frontend
   - 1.6: support message in backend
+  - 1.7: kubeOVN, dex, superset
 ```
 
 ## Useage
