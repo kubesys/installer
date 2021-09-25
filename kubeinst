@@ -23,10 +23,7 @@ kube_pod_subnet="10.244.0.0/16"
 kube_version="1.21.5"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 kube_runtime="containerd"     # containerd or docker
-
-# Optional
-#fip="119.8.188.235"
-fip=""
+kube_fip=""                   # just consider it if you deploy Kubernetes on a public cloud, the fip is public IP
 
 
 network="https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml"
@@ -219,9 +216,9 @@ function init-kubeadm-kubeconfig()
   echo -e "---" >> /etc/kubernetes/kubeadm.yaml
   echo -e "apiVersion: kubeadm.k8s.io/v1beta2" >> /etc/kubernetes/kubeadm.yaml
   echo -e "kind: ClusterConfiguration" >> /etc/kubernetes/kubeadm.yaml
-  if [[ -n $fip ]]
+  if [[ -n $kube_fip ]]
   then
-  echo -e "controlPlaneEndpoint: \"$fip:6443\"" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "controlPlaneEndpoint: \"$kube_fip:6443\"" >> /etc/kubernetes/kubeadm.yaml
   fi
   echo -e "networking:" >> /etc/kubernetes/kubeadm.yaml
   echo -e "  podSubnet: \"${kube_pod_subnet}\"" >> /etc/kubernetes/kubeadm.yaml
@@ -503,9 +500,9 @@ function init-frontend-yaml()
   rm -rf $config_dir
   mkdir -p $config_dir
   echo "window.g = {" > $config_dir/$config_name
-  if [[ -n $fip ]]
+  if [[ -n $kube_fip ]]
   then
-    echo "    baseURL: 'http://$fip:30308/kubesys'" >> $config_dir/$config_name
+    echo "    baseURL: 'http://$kube_fip:30308/kubesys'" >> $config_dir/$config_name
   else
     echo "    baseURL: 'http://`get-ip`:30308/kubesys'" >> $config_dir/$config_name
   fi
