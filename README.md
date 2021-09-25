@@ -15,15 +15,19 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 ## Matrix
 
 
-| Name        | Type      | Version |  Packages  |   
-| ------      | ------    | ------  | ------      |
-| Containerd  | Container-based virtualization | 1.3.9   |[Linux](https://containerd.io/docs/getting-started/)|
-| Kubernetes  | Virtual compute resource pool  | 1.21.5  | [Linux](https://docs.kubernetes.io/) |
-| OVN         | Network solution        | 1.6.2 | [Linux](https://github.com/alauda/kube-ovn) |
-| Loki        | log                  | 1.6.1   | [Linux](https://grafana.com/oss/loki/)             |            NA                |
-| Prometheus  | utilization          | 2.23.0  | [Linux](https://github.com/prometheus/prometheus/) |           31001              |
-| grafana     | Dashboard            | 7.3.4   | [Linux](https://community.grafana.com/)            |           31002              |
-| superset    | Dashboard            | 1.0.0   | [Linux](https://superset.apache.org//)             |           31003             |
+| Name        | Type      | Version |  Packages   |  Ports    |    
+| ------      | ------    | ------  | ------      |   -----   |
+| Containerd  | Container        | 1.4.9    | [Linux](https://containerd.io/docs/getting-started/)|            NA                |
+| Kubernetes  | Orchestrator     | 1.21.5   | [Linux](https://docs.kubernetes.io/)                | 6443,12500,12501,30000-32000 |  
+| OVN         | SDNController    | 1.8.0    | [Linux](https://github.com/alauda/kube-ovn)         |            NA                | 
+| Loki        | LogCollector     | 1.6.1    | [Linux](https://grafana.com/oss/loki/)              |            NA                |  
+| Prometheus  | Monitor          | 2.23.0   | [Linux](https://github.com/prometheus/prometheus/)  |            NA                |
+| Dex         | Authentication   | 2.23.0   | [Linux](https://dexidp.io/)                         |           31000              |
+| OpenLDAP    | UserManager      | 2.5.7    | [Linux](https://www.openldap.org/)                  |           31001              |
+| grafana     | StateObserver    | 7.3.4    | [Linux](https://community.grafana.com/)             |           31002              |
+| superset    | StateAnalyzer    | 1.0.0    | [Linux](https://superset.apache.org//)              |           31003              |
+
+** Update 25/09/2021 **
 
 
 **Optional**
