@@ -633,7 +633,7 @@ function help()
 #  echo -e "  init-frontend        :\t(Init): deploy Kuberetes-based dashboard, includes all crd and jsons, see project https://github.com/kubesys/kube-frontend"
 #  echo -e "  init-frontend-simple :\t(Init): deploy Kuberetes-based dashboard without crd and jsons, see project https://github.com/kubesys/kube-frontend"
 #  echo -e "  init-kvm-env         :\t(Init): install kvm and libvirt"
-  echo -e "  reset-kube           :\t(Init): uninstall Kubernetes and all running addons"
+#  echo -e "  reset-kube           :\t(Init): uninstall Kubernetes and all running addons"
 #  echo -e "  reset-backend        :\t(Init): just uninstall deployment and svc"
 #  echo -e "  reset-frontend       :\t(Init): just uninstall deployment and svc"
 }
