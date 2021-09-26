@@ -1,4 +1,4 @@
-a! /bin/bash
+#! /bin/bash
 ###############################################
 ##
 ##  Copyright (2020, ) Institute of Software
