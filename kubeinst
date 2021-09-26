@@ -27,7 +27,6 @@ kube_runtime_version="1.4.9"          # containerd or docker
 kube_fip=""                           # just consider it if you deploy Kubernetes on a public cloud, the fip is public IP
 kube_software_repo="39.100.71.73"     # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
 
-
 network="https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml"
 
 ########    Do not modify them       ########
@@ -227,25 +226,6 @@ function init-kubeadm-kubeconfig()
 }
 
 
-yamlUrl="https://gitee.com/syswu/yamls/raw/master/"
-plugins="collector/list"
-
-function init-k8s-plugins()
-{
-   rm -rf /etc/kubernetes/kubeenv.list
-   echo -e "$network" > /etc/kubernetes/kubeenv.list 
- 
-   array=(${plugins//,/ }) 
-   for var in ${array[@]}
-   do
-     curl $yamlUrl$var > /tmp/list
-     for line in `cat /tmp/list` 
-     do 
-       echo ${line} >> /etc/kubernetes/kubeenv.list
-     done
-   done
-}
-
 function init-env()
 {
   install=""
@@ -338,6 +318,32 @@ function reset-kube()
   rm -rf /root/.kube/
   rm -rf /var/lib/docker/
   rm -rf /var/lib/containerd/
+}
+
+
+###########################################################
+##
+##  kube-backend
+##
+##########################################################
+
+yamlUrl="https://gitee.com/syswu/yamls/raw/master/"
+plugins="collector/list"
+
+function init-k8s-plugins()
+{
+   rm -rf /etc/kubernetes/kubeenv.list
+   echo -e "$network" > /etc/kubernetes/kubeenv.list
+
+   array=(${plugins//,/ })
+   for var in ${array[@]}
+   do
+     curl $yamlUrl$var > /tmp/list
+     for line in `cat /tmp/list`
+     do
+       echo ${line} >> /etc/kubernetes/kubeenv.list
+     done
+   done
 }
 
 ###########################################################

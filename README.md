@@ -60,30 +60,28 @@ chmod 777 /usr/bin/kubeinst
 ```
 kubeinst init-env
 kubeinst init-kube
-kubeinst init-backend
-kubeinst init-frontend
-kubeinst init-kvm-env
+kubeinst init-cni
+kubeinst init-addon
 ```
 
 Now it support two commands
 
 ```
 Commands:
-  init-env       :  (Init): simplify configuring node, such as disable selinux, install docker
-  init-kube      :  (Init): deploy Kubernetes as your want
-  init-backend   :  (Init): install backend services"
-  init-frontend  :  (Init): install dashboard (current only install all required files by frontend)"
-  init-kvm-env   :  (Init): deploy qemu-kvm and libvirt
+  init-env             :(Init): install conatiner/docker, kubeadm, kubelet, kubectl and helm
+  init-kube            :(Init): initialize kubernetes and deploy dex openldap
+  init-cni             :(Init): deploy calico or kubeovn
+  init-addon           :(Init): deploy loki, prometheus, grafana and superset
 ```
 
 - Using the `init-env` command, you can install Docker and Kubernetes on a just installed OS.
 - Using the `init-kube` commnad, you can install kubernetes as your want
 
 ```
-kubeinst init-env 
-kubeinst init-kube
-kubeinst init-backend   
-kubeinst init-frontend  
+kubeinst init-env    # (required)
+kubeinst init-kube   # (required)
+kubeinst init-cni    # (required)
+kubeinst init-addon  # (optinal)
 ```
 
 Note that you can customized :
@@ -148,7 +146,7 @@ Note that you can customized :
   - 1.4: support init-frontend
   - 1.5: support common for backend and frontend
   - 1.6: support message in backend
-  - 1.7: kubeOVN, dex, superset
+  - 1.7: support kubeinst-cni and kubeinst-addon
 ```
 
 ## Useage
