@@ -225,6 +225,8 @@ function config-containerd()
 
   echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
 
+  rm -rf /etc/containerd/config.toml
+
   start-service containerd kubelet
 }
 
@@ -316,11 +318,6 @@ function init-cni()
 function init-cni-calico()
 {
   kubectl apply -f http://$kube_software_repo/mirror/$kube_cni.yaml
-}
-
-function init-cni-kubeovn()
-{
-  
 }
 
 
