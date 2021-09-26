@@ -23,7 +23,7 @@ spec:
         - key: node-role.kubernetes.io/master
           effect: NoSchedule
       containers:
-      - image: grafana/grafana:7.5.6
+      - image: grafana/grafana:8.1.5
         name: grafana-core
         imagePullPolicy: IfNotPresent
         resources:
