@@ -22,8 +22,8 @@ VERSION="1.7"
 kube_pod_subnet="10.244.0.0/16"
 kube_version="1.21.5"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
-kube_runtime="containerd"                 # containerd or docker
-kube_runtime_version="1.4.9"              # 
+kube_runtime="docker"                 # containerd or docker
+kube_runtime_version="20.10.8"              # 
 kube_fip=""                               # if you deploy Kubernetes on a public cloud, the fip is public IP
 kube_software_repo="39.100.71.73"         # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
 kube_software_dns="kubesys.opensource.io" # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
@@ -324,7 +324,7 @@ function init-cni()
 
 function init-cni-calico()
 {
-  kubectl apply -f http://$kube_software_dns/mirror/$kube_cni.yaml
+  kubectl apply -f http://$kube_software_repo/mirror/$kube_cni.yaml
 }
 
 
