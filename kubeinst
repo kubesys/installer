@@ -23,8 +23,9 @@ kube_pod_subnet="10.244.0.0/16"
 kube_version="1.21.5"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 kube_runtime="containerd"             # containerd or docker
-kube_runtime_version="1.4.9"     # containerd or docker
+kube_runtime_version="1.4.9"          # containerd or docker
 kube_fip=""                           # just consider it if you deploy Kubernetes on a public cloud, the fip is public IP
+kube_software_repo="39.100.71.73"     # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
 
 
 network="https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml"
@@ -265,7 +266,7 @@ function init-env()
   add-$install-repository
   $install-$kube_runtime-k8s
   init-kubeadm-kubeconfig
-  
+  install-helm 
 }
 
 ###########################################################
@@ -328,14 +329,6 @@ function init-kube()
   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
   iptables -P FORWARD ACCEPT
-
-  # [required] see https://github.com/projectcalico/cni-plugin/issues/749
-  # mkdir -p /var/lib/cni/networks/k8s-pod-network
-  while read line
-  do
-    kubectl apply -f $line
-  done  < /etc/kubernetes/kubeenv.list
-
 }
 
 function reset-kube()
@@ -518,6 +511,15 @@ function reset-frontend()
 
 function install-helm()
 {
+  if [[ -f "/usr/local/bin/helm" ]]
+  then
+    return
+  fi
+
+  if [[ -z $(cat /etc/hosts | grep kubesys.opensource.io) ]]
+  then
+    echo "$kube_software_repo kubesys.opensource.io" >> /etc/hosts
+  fi
   curl  https://gitee.com/syswu/yamls/raw/master/tools/helm/get-helm-3 | bash -
 }
 
@@ -526,11 +528,6 @@ function install-flagger-istio
   helm repo add flagger https://flagger.app
   kubectl apply -f https://raw.githubusercontent.com/fluxcd/flagger/main/artifacts/flagger/crd.yaml
   helm upgrade -i flagger flagger/flagger --namespace=devops-system --set crd.create=false --set meshProvider=istio --set metricsServer=http://prometheus-service.kube-system:9090
-}
-
-function init-devops-tools()
-{
-  install-helm
 }
 
 
