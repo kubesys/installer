@@ -29,7 +29,6 @@ kube_software_repo="39.100.71.73"         # if it is a private env, modify it, s
 kube_software_dns="kubesys.opensource.io" # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
 kube_cni="calico"                         # calico or kubeovn
 
-# network="https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml"
 
 ########    Do not modify them       ########
 
@@ -406,8 +405,6 @@ plugins="collector/list"
 function init-k8s-plugins()
 {
    rm -rf /etc/kubernetes/kubeenv.list
-   echo -e "$network" > /etc/kubernetes/kubeenv.list
-
    array=(${plugins//,/ })
    for var in ${array[@]}
    do
