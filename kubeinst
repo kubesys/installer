@@ -248,40 +248,59 @@ function init-k8s-plugins()
 
 function init-env()
 {
+  install=""
+  osname=""
   if [[ -n $(cat /etc/os-release | grep centos) ]]
   then
-    disable-centos-security
-    add-yum-repository
-    if [[ $kube_runtime == "docker" ]]
-    then
-      yum-docker-k8s
-    elif [[ $kube_runtime == "containerd" ]]
-    then
-      yum-containerd-k8s
-    else
-      echo "only support docker and containerd"
-      exit 1
-    fi
+    install="yum"
+    osname="centos"
   elif [[ -n $(cat /etc/os-release | grep ubuntu) ]]
   then
-    disable-ubuntu-security
-    add-apt-repository
-    if [[ $kube_runtime == "docker" ]]
-    then
-      apt-docker-k8s
-    elif [[ $kube_runtime == "containerd" ]]
-    then
-      apt-containerd-k8s
-    else
-      echo "only support docker and containerd"
-      exit 1
-    fi
+    install="apt"
+    osname="ubuntu"
   else
     echo "only support centos and ubuntu."
     exit 1
   fi
+  disable-$osname-security
+  add-$install-repository
+  $install-$kube_runtime-k8s
   init-kubeadm-kubeconfig
-  init-k8s-plugins
+  
+#  if [[ -n $(cat /etc/os-release | grep centos) ]]
+#  then
+#    disable-centos-security
+#    add-yum-repository
+#    if [[ $kube_runtime == "docker" ]]
+#    then
+#      yum-docker-k8s
+#    elif [[ $kube_runtime == "containerd" ]]
+#    then
+#      yum-containerd-k8s
+#    else
+#      echo "only support docker and containerd"
+#      exit 1
+#    fi
+#  elif [[ -n $(cat /etc/os-release | grep ubuntu) ]]
+#  then
+#    disable-ubuntu-security
+#    add-apt-repository
+#    if [[ $kube_runtime == "docker" ]]
+#    then
+#      apt-docker-k8s
+#    elif [[ $kube_runtime == "containerd" ]]
+#    then
+#      apt-containerd-k8s
+#    else
+#      echo "only support docker and containerd"
+#      exit 1
+#    fi
+#  else
+#    echo "only support centos and ubuntu."
+#    exit 1
+#  fi 
+#  init-kubeadm-kubeconfig
+#  init-k8s-plugins
 }
 
 ###########################################################
