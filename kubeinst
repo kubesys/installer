@@ -22,8 +22,9 @@ VERSION="1.7"
 kube_pod_subnet="10.244.0.0/16"
 kube_version="1.21.5"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
-kube_runtime="containerd"     # containerd or docker
-kube_fip=""                   # just consider it if you deploy Kubernetes on a public cloud, the fip is public IP
+kube_runtime="containerd"             # containerd or docker
+kube_runtime_version="1.4.9"     # containerd or docker
+kube_fip=""                           # just consider it if you deploy Kubernetes on a public cloud, the fip is public IP
 
 
 network="https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml"
@@ -131,9 +132,7 @@ function add-apt-repository()
 
 function yum-docker-k8s()
 {
-  #yum install -y wget docker-ce-${docker_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
-  yum install -y wget docker-ce kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
-
+  yum install -y wget docker-ce-${kube_runtime_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
   config-docker 
 }
 
@@ -163,7 +162,7 @@ function config-docker()
 function yum-containerd-k8s()
 {
 
-  yum install -y wget containerd.io kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
+  yum install -y wget containerd.io-${kube_runtime_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
   
   config-containerd
 }
@@ -267,40 +266,6 @@ function init-env()
   $install-$kube_runtime-k8s
   init-kubeadm-kubeconfig
   
-#  if [[ -n $(cat /etc/os-release | grep centos) ]]
-#  then
-#    disable-centos-security
-#    add-yum-repository
-#    if [[ $kube_runtime == "docker" ]]
-#    then
-#      yum-docker-k8s
-#    elif [[ $kube_runtime == "containerd" ]]
-#    then
-#      yum-containerd-k8s
-#    else
-#      echo "only support docker and containerd"
-#      exit 1
-#    fi
-#  elif [[ -n $(cat /etc/os-release | grep ubuntu) ]]
-#  then
-#    disable-ubuntu-security
-#    add-apt-repository
-#    if [[ $kube_runtime == "docker" ]]
-#    then
-#      apt-docker-k8s
-#    elif [[ $kube_runtime == "containerd" ]]
-#    then
-#      apt-containerd-k8s
-#    else
-#      echo "only support docker and containerd"
-#      exit 1
-#    fi
-#  else
-#    echo "only support centos and ubuntu."
-#    exit 1
-#  fi 
-#  init-kubeadm-kubeconfig
-#  init-k8s-plugins
 }
 
 ###########################################################
