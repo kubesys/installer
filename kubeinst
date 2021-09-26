@@ -26,8 +26,9 @@ kube_runtime="containerd"             # containerd or docker
 kube_runtime_version="1.4.9"          # containerd or docker
 kube_fip=""                           # just consider it if you deploy Kubernetes on a public cloud, the fip is public IP
 kube_software_repo="39.100.71.73"     # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
+kube_cni="calico"                     # calico or kubeovn
 
-network="https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml"
+# network="https://docs.projectcalico.org/archive/v3.19/manifests/calico.yaml"
 
 ########    Do not modify them       ########
 
@@ -96,6 +97,31 @@ function start-service()
 ##
 ##########################################################
 
+function init-env()
+{
+  install=""
+  osname=""
+  if [[ -n $(cat /etc/os-release | grep centos) ]]
+  then
+    install="yum"
+    osname="centos"
+  elif [[ -n $(cat /etc/os-release | grep ubuntu) ]]
+  then
+    install="apt"
+    osname="ubuntu"
+  else
+    echo "only support centos and ubuntu."
+    exit 1
+  fi
+  disable-$osname-security
+  add-$install-repository
+  $install-$kube_runtime-k8s
+  init-kubeadm-kubeconfig
+  install-helm 
+}
+
+
+
 function disable-centos-security()
 {
   sed -ie 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config
@@ -108,12 +134,13 @@ function disable-ubuntu-security()
   sudo ufw disable
 }
 
+
+
 function add-yum-repository()
 {
   echo -e "[docker-ce-stable]\nname=Docker CE Stable - \$basearch \nbaseurl=https://download.docker.com/linux/centos/\$releasever/\$basearch/stable\nenabled=1 \ngpgcheck=1 \ngpgkey=https://download.docker.com/linux/centos/gpg" > /etc/yum.repos.d/docker-ce.repo
   echo -e "[kubernetes] \nname=Kubernetes - \$basearch \nbaseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-\$basearch/ \nenabled=1 \ngpgcheck=0 \nrepo_gpgcheck=0 \ngpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg" > /etc/yum.repos.d/kubernetes.repo
 }
-
 
 function add-apt-repository()
 {
@@ -130,11 +157,14 @@ function add-apt-repository()
   echo  "deb [arch=$arch signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
 }
 
+
+
 function yum-docker-k8s()
 {
   yum install -y wget docker-ce-${kube_runtime_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
   config-docker 
 }
+
 
 function apt-docker-k8s()
 {
@@ -145,18 +175,6 @@ function apt-docker-k8s()
   apt-get install docker-ce kubectl=$kVer kubelet=$kVer kubeadm=$kVer
   
   config-docker
-}
-
-function config-docker()
-{
-  ## kubernetes >= 1.22 only supports systemd
-  mkdir -p /etc/docker
-  echo "{" > /etc/docker/daemon.json
-  echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
-  echo "}" >> /etc/docker/daemon.json
-  systemctl daemon-reload
-
-  start-service docker kubelet
 }
 
 function yum-containerd-k8s()
@@ -178,6 +196,19 @@ function apt-containerd-k8s()
 }
 
 
+
+function config-docker()
+{
+  ## kubernetes >= 1.22 only supports systemd
+  mkdir -p /etc/docker
+  echo "{" > /etc/docker/daemon.json
+  echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
+  echo "}" >> /etc/docker/daemon.json
+  systemctl daemon-reload
+
+  start-service docker kubelet
+}
+
 function config-containerd()
 {
   echo "overlay" > /etc/modules-load.d/containerd.conf
@@ -196,6 +227,8 @@ function config-containerd()
 
   start-service containerd kubelet
 }
+
+
 
 function init-kubeadm-kubeconfig()
 {
@@ -226,27 +259,80 @@ function init-kubeadm-kubeconfig()
 }
 
 
-function init-env()
+
+function install-helm()
 {
-  install=""
-  osname=""
-  if [[ -n $(cat /etc/os-release | grep centos) ]]
+  if [[ -f "/usr/local/bin/helm" ]]
   then
-    install="yum"
-    osname="centos"
-  elif [[ -n $(cat /etc/os-release | grep ubuntu) ]]
-  then
-    install="apt"
-    osname="ubuntu"
-  else
-    echo "only support centos and ubuntu."
-    exit 1
+    return
   fi
-  disable-$osname-security
-  add-$install-repository
-  $install-$kube_runtime-k8s
-  init-kubeadm-kubeconfig
-  install-helm 
+
+  if [[ -z $(cat /etc/hosts | grep kubesys.opensource.io) ]]
+  then
+    echo "$kube_software_repo kubesys.opensource.io" >> /etc/hosts
+  fi
+  curl  https://gitee.com/syswu/yamls/raw/master/tools/helm/get-helm-3 | bash -
+}
+
+
+###########################################################
+##
+##  init-kube
+##
+##########################################################
+
+function init-kube()
+{
+  # [optional] just consider performance
+  swapoff -a      
+  
+  # [required] prerequires
+  systemctl restart kubelet
+  echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
+  echo "1" > /proc/sys/net/ipv4/ip_forward
+
+  # [required], see https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta2/
+  kubeadm init --config /etc/kubernetes/kubeadm.yaml
+  rm -rf $HOME/.kube
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  iptables -P FORWARD ACCEPT
+}
+
+
+###########################################################
+##
+##  init-cni
+##
+##########################################################
+
+function init-cni()
+{
+  init-cni-$kube_cni
+}
+
+
+function init-cni-calico()
+{
+  kubectl apply -f http://$kube_software_repo/mirror/$kube_cni.yaml
+}
+
+function init-cni-kubeovn()
+{
+  
+}
+
+
+###########################################################
+##
+##  init-addon
+##
+##########################################################
+
+function init-addon()
+{
+  init-cni-$kube_cni
 }
 
 ###########################################################
@@ -288,28 +374,10 @@ function add-kvm-apt-repository
 
 ###########################################################
 ##
-##  init-kube
+##  reset 
 ##
 ##########################################################
 
-function init-kube()
-{
-  # [optional] just consider performance
-  swapoff -a      
-  
-  # [required] prerequires
-  systemctl restart kubelet
-  echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
-  echo "1" > /proc/sys/net/ipv4/ip_forward
-
-  # [required], see https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta2/
-  kubeadm init --config /etc/kubernetes/kubeadm.yaml
-  rm -rf $HOME/.kube
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
-  iptables -P FORWARD ACCEPT
-}
 
 function reset-kube()
 {
@@ -515,19 +583,7 @@ function reset-frontend()
 ##
 ##########################################################
 
-function install-helm()
-{
-  if [[ -f "/usr/local/bin/helm" ]]
-  then
-    return
-  fi
 
-  if [[ -z $(cat /etc/hosts | grep kubesys.opensource.io) ]]
-  then
-    echo "$kube_software_repo kubesys.opensource.io" >> /etc/hosts
-  fi
-  curl  https://gitee.com/syswu/yamls/raw/master/tools/helm/get-helm-3 | bash -
-}
 
 function install-flagger-istio
 {
