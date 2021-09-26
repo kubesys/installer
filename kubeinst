@@ -29,6 +29,7 @@ kube_fip=""                               # if you deploy Kubernetes on a public
 kube_software_repo="39.100.71.73"         # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
 kube_software_dns="kubesys.opensource.io" # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
 kube_cni="calico"                         # calico or kubeovn
+kube_addon="addon"                        # calico or kubeovn
 
 
 ########    Do not modify them       ########
@@ -337,7 +338,12 @@ function init-cni-calico()
 
 function init-addon()
 {
-  init-cni-$kube_cni
+  rm -rf /tmp/$kube_addon.list
+  wget -P /tmp/ http://$kube_software_repo/mirror/$kube_addon.list
+  for line in `cat /tmp/$kube_addon.list`
+  do
+    kubectl apply -f $line
+  done
 }
 
 ###########################################################
