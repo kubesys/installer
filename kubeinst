@@ -368,7 +368,7 @@ function init-addon()
 
 function init-auth()
 {
-  kubectl apply -f http://$kube_software_repo/mirror/$kube_auth
+  kubectl apply -f http://$kube_software_repo/mirror/$kube_auth.yaml
 }
 
 ###########################################################
@@ -691,7 +691,7 @@ case $1 in
   "init-addon")
     init-addon $*
     ;;
-  "init-anth")
+  "init-auth")
     init-auth $*
     ;;
   "init-virt")
