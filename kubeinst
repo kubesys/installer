@@ -31,6 +31,7 @@ kube_software_repo="39.100.71.73"         # if it is a private env, modify it, s
 kube_software_dns="kubesys.opensource.io" # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
 kube_cni="kubeovn"                        # calico or kubeovn
 kube_addon="addon"                        # loki, prometheus, grafana
+kube_auth="keycloak"                        # loki, prometheus, grafana
 
 
 #### VirtualMachine ####
@@ -364,6 +365,11 @@ function init-addon()
 ##  init-auth
 ##
 ##########################################################
+
+function init-auth()
+{
+  kubectl apply -f http://$kube_software_repo/mirror/$kube_auth
+}
 
 ###########################################################
 ##
