@@ -18,27 +18,39 @@ VERSION="1.8"
 
 ########      You can modify them      ########
 
-# Required
+####   Container  #### 
 kube_pod_subnet="10.244.0.0/16"
 kube_version="1.21.5"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
+
+
 kube_runtime="containerd"                # containerd or docker
 kube_runtime_version="1.4.9"             # containerd 
 #kube_runtime="docker"                # containerd or docker
 #kube_runtime_version="20.10.8"              # docker
+
+
 kube_fip=""                               # if you deploy Kubernetes on a public cloud, the fip is public IP
 kube_software_repo="39.100.71.73"         # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
 kube_software_dns="kubesys.opensource.io" # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
+
+
 kube_cni="kubeovn"                        # calico or kubeovn
+
+
 kube_addon="addon"                        # loki, prometheus, grafana
+
+
+kube_virt_type="kvm"                      # kvm or cata
+kube_virt_kvm="train"
+
+#### VirtualMachine ####
 
 
 ########    Do not modify them       ########
 
 
 # Deprecated
-
-openstack="victoria"
 
 ## version
 kube_backend_version="2.0.3"
@@ -92,6 +104,11 @@ function start-service()
     systemctl start $ser
     systemctl enable $ser
   done 
+}
+
+function replace()
+{
+   sed -ie "s/$1/$2/g" $3
 }
 
 ###########################################################
@@ -330,6 +347,7 @@ function init-cni-calico()
   kubectl apply -f http://$kube_software_repo/mirror/$kube_cni.yaml
 }
 
+
 function init-cni-kubeovn()
 {
   curl http://$kube_software_repo/mirror/$kube_cni.sh | bash -
@@ -353,38 +371,51 @@ function init-addon()
 
 ###########################################################
 ##
-##  init-kvm-env
+##  init-auth
 ##
 ##########################################################
 
-function init-kvm-env()
+###########################################################
+##
+##  init-kvm
+##
+##########################################################
+
+function init-virt()
 {
+  init-$kube_virt_type
+}
+
+function init-kvm()
+{
+  install=""
+  osname=""
   if [[ -n $(cat /etc/os-release | grep centos) ]]
   then
-    disable-centos-security
-    add-kvm-yum-repository
-    yum install qemu-kvm libvirt libvirt-python virt-install virt-manager -y
+    install="yum"
+    osname="centos"
   elif [[ -n $(cat /etc/os-release | grep ubuntu) ]]
   then
-    disable-ubuntu-security
-    add-kvm-apt-repository
-    apt-get install qemu-kvm libvirt libvirt-python virt-install virt-manager -y
+    install="apt-get"
+    osname="ubuntu"
   else
     echo "only support centos and ubuntu."
     exit 1
   fi
-  
+  disable-$osname-security
+  add-kvm-$osname-repository
+  $install install qemu-kvm libvirt libvirt-python virt-install virt-manager -y
   start-service libvirtd 
 }
 
 function add-kvm-yum-repository()
 {
-  yum install centos-release-openstack-$openstack lrzsz -y
+  yum install centos-release-openstack-$kube_virt_kvm -y
 }
 
 function add-kvm-apt-repository
 {
-  add-apt-repository cloud-archive:$openstack
+  add-apt-repository cloud-archive:$kube_virt_kvm
 }
 
 
@@ -629,10 +660,11 @@ function help()
   echo -e "  init-kube            :\t(Init): initialize kubernetes and deploy dex openldap"
   echo -e "  init-cni             :\t(Init): deploy calico or kubeovn"
   echo -e "  init-addon           :\t(Init): deploy loki, prometheus, grafana and superset"
+  echo -e "  init-auth            :\t(Init): deploy and config keycloack"
+  echo -e "  init-virt            :\t(Init): install kvm and libvirt"
 #  echo -e "  init-backend         :\t(Init): deploy backend services, see project https://github.com/kubesys/kube-backend"
 #  echo -e "  init-frontend        :\t(Init): deploy Kuberetes-based dashboard, includes all crd and jsons, see project https://github.com/kubesys/kube-frontend"
 #  echo -e "  init-frontend-simple :\t(Init): deploy Kuberetes-based dashboard without crd and jsons, see project https://github.com/kubesys/kube-frontend"
-#  echo -e "  init-kvm-env         :\t(Init): install kvm and libvirt"
 #  echo -e "  reset-kube           :\t(Init): uninstall Kubernetes and all running addons"
 #  echo -e "  reset-backend        :\t(Init): just uninstall deployment and svc"
 #  echo -e "  reset-frontend       :\t(Init): just uninstall deployment and svc"
@@ -651,6 +683,12 @@ case $1 in
     ;;
   "init-addon")
     init-addon $*
+    ;;
+  "init-anth")
+    init-auth $*
+    ;;
+  "init-virt")
+    init-virt $*
     ;;
   "init-backend")
     init-backend $*
