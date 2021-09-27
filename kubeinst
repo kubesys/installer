@@ -395,13 +395,13 @@ function init-kvm()
   disable-$osname-security
   add-kvm-$install-repository
   $install-install
-  #$install install qemu-kvm libvirt libvirt-python virt-install virt-manager -y
   start-service libvirtd 
 }
 
 function apt-install()
 {
-  apt-get install qemu-kvm libvirt-dev libvirt-daemon libvirt-clients -y
+  #apt-get install qemu-kvm libvirt-dev libvirt-daemon libvirt-clients -y
+  apt-get install qemu-kvm libvirt-bin -y
 }
 
 function yum-install()
