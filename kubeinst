@@ -393,7 +393,7 @@ function init-kvm()
     exit 1
   fi
   disable-$osname-security
-  add-kvm-$osname-repository
+  add-kvm-$install-repository
   $install install qemu-kvm libvirt libvirt-python virt-install virt-manager -y
   start-service libvirtd 
 }
@@ -403,7 +403,7 @@ function add-kvm-yum-repository()
   yum install centos-release-openstack-$kube_virt_version -y
 }
 
-function add-kvm-apt-repository
+function add-kvm-apt-get-repository
 {
   add-apt-repository cloud-archive:$kube_virt_version
 }
