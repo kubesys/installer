@@ -386,7 +386,7 @@ function init-kvm()
     osname="centos"
   elif [[ -n $(cat /etc/os-release | grep ubuntu) ]]
   then
-    install="apt-get"
+    install="apt"
     osname="ubuntu"
   else
     echo "only support centos and ubuntu."
@@ -394,8 +394,19 @@ function init-kvm()
   fi
   disable-$osname-security
   add-kvm-$install-repository
-  $install install qemu-kvm libvirt libvirt-python virt-install virt-manager -y
+  $install-install
+  #$install install qemu-kvm libvirt libvirt-python virt-install virt-manager -y
   start-service libvirtd 
+}
+
+function apt-install()
+{
+  apt-get install qemu-kvm libvirt-dev libvirt-daemon libvirt-clients -y
+}
+
+function yum-install()
+{
+  yum instal qemu-kvm libvirt -y
 }
 
 function add-kvm-yum-repository()
@@ -403,7 +414,7 @@ function add-kvm-yum-repository()
   yum install centos-release-openstack-$kube_virt_version -y
 }
 
-function add-kvm-apt-get-repository
+function add-kvm-apt-repository
 {
   add-apt-repository cloud-archive:$kube_virt_version
 }
