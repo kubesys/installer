@@ -22,7 +22,7 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 | OVN         | SDNController    | 1.8.0    | [Linux](https://github.com/alauda/kube-ovn)         |            NA                |
 | Helm        | PackageManager   | 3.7.0    | [Linux](https://helm.sh/docs/intro/quickstart/)     |            NA                |
 | Loki        | LogCollector     | 1.6.1    | [Linux](https://grafana.com/oss/loki/)              |            NA                |  
-| dex         | Authentication   | 2.23.0   | [Linux](https://dex.io/)                            |           31000              |
+| KeyCloack   | Authentication   | 15.0.2   | [Linux](https://www.keycloak.org/)                  |           31000              |
 | Prometheus  | Monitor          | 2.23.0   | [Linux](https://github.com/prometheus/prometheus/)  |           31001              |
 | grafana     | StateObserver    | 7.3.4    | [Linux](https://community.grafana.com/)             |           31002              |
 | superset    | StateAnalyzer    | 1.0.0    | [Linux](https://superset.apache.org//)              |           31003              |
