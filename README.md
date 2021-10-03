@@ -22,8 +22,8 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 | OVN         | SDNController    | 1.8.0    | [Linux](https://github.com/alauda/kube-ovn)         |            NA                |
 | Helm        | PackageManager   | 3.7.0    | [Linux](https://helm.sh/docs/intro/quickstart/)     |            NA                |
 | Loki        | LogCollector     | 1.6.1    | [Linux](https://grafana.com/oss/loki/)              |            NA                |  
-| KeyCloack   | Authentication   | 15.0.2   | [Linux](https://www.keycloak.org/)                  |           31000              |
-| Prometheus  | Monitor          | 2.23.0   | [Linux](https://github.com/prometheus/prometheus/)  |           31001                |
+| dex         | Authentication   | 2.23.0   | [Linux](https://dex.io/)                            |           31000              |
+| Prometheus  | Monitor          | 2.23.0   | [Linux](https://github.com/prometheus/prometheus/)  |           31001              |
 | grafana     | StateObserver    | 7.3.4    | [Linux](https://community.grafana.com/)             |           31002              |
 | superset    | StateAnalyzer    | 1.0.0    | [Linux](https://superset.apache.org//)              |           31003              |
 
@@ -102,10 +102,8 @@ Note that you can customized :
 | gitlab      | code repository      | latest  | [Linux](https://hub.docker.com/r/gitlab/gitlab-ce)            |  31013       |
 | sonar       | quality manager |  sonarqube:8.6.0-community  | [Linux](https://docs.sonarqube.org/latest/)    |  31014       |
 | kanboard    | task manager   |  kanboard/kanboard:v1.2.8  | [Linux](https://github.com/kanboard/kanboard)    |  31015       |
-| nexus3      | jar repository       | 3.29.0  | [Linux](https://hub.docker.com/r/sonatype/nexus3)             |  31021       |
-| jenkins     | full pipeline   |  jenkins:2.263.1-lts-centos  | [Linux](https://www.jenkins.io)               |  31023       |
-| vsftpd      | -          |  -  | [Linux](https://github.com/ent-projects/vsftpd)               |  31024       |
-| registry    | -          |  -  | [Linux](https://github.com/ent-projects/registries-operator)               |  31025       |
+| nexus3      | jar repository       | 3.29.0  | [Linux](https://hub.docker.com/r/sonatype/nexus3)             |  31016       |
+| jenkins     | full pipeline   |  jenkins:2.263.1-lts-centos  | [Linux](https://www.jenkins.io)               |  31017       |
 
 
 ### 1.2 Ops tools
