@@ -1,0 +1,66 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata: 
+  name: "kube-sonar"
+  namespace: "kube-system"
+  labels: 
+    name: "kube-sonar"
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels:
+      name: "kube-sonar"
+  template: 
+    metadata: 
+      labels: 
+        name: "kube-sonar"
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+      - name: "kube-sonar"
+        image: "sonarqube:9.1.0-community"
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: SONARQUBE_JDBC_USERNAME
+          value: 'postgres'
+        - name: SONARQUBE_JDBC_URL
+          value: 'jdbc:postgresql://39.100.71.73:30306/sonar'
+        - name: SONARQUBE_JDBC_PASSWORD
+          value: 'onceas'
+        ports:
+        - containerPort: 9000
+        volumeMounts: 
+        - name: "data"
+          mountPath: "/opt/sonarqube/data"
+        - name: "ext"
+          mountPath: "/opt/sonarqube/extensions"
+      volumes: 
+      - name: "data"
+        hostPath:
+          path: "/var/lib/doslab/sonar/data"
+      - name: "ext"
+        hostPath:
+          path: "/var/lib/doslab/sonar/extensions"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-sonar
+  namespace: kube-system
+  labels: 
+    name: kube-sonar
+spec:
+  type: NodePort
+  ports:
+  - port: 9000
+    protocol: TCP
+    targetPort: 9000
+    name: sonar-http-port
+    nodePort: 31014
+  selector:
+    name: kube-sonar
