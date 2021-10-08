@@ -189,9 +189,7 @@ function apt-docker-k8s()
 
 function yum-containerd-k8s()
 {
-  dVer=$(apt-cache madison containerd.io | grep $kube_runtime_version | awk -F"|" '{print$2}' | sed 's/ //g')
-  kVer=$(apt-cache madison kubelet | grep $kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
-  yum install -y wget containerd.io-$dVer kubectl-$kVer kubelet-$kVer kubeadm-$kVer
+  yum install -y wget containerd.io-${kube_runtime_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version}
   
   config-containerd
 }
