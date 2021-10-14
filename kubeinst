@@ -20,7 +20,7 @@ VERSION="1.8"
 
 ####   Container  #### 
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.21.5"
+kube_version="1.22.2"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 #kube_runtime="containerd"                # containerd or docker
 #kube_runtime_version="1.4.9"             # containerd 
