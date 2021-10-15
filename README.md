@@ -15,17 +15,18 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 ## Matrix
 
 
-| Name        | Type      | Version |  Packages   |  Ports    |    
-| ------      | ------    | ------  | ------      |   -----   |
-| Containerd  | Container        | 1.4.9    | [Linux](https://containerd.io/docs/getting-started/)|            NA                |
-| Kubernetes  | Orchestrator     | 1.21.5   | [Linux](https://docs.kubernetes.io/)                | 6443,12500,12501,30000-32000 |  
-| OVN         | SDNController    | 1.8.0    | [Linux](https://github.com/alauda/kube-ovn)         |            NA                |
-| Helm        | PackageManager   | 3.7.0    | [Linux](https://helm.sh/docs/intro/quickstart/)     |            NA                |
-| Loki        | LogCollector     | 1.6.1    | [Linux](https://grafana.com/oss/loki/)              |            NA                |  
-| KeyCloack   | Authentication   | 15.0.2   | [Linux](https://www.keycloak.org/)                  |           31000              |
-| Prometheus  | Monitor          | 2.23.0   | [Linux](https://github.com/prometheus/prometheus/)  |           31001              |
-| grafana     | StateObserver    | 7.3.4    | [Linux](https://community.grafana.com/)             |           31002              |
-| superset    | StateAnalyzer    | 1.0.0    | [Linux](https://superset.apache.org//)              |           31003              |
+| Name        | Type      | Version |  Packages   |  Ports    |     DNS   |
+| ------      | ------    | ------  | ------      |   -----   |    -----  |
+| Containerd  | Container        | 1.4.9    | [Linux](https://containerd.io/docs/getting-started/)|            NA                |              NA              |
+| Kubernetes  | Orchestrator     | 1.22.2   | [Linux](https://docs.kubernetes.io/)                | 6443,12500,12501,30000-32000 |              NA              |           
+| OVN         | SDNController    | 1.8.0    | [Linux](https://github.com/alauda/kube-ovn)         |            NA                |              NA              |
+| Loki        | LogCollector     | 1.6.1    | [Linux](https://grafana.com/oss/loki/)              |            NA                |              NA              |  
+| KeyCloack   | Authentication   | 15.0.2   | [Linux](https://www.keycloak.org/)                  |           31000              |              NA              |
+| Prometheus  | Monitor          | 2.23.0   | [Linux](https://github.com/prometheus/prometheus/)  |           31001              |              NA              |
+| grafana     | StateObserver    | 7.3.4    | [Linux](https://community.grafana.com/)             |           31002              |              NA              |
+| superset    | StateAnalyzer    | 1.0.0    | [Linux](https://superset.apache.org//)              |           31003              |              NA              |
+| Helm        | PackageManager   | 3.7.0    | [Linux](https://helm.sh/docs/intro/quickstart/)     |         8080/31004           |   package-charts.kube-repo   |
+| Registry    | ImageManager     | 2.7.1    | [Linux](https://helm.sh/docs/intro/quickstart/)     |         5000/31005           |  image-containers.kube-repo  |
 
 ** Update 25/09/2021 **
 
