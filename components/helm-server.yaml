@@ -1,0 +1,63 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "helm-server"
+  namespace: "kube-repo"
+  labels:
+    name: "helm-server"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: "helm-server"
+  template:
+    metadata:
+      labels:
+        name: "helm-server"
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+      - name: "helm-server"
+        image: "centos:centos7"
+        imagePullPolicy: "IfNotPresent"
+        command: 
+        - "helm"
+        - "serve"
+        - "--repo-path"
+        - "/home/charts"
+        volumeMounts:
+        - name: "helm"
+          mountPath: "/usr/bin/helm"
+        volumeMounts:
+        - name: "data"
+          mountPath: "/home"
+      volumes:
+      - name: "helm"
+        hostPath:
+          path: "/usr/local/bin/helm"
+      - name: "data"
+        hostPath:
+          path: "/var/lib/doslab/charts"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helm-server
+  namespace: kube-system
+  labels:
+    name: helm-server
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+    name: helm-server-port
+    nodePort: 31004
+  selector:
+    name: helm-server
