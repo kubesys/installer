@@ -25,8 +25,8 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 | Prometheus  | Monitor          | 2.23.0   | [Linux](https://github.com/prometheus/prometheus/)  |           31001              |              NA              |
 | grafana     | StateObserver    | 7.3.4    | [Linux](https://community.grafana.com/)             |           31002              |              NA              |
 | superset    | StateAnalyzer    | 1.0.0    | [Linux](https://superset.apache.org//)              |           31003              |              NA              |
-| Helm        | PackageManager   | 3.7.0    | [Linux](https://helm.sh/docs/intro/quickstart/)     |         8080/31004           |   package-charts.kube-repo   |
-| Registry    | ImageManager     | 2.7.1    | [Linux](https://helm.sh/docs/intro/quickstart/)     |         5000/31005           |  image-containers.kube-repo  |
+| Helm        | PackageManager   | 3.7.0    | [Linux](https://helm.sh/docs/intro/quickstart/)     |         8080/31004           |    charts-server.kube-repo   |
+| Registry    | ImageManager     | 2.7.1    | [Linux](https://helm.sh/docs/intro/quickstart/)     |         5000/31005           |      oci-server.kube-repo    |
 
 ** Update 25/09/2021 **
 
