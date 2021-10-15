@@ -280,16 +280,7 @@ function init-kubeadm-kubeconfig()
 
 function install-helm()
 {
-  if [[ -f "/usr/local/bin/helm" ]]
-  then
-    return
-  fi
-
-  if [[ -z $(cat /etc/hosts | grep kubesys.opensource.io) ]]
-  then
-    echo "$kube_software_repo $kube_software_dns" >> /etc/hosts
-  fi
-  curl  https://gitee.com/syswu/yamls/raw/master/tools/helm/get-helm-3 | bash -
+  helm plugin install git@github.com:chartmuseum/helm-push.git
 }
 
 
