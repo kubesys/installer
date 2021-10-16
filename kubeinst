@@ -30,9 +30,9 @@ kube_fip=""                               # if you deploy Kubernetes on a public
 kube_software_repo="39.100.71.73"         # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
 kube_software_dns="kubesys.opensource.io" # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
 kube_cni="calico"                         # calico or kubeovn
+kube_cni_repo="https://gitee.com/syswu/kube-installer/raw/master/components"
 kube_addon="addon"                        # loki, prometheus, grafana
 kube_auth="keycloak"                      # loki, prometheus, grafana
-
 
 #### VirtualMachine ####
 kube_virt_type="kvm"                      # kvm or kata
@@ -324,13 +324,13 @@ function init-cni()
 
 function init-cni-calico()
 {
-  kubectl apply -f http://$kube_software_repo/mirror/$kube_cni.yaml
+  kubectl apply -f $kube_cni_repo/$kube_cni.yaml
 }
 
 
 function init-cni-kubeovn()
 {
-  curl http://$kube_software_repo/mirror/$kube_cni.sh | bash -
+  curl $kube_cni_repo/$kube_cni.sh | bash -
 }
 
 ###########################################################
