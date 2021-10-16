@@ -2,19 +2,19 @@
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: "helm-server"
+  name: "charts-server"
   namespace: "kube-repo"
   labels:
-    name: "helm-server"
+    name: "charts-server"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: "helm-server"
+      name: "charts-server"
   template:
     metadata:
       labels:
-        name: "helm-server"
+        name: "charts-server"
     spec:
       nodeSelector:
         node-role.kubernetes.io/master: ""
@@ -22,24 +22,20 @@ spec:
         - key: node-role.kubernetes.io/master
           effect: NoSchedule
       containers:
-      - name: "helm-server"
-        image: "centos:centos7"
+      - name: "charts-server"
+        image: "bitnami/chartmuseum:0.13.1"
         imagePullPolicy: "IfNotPresent"
-        command: 
-        - "helm"
-        - "serve"
-        - "--repo-path"
-        - "/home/charts"
-        volumeMounts:
-        - name: "helm"
-          mountPath: "/usr/bin/helm"
+        env:
+        - name: STORAGE
+          value: local
+        - name: STORAGE_LOCAL_ROOTDIR
+          value: /bitnami/data
+        ports: 
+        - containerPort: 8080
         volumeMounts:
         - name: "data"
-          mountPath: "/home"
+          mountPath: "/bitnami/data"
       volumes:
-      - name: "helm"
-        hostPath:
-          path: "/usr/local/bin/helm"
       - name: "data"
         hostPath:
           path: "/var/lib/doslab/charts"
@@ -47,17 +43,17 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: helm-server
+  name: charts-server
   namespace: kube-system
   labels:
-    name: helm-server
+    name: charts-server
 spec:
   type: NodePort
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
-    name: helm-server-port
+    name: charts-server-port
     nodePort: 31004
   selector:
-    name: helm-server
+    name: charts-server
