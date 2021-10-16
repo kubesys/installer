@@ -12,6 +12,7 @@ spec:
       labels:
         app: kube-tools
     spec:
+      hostNetwork: true
       restartPolicy: Never
       nodeSelector:
         node-role.kubernetes.io/master: ""
