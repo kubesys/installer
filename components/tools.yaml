@@ -1,0 +1,35 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kube-tools
+  namespace: kube-system
+  labels:
+    app: kube-tools
+spec:
+  template:
+    metadata:
+      labels:
+        app: kube-tools
+    spec:
+      restartPolicy: Never
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+      - name: kube-tools
+        image: registry.cn-beijing.aliyuncs.com/dosproj/tools:v0.1-amd64
+        command:
+        - "mv"
+        - "-f"
+        - "/home/*"
+        - "/usr/local/bin/"
+        volumeMounts:
+        - name: "tools"
+          mountPath: "/usr/local/bin"
+      volumes: 
+      - name: "tools"
+        hostPath:
+          path: "/usr/local/bin"
