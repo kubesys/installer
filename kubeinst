@@ -47,6 +47,13 @@ kube_virt_version="train"
 kube_backend_version="2.0.3"
 kube_frontend_version="2.0.3"
 
+## apt-get registry url https://download.docker.com/linux/ubuntu
+
+ubuntu_docker_ce_url = "https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/"
+ubuntu_docker_ce_gpg = "https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg"
+ubuntu_kuberentes_gpg = "https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg"
+ubuntu_kuberentes_url = "https://mirrors.aliyun.com/kubernetes/apt/"
+
 ###############################################
 ##
 ## Do not modify the below codes youself
@@ -160,12 +167,12 @@ function add-apt-repository()
   apt-get install apt-transport-https ca-certificates curl gnupg lsb-release lrzsz -y
 
   rm -rf /usr/share/keyrings/docker-archive-keyring.gpg
-  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-  echo  "deb [arch=$arch signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  curl -fsSL $ubuntu_docker_ce_gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+  echo  "deb [arch=$arch signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] $ubuntu_docker_ce_url $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
   rm -rf /usr/share/keyrings/kubernetes-archive-keyring.gpg
-  curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/kubernetes-archive-keyring.gpg
-  echo  "deb [arch=$arch signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
+  curl -fsSL $ubuntu_kuberentes_gpg | sudo gpg --dearmor -o /usr/share/keyrings/kubernetes-archive-keyring.gpg
+  echo  "deb [arch=$arch signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] $ubuntu_kuberentes_url kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
 }
 
 
