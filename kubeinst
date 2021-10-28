@@ -27,7 +27,7 @@ kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 kube_runtime="docker"                # containerd or docker
 kube_runtime_version="20.10.8"            # docker
 kube_fip=""                               # if you deploy Kubernetes on a public cloud, the fip is public IP
-kube_software_repo="39.100.71.73"         # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
+kube_software_repo=""         # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
 kube_software_dns="kubesys.opensource.io" # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
 kube_cni="calico"                         # calico or kubeovn
 kube_cni_repo="https://gitee.com/syswu/kube-installer/raw/master/components"
@@ -49,10 +49,10 @@ kube_frontend_version="2.0.3"
 
 ## apt-get registry url https://download.docker.com/linux/ubuntu
 
-ubuntu_docker_ce_url = "https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/"
-ubuntu_docker_ce_gpg = "https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg"
-ubuntu_kuberentes_gpg = "https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg"
-ubuntu_kuberentes_url = "https://mirrors.aliyun.com/kubernetes/apt/"
+ubuntu_docker_ce_url="https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/"
+ubuntu_docker_ce_gpg="https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg"
+ubuntu_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg"
+ubuntu_kuberentes_url="https://mirrors.aliyun.com/kubernetes/apt/"
 
 ###############################################
 ##
