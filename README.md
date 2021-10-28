@@ -55,16 +55,6 @@ curl --url https://gitee.com/syswu/kube-installer/raw/master/kubeinst --output /
 chmod 777 /usr/bin/kubeinst
 ```
 
-or copy from the gitee registory.
-
-```
-rm -rf kube-installer
-git clone https://gitee.com/Xuyuanjia2014/kube-installer.git
-cd kube-installer
-cp kubeinst /usr/bin/kubeinst
-chmod 777 /usr/bin/kubeinst
-```
-
 ## Commands
 
 ```
