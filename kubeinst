@@ -347,8 +347,8 @@ function init-cni-kubeovn()
 
 function init-addon()
 {
-  rm -rf /tmp/$kube_addon.list
-  wget -P /tmp/ http://$kube_software_repo/raw/master/$kube_addon/list
+  rm -rf /tmp/list
+  wget -P /tmp/ $kube_software_repo/raw/master/$kube_addon/list
   for line in `cat /tmp/list`
   do
     kubectl apply -f $line
