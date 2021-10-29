@@ -24,15 +24,14 @@ kube_version="1.22.2"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 #kube_runtime="containerd"                # containerd or docker
 #kube_runtime_version="1.4.9"             # containerd 
-kube_runtime="docker"                # containerd or docker
+kube_runtime="docker"                     # containerd or docker
 kube_runtime_version="20.10.8"            # docker
 kube_fip=""                               # if you deploy Kubernetes on a public cloud, the fip is public IP
-kube_software_repo=""         # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
-kube_software_dns="kubesys.opensource.io" # if it is a private env, modify it, see https://github.io/kubesys/kube-meta 
+kube_software_repo="https://gitee.com/syswu/yamls"  
 kube_cni="calico"                         # calico or kubeovn
 kube_cni_repo="https://gitee.com/syswu/kube-installer/raw/master/components"
 kube_addon="addon"                        # loki, prometheus, grafana
-kube_auth="keycloak"                      # loki, prometheus, grafana
+kube_auth="keycloak"                      # keycloack
 
 #### VirtualMachine ####
 kube_virt_type="kvm"                      # kvm or kata
@@ -349,8 +348,8 @@ function init-cni-kubeovn()
 function init-addon()
 {
   rm -rf /tmp/$kube_addon.list
-  wget -P /tmp/ http://$kube_software_repo/mirror/$kube_addon.list
-  for line in `cat /tmp/$kube_addon.list`
+  wget -P /tmp/ http://$kube_software_repo/raw/master/$kube_addon/list
+  for line in `cat /tmp/list`
   do
     kubectl apply -f $line
   done
