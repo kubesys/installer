@@ -40,7 +40,7 @@ kube_virt_version="train"
 
 ########    Advanced setting       ########
 centos_docker_ce_url="https://download.docker.com/linux/centos/\$releasever/\$basearch/stable"
-centos_docker_ce_gpg=https://download.docker.com/linux/centos/gpg
+centos_docker_ce_gpg="https://download.docker.com/linux/centos/gpg"
 centos_kuberentes_url="https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-\$basearch/"
 centos_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg"
 
@@ -669,6 +669,7 @@ function help()
   echo -e "  init-kube            :\t(Init): initialize kubernetes and deploy dex openldap"
   echo -e "  init-cni             :\t(Init): deploy calico or kubeovn"
   echo -e "  init-addon           :\t(Init): deploy loki, prometheus, grafana and superset"
+  echo -e "  init-gpu             :\t(Init): deploy GPU manager"
   echo -e "  init-auth            :\t(Init): deploy and config keycloack"
   echo -e "  init-virt            :\t(Init): install kvm and libvirt"
 #  echo -e "  init-backend         :\t(Init): deploy backend services, see project https://github.com/kubesys/kube-backend"
@@ -692,6 +693,9 @@ case $1 in
     ;;
   "init-addon")
     init-addon $*
+    ;;
+  init-gpu")
+    init-gpu $*
     ;;
   "init-auth")
     init-auth $*
