@@ -38,6 +38,18 @@ kube_virt_type="kvm"                      # kvm or kata
 kube_virt_version="train"                
 
 
+########    Advanced setting       ########
+centos_docker_ce_url="https://download.docker.com/linux/centos/\$releasever/\$basearch/stable"
+centos_docker_ce_gpg=https://download.docker.com/linux/centos/gpg
+centos_kuberentes_url="https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-\$basearch/"
+centos_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg"
+
+ubuntu_docker_ce_url="https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/"
+ubuntu_docker_ce_gpg="https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg"
+ubuntu_kuberentes_url="https://mirrors.aliyun.com/kubernetes/apt/"
+ubuntu_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg"
+
+
 ########    Do not modify them       ########
 
 # Deprecated
@@ -45,13 +57,6 @@ kube_virt_version="train"
 ## version
 kube_backend_version="2.0.3"
 kube_frontend_version="2.0.3"
-
-## apt-get registry url https://download.docker.com/linux/ubuntu
-
-ubuntu_docker_ce_url="https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/"
-ubuntu_docker_ce_gpg="https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg"
-ubuntu_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg"
-ubuntu_kuberentes_url="https://mirrors.aliyun.com/kubernetes/apt/"
 
 ###############################################
 ##
@@ -155,10 +160,9 @@ function disable-ubuntu-security()
 
 function add-yum-repository()
 {
-  echo -e "[docker-ce-stable]\nname=Docker CE Stable - \$basearch \nbaseurl=https://download.docker.com/linux/centos/\$releasever/\$basearch/stable\nenabled=1 \ngpgcheck=1 \ngpgkey=https://download.docker.com/linux/centos/gpg" > /etc/yum.repos.d/docker-ce.repo
-  echo -e "[kubernetes] \nname=Kubernetes - \$basearch \nbaseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-\$basearch/ \nenabled=1 \ngpgcheck=0 \nrepo_gpgcheck=0 \ngpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg" > /etc/yum.repos.d/kubernetes.repo
+  echo -e "[docker-ce-stable]\nname=Docker CE Stable - \$basearch \nbaseurl=$centos_docker_ce_url\nenabled=1 \ngpgcheck=1 \ngpgkey=$centos_docker_ce_gpg" > /etc/yum.repos.d/docker-ce.repo
+  echo -e "[kubernetes] \nname=Kubernetes - \$basearch \nbaseurl=$centos_kuberentes_url \nenabled=1 \ngpgcheck=0 \nrepo_gpgcheck=0 \ngpgkey=$centos_kuberentes_gpg" > /etc/yum.repos.d/kubernetes.repo
 
-  yum update
 }
 
 function add-apt-repository()
@@ -175,7 +179,6 @@ function add-apt-repository()
   curl -fsSL $ubuntu_kuberentes_gpg | sudo gpg --dearmor -o /usr/share/keyrings/kubernetes-archive-keyring.gpg
   echo  "deb [arch=$arch signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] $ubuntu_kuberentes_url kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
 
-  apt-get update
 }
 
 
@@ -192,7 +195,7 @@ function apt-docker-k8s()
   dVer=$(apt-cache madison docker-ce | grep $kube_runtime_version | awk -F"|" '{print$2}' | sed 's/ //g')
   kVer=$(apt-cache madison kubelet | grep $kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
   apt-get update
-  apt-get install docker-ce=$dVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer
+  apt-get install docker-ce=$dVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer -y
   
   config-docker
 }
@@ -209,7 +212,7 @@ function apt-containerd-k8s()
 
   kVer=$(apt-cache madison kubelet | grep $kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
   apt-get update
-  apt-get install containerd.io kubectl=$kVer kubelet=$kVer kubeadm=$kVer
+  apt-get install containerd.io kubectl=$kVer kubelet=$kVer kubeadm=$kVer -y
   
   config-containerd
 }
