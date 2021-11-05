@@ -157,6 +157,8 @@ function add-yum-repository()
 {
   echo -e "[docker-ce-stable]\nname=Docker CE Stable - \$basearch \nbaseurl=https://download.docker.com/linux/centos/\$releasever/\$basearch/stable\nenabled=1 \ngpgcheck=1 \ngpgkey=https://download.docker.com/linux/centos/gpg" > /etc/yum.repos.d/docker-ce.repo
   echo -e "[kubernetes] \nname=Kubernetes - \$basearch \nbaseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-\$basearch/ \nenabled=1 \ngpgcheck=0 \nrepo_gpgcheck=0 \ngpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg" > /etc/yum.repos.d/kubernetes.repo
+
+  yum update
 }
 
 function add-apt-repository()
@@ -172,6 +174,8 @@ function add-apt-repository()
   rm -rf /usr/share/keyrings/kubernetes-archive-keyring.gpg
   curl -fsSL $ubuntu_kuberentes_gpg | sudo gpg --dearmor -o /usr/share/keyrings/kubernetes-archive-keyring.gpg
   echo  "deb [arch=$arch signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] $ubuntu_kuberentes_url kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
+
+  apt-get update
 }
 
 
