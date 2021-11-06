@@ -20,7 +20,7 @@ VERSION="2.0"
 
 ####   Container  #### 
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.22.2"
+kube_version="1.22.3"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 #kube_runtime="containerd"                # containerd or docker
 #kube_runtime_version="1.4.9"             # containerd 
@@ -30,7 +30,6 @@ kube_fip=""                               # if you deploy Kubernetes on a public
 kube_software_repo="https://gitee.com/syswu/yamls"  
 kube_cni="calico"                         # calico or kubeovn
 kube_addon="addon"                        # loki, prometheus, grafana
-kube_cicd="cicd"                          # argo-cd
 kube_auth="keycloak"                      # keycloack
 
 #### VirtualMachine ####
@@ -370,12 +369,12 @@ function init-addon()
 
 function init-cicd()
 {
-  rm -rf /tmp/list
-  wget -P /tmp/ $kube_software_repo/raw/master/$kube_cicd/list
-  for line in `cat /tmp/list`
-  do
-    kubectl apply -f $line
-  done
+  if [[ ! -f "/usr/local/bin/jx" ]]
+  then
+    curl -L $kube_software_repo/attach_files/873213/download/jx-linux-amd64.tar.gz |tar xzv
+    chmod +x jx 
+    mv jx /usr/local/bin
+  fi
 }
 
 ###########################################################
@@ -638,13 +637,6 @@ function reset-frontend()
 
 
 
-function install-flagger-istio
-{
-  helm repo add flagger https://flagger.app
-  kubectl apply -f https://raw.githubusercontent.com/fluxcd/flagger/main/artifacts/flagger/crd.yaml
-  helm upgrade -i flagger flagger/flagger --namespace=devops-system --set crd.create=false --set meshProvider=istio --set metricsServer=http://prometheus-service.kube-system:9090
-}
-
 
 ###########################################################
 ##
@@ -667,7 +659,7 @@ function help()
   echo -e "  init-kube            :\t(Init): initialize kubernetes and deploy dex openldap"
   echo -e "  init-cni             :\t(Init): deploy calico or kubeovn"
   echo -e "  init-addon           :\t(Init): deploy loki, prometheus, grafana and superset"
-  echo -e "  init-cicd            :\t(Init): deploy argo-cd tools"
+  echo -e "  init-cicd            :\t(Init): deploy onedev"
   echo -e "  init-gpu             :\t(Init): deploy GPU manager"
   echo -e "  init-auth            :\t(Init): deploy and config keycloack"
   echo -e "  init-virt            :\t(Init): install kvm and libvirt"
