@@ -30,6 +30,7 @@ kube_fip=""                               # if you deploy Kubernetes on a public
 kube_software_repo="https://gitee.com/syswu/yamls"  
 kube_cni="calico"                         # calico or kubeovn
 kube_addon="addon"                        # loki, prometheus, grafana
+kube_cicd="cicd"                          # argo-cd
 kube_auth="keycloak"                      # keycloack
 
 #### VirtualMachine ####
@@ -666,7 +667,7 @@ function help()
   echo -e "  init-kube            :\t(Init): initialize kubernetes and deploy dex openldap"
   echo -e "  init-cni             :\t(Init): deploy calico or kubeovn"
   echo -e "  init-addon           :\t(Init): deploy loki, prometheus, grafana and superset"
-  echo -e "  init-cicd            :\t(Init): deploy argo tools"
+  echo -e "  init-cicd            :\t(Init): deploy argo-cd tools"
   echo -e "  init-gpu             :\t(Init): deploy GPU manager"
   echo -e "  init-auth            :\t(Init): deploy and config keycloack"
   echo -e "  init-virt            :\t(Init): install kvm and libvirt"
@@ -695,7 +696,7 @@ case $1 in
   "init-cicd")
     init-cicd $*
     ;;
-  init-gpu")
+  "init-gpu")
     init-gpu $*
     ;;
   "init-auth")
