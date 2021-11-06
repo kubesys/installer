@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="1.8"
+VERSION="2.0"
 
 ###############################################
 ##
@@ -363,6 +363,22 @@ function init-addon()
 
 ###########################################################
 ##
+##  init-addon
+##
+##########################################################
+
+function init-cicd()
+{
+  rm -rf /tmp/list
+  wget -P /tmp/ $kube_software_repo/raw/master/$kube_cicd/list
+  for line in `cat /tmp/list`
+  do
+    kubectl apply -f $line
+  done
+}
+
+###########################################################
+##
 ##  init-auth
 ##
 ##########################################################
@@ -424,24 +440,6 @@ function add-kvm-yum-repository()
 function add-kvm-apt-repository
 {
   add-apt-repository cloud-archive:$kube_virt_version
-}
-
-
-###########################################################
-##
-##  reset 
-##
-##########################################################
-
-
-function reset-kube()
-{
-  kubeadm reset
-  sed -i '/kubesys.opensource.io/d' /etc/hosts
-  rm -rf /usr/bin/helm
-  rm -rf /root/.kube/
-  rm -rf /var/lib/docker/
-  rm -rf /var/lib/containerd/
 }
 
 
