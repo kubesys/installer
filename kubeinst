@@ -29,7 +29,6 @@ kube_runtime_version="20.10.8"            # docker
 kube_fip=""                               # if you deploy Kubernetes on a public cloud, the fip is public IP
 kube_software_repo="https://gitee.com/syswu/yamls"  
 kube_cni="calico"                         # calico or kubeovn
-kube_cni_repo="https://gitee.com/syswu/kube-installer/raw/master/components"
 kube_addon="addon"                        # loki, prometheus, grafana
 kube_auth="keycloak"                      # keycloack
 
@@ -337,13 +336,13 @@ function init-cni()
 
 function init-cni-calico()
 {
-  kubectl apply -f $kube_cni_repo/$kube_cni.yaml
+  kubectl apply -f $kube_software_repo/raw/master/cni/$kube_cni.yaml
 }
 
 
 function init-cni-kubeovn()
 {
-  curl $kube_cni_repo/$kube_cni.sh | bash -
+  curl $kube_software_repo/raw/master/cni/$kube_cni.sh | bash -
 }
 
 ###########################################################
@@ -669,6 +668,7 @@ function help()
   echo -e "  init-kube            :\t(Init): initialize kubernetes and deploy dex openldap"
   echo -e "  init-cni             :\t(Init): deploy calico or kubeovn"
   echo -e "  init-addon           :\t(Init): deploy loki, prometheus, grafana and superset"
+  echo -e "  init-cicd            :\t(Init): deploy argo tools"
   echo -e "  init-gpu             :\t(Init): deploy GPU manager"
   echo -e "  init-auth            :\t(Init): deploy and config keycloack"
   echo -e "  init-virt            :\t(Init): install kvm and libvirt"
@@ -693,6 +693,9 @@ case $1 in
     ;;
   "init-addon")
     init-addon $*
+    ;;
+  "init-cicd")
+    init-cicd $*
     ;;
   init-gpu")
     init-gpu $*
