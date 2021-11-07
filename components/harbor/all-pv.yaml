@@ -1,0 +1,191 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "harbor-trivy-pv"
+  labels:
+    name: harbor-trivy
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  hostPath:
+    path: /var/lib/doslab/harbor/trivy-data
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "harbor-database-pv"
+  labels:
+    name: harbor-database
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  hostPath:
+    path: /var/lib/doslab/harbor/database-data
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "harbor-redis-pv"
+  labels:
+    name: harbor-redis
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  hostPath:
+    path: /var/lib/doslab/harbor/redis-data
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "harbor-registry-pv"
+  labels:
+    name: harbor-registry
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  hostPath:
+    path: /var/lib/doslab/harbor/registry-data
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "harbor-chartmuseum-pv"
+  labels:
+    name: harbor-chartmuseum
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  hostPath:
+    path: /var/lib/doslab/harbor/chartmuseum-data
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "harbor-jobservice-pv"
+  labels:
+    name: harbor-jobservice
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  hostPath:
+    path: /var/lib/doslab/harbor/jobservice-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: harbor-redis-pvc
+  namespace: devops-system
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      name: harbor-redis
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: harbor-registry-pvc
+  namespace: devops-system
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      name: harbor-registry
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: harbor-chartmuseum-pvc
+  namespace: devops-system
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      name: harbor-chartmuseum
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: harbor-jobservice-pvc
+  namespace: devops-system
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      name: harbor-jobservice
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: harbor-trivy-pvc
+  namespace: devops-system
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      name: harbor-trivy
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: harbor-database-pvc
+  namespace: devops-system
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      name: harbor-database
