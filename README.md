@@ -15,18 +15,17 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 ## Matrix
 
 
-| Name        | Type      | Version |  Packages   |  Ports    |     DNS   |
-| ------      | ------    | ------  | ------      |   -----   |    -----  |
-| Containerd  | Container        | 1.4.9    | [Linux](https://containerd.io/docs/getting-started/)|            NA                |              NA              |
-| Kubernetes  | Orchestrator     | 1.22.2   | [Linux](https://docs.kubernetes.io/)                | 6443,12500,12501,30000-32000 |              NA              |           
-| OVN         | SDNController    | 1.8.0    | [Linux](https://github.com/alauda/kube-ovn)         |            NA                |              NA              |
-| Loki        | LogCollector     | 1.6.1    | [Linux](https://grafana.com/oss/loki/)              |            NA                |              NA              |  
-| KeyCloack   | Authentication   | 15.0.2   | [Linux](https://www.keycloak.org/)                  |           31000              |              NA              |
-| Prometheus  | Monitor          | 2.23.0   | [Linux](https://github.com/prometheus/prometheus/)  |           31001              |              NA              |
-| grafana     | StateObserver    | 7.3.4    | [Linux](https://community.grafana.com/)             |           31002              |              NA              |
-| superset    | StateAnalyzer    | 1.0.0    | [Linux](https://superset.apache.org//)              |           31003              |              NA              |
-| Helm        | PackageManager   | 3.7.0    | [Linux](https://helm.sh/docs/intro/quickstart/)     |         8080/31004           |    charts-server.kube-repo   |
-| Registry    | ImageManager     | 2.7.1    | [Linux](https://helm.sh/docs/intro/quickstart/)     |         5000/31005           |      oci-server.kube-repo    |
+| Name        | Type      | Version |  Packages   |  Ports    |     DNS   |   command  |      
+| ------      | ------    | ------  | ------      |   -----   |    -----  |   -----   |
+| Containerd  | Container        | 1.4.9    | [Linux](https://containerd.io/docs/getting-started/)|            NA                |              NA              | init-env |
+| Kubernetes  | Orchestrator     | 1.22.2   | [Linux](https://docs.kubernetes.io/)                | 6443,12500,12501,30000-32000 |              NA              | init-env |
+| Calico      | Network solution | 3.19     | [Linux](https://docs.projectcalico.org/)            |            NA                |              NA              | init-cni |
+| Loki        | LogCollector     | 1.6.1    | [Linux](https://grafana.com/oss/loki/)              |            NA                |              NA              |   ---    | 
+| KeyCloack   | Authentication   | 15.0.2   | [Linux](https://www.keycloak.org/)                  |         8080/31000           |              NA              |init-addon|
+| Prometheus  | Monitor          | 2.23.0   | [Linux](https://github.com/prometheus/prometheus/)  |         9090/31001           |              NA              |init-addon|
+| grafana     | StateObserver    | 7.3.4    | [Linux](https://community.grafana.com/)             |         3000/31002           |              NA              |init-addon|
+| superset    | StateAnalyzer    | 1.0.0    | [Linux](https://superset.apache.org//)              |         8088/31003           |              NA              |init-addon|
+| Registry    | ImageManager     | 2.7.1    | [Linux](https://helm.sh/docs/intro/quickstart/)     |         5000/31005           |      oci-server.kube-repo    |   ---    |
 
 ** Update 25/09/2021 **
 
@@ -36,7 +35,7 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 | Name        | Type      | Version |  Packages  |
 | ------      | ------    | ------  | ------      |
 | Docker      | Container-based virtualization | 20.10   | [redhat](https://docs.docker.com/install/linux/docker-ee/rhel/), [openSUSE/SUSE](https://docs.docker.com/install/linux/docker-ee/suse/), [centos](https://docs.docker.com/install/linux/docker-ce/centos/), [debian](https://docs.docker.com/install/linux/docker-ce/debian/), [fedora](https://docs.docker.com/install/linux/docker-ce/fedora/), [ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/) |
-| Calico      | Network solution        | 3.19  | [Linux](https://docs.projectcalico.org/v3.17/getting-started/kubernetes/) |
+| OVN         | SDNController    | 1.8.0    | [Linux](https://github.com/alauda/kube-ovn)         |          
 
 ## Structure
 
