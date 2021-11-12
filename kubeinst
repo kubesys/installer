@@ -32,6 +32,7 @@ kube_cni="calico"                         # calico or kubeovn
 kube_addon="addon"                        # loki, prometheus, grafana
 kube_cicd="cicd"                          # gitlab
 kube_auth="keycloak"                      # keycloack
+kube_crds="crds"                          # crds
 
 #### VirtualMachine ####
 kube_virt_type="kvm"                      # kvm or kata
@@ -496,6 +497,17 @@ function apply-yaml()
   kubectl apply -f $1/$2
 }
 
+
+function init-crds()
+{
+  rm -rf /tmp/list
+  wget -P /tmp/ $kube_software_repo/raw/master/$kube_crds/list
+  for line in `cat /tmp/list`
+  do
+    kubectl apply -f $line
+  done
+}
+
 function init-backend()
 {
 
@@ -632,15 +644,6 @@ function reset-frontend()
 
 ###########################################################
 ##
-##  helm
-##
-##########################################################
-
-
-
-
-###########################################################
-##
 ##  help
 ##
 ##########################################################
@@ -666,7 +669,6 @@ function help()
 #  echo -e "  init-crds            :\t(Init): deploy crds, see https://gitee.com/syswu/yamls/crds"
 #  echo -e "  init-backend         :\t(Init): deploy backend services, see https://gitee.com/syswu/yamls/backend"
 #  echo -e "  init-frontend        :\t(Init): deploy dashboard, see https://gitee.com/syswu/yamls/frontend"
-#  echo -e "  init-frontend-simple :\t(Init): deploy Kuberetes-based dashboard without crd and jsons, see project https://github.com/kubesys/kube-frontend"
 }
 
 
