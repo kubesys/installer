@@ -658,18 +658,15 @@ function help()
   echo -e "Commands:"
   echo -e "  init-env             :\t(Init): install conatiner/docker, kubeadm, kubelet, kubectl and helm"
   echo -e "  init-kube            :\t(Init): initialize kubernetes and deploy dex openldap"
-  echo -e "  init-cni             :\t(Init): deploy calico or kubeovn"
-  echo -e "  init-addon           :\t(Init): deploy loki, prometheus, grafana and superset"
-  echo -e "  init-cicd            :\t(Init): deploy gitlab and using its cicd"
+  echo -e "  init-cni             :\t(Init): deploy calico or kubeovn, see https://gitee.com/syswu/yamls/cni"
+  echo -e "  init-addon           :\t(Init): deploy loki, prometheus, grafana and superset, see https://gitee.com/syswu/yamls/addon"
   echo -e "  init-gpu             :\t(Init): deploy GPU manager"
   echo -e "  init-auth            :\t(Init): deploy and config keycloack"
   echo -e "  init-virt            :\t(Init): install kvm and libvirt"
-#  echo -e "  init-backend         :\t(Init): deploy backend services, see project https://github.com/kubesys/kube-backend"
-#  echo -e "  init-frontend        :\t(Init): deploy Kuberetes-based dashboard, includes all crd and jsons, see project https://github.com/kubesys/kube-frontend"
+#  echo -e "  init-crds            :\t(Init): deploy crds, see https://gitee.com/syswu/yamls/crds"
+#  echo -e "  init-backend         :\t(Init): deploy backend services, see https://gitee.com/syswu/yamls/backend"
+#  echo -e "  init-frontend        :\t(Init): deploy dashboard, see https://gitee.com/syswu/yamls/frontend"
 #  echo -e "  init-frontend-simple :\t(Init): deploy Kuberetes-based dashboard without crd and jsons, see project https://github.com/kubesys/kube-frontend"
-#  echo -e "  reset-kube           :\t(Init): uninstall Kubernetes and all running addons"
-#  echo -e "  reset-backend        :\t(Init): just uninstall deployment and svc"
-#  echo -e "  reset-frontend       :\t(Init): just uninstall deployment and svc"
 }
 
 
@@ -698,17 +695,14 @@ case $1 in
   "init-virt")
     init-virt $*
     ;;
+  "init-crds")
+    init-crds $*
+    ;;
   "init-backend")
     init-backend $*
     ;;
   "init-frontend")
     init-frontend $*
-    ;;
-  "init-frontend-simple")
-    init-frontend-yaml $*
-    ;;
-  "init-devops-tools")
-    init-devops-tools $*
     ;;
   "init-kvm-env")
     init-kvm-env $*
