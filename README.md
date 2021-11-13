@@ -151,7 +151,7 @@ Note that you can customized :
   - 1.7: support init-cni and inst-addon
   - 1.8: support inst-anth, and enable superset
 - 2.x: product ready
-  - 2.0: support native auth and arm-based superset
+  - 2.0: support amd64 and arm64
 ```
 
 ## Useage
