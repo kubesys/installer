@@ -578,13 +578,6 @@ function init-frontend-prerequire()
      kubectl apply -f $name
    done
    
-   rm -rf /tmp/user-1001-admin.json
-   wget -P /tmp/ $frontendUrl/users/user-1001-admin.json
-   
-   token=$(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
-   sed -i "s/#token#/$token/g" /tmp/user-1001-admin.json
-   
-   kubectl apply -f /tmp/user-1001-admin.json
 }
 
 function init-frontend-yaml()
@@ -604,7 +597,6 @@ function init-frontend-yaml()
   // make and config yaml
   rm -rf /$dir/$frontendFile 
   wget -P $dir/ $frontendUrl/$frontendFile
-  sed -i "s/#arch#/`get-arch`/g" $dir/$frontendFile
   sed -i "s/#version#/$kube_frontend_version/g" $dir/$frontendFile
 
   // apply yaml
