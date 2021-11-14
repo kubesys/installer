@@ -582,7 +582,7 @@ function init-frontend-prerequire()
 
 function init-frontend-yaml()
 {
-  // make and config config.js 
+  # make and config config.js 
   rm -rf $config_dir
   mkdir -p $config_dir
   echo "window.g = {" > $config_dir/$config_name
@@ -594,12 +594,12 @@ function init-frontend-yaml()
   fi
   echo "}" >> $config_dir/$config_name
   
-  // make and config yaml
+  # make and config yaml
   rm -rf /$dir/$frontendFile 
   wget -P $dir/ $frontendUrl/$frontendFile
   sed -i "s/#version#/$kube_frontend_version/g" $dir/$frontendFile
 
-  // apply yaml
+  # apply yaml
   kubectl apply -f /$dir/$frontendFile
 }
 
