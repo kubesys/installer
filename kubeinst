@@ -494,6 +494,17 @@ function init-crds()
   do
     kubectl apply -f $line
   done
+
+  kubectl delete clusterrole admin
+
+  rm -rf /tmp/list
+  wget -P /tmp/ $frontendUrl/list
+
+  for name in `cat /tmp/list`
+  do
+    kubectl apply -f $name
+  done
+
 }
 
 function init-backend()
@@ -564,25 +575,6 @@ frontendFile="kube-frontend.yaml"
 
 function init-frontend()
 {
-  init-frontend-prerequire
-  init-frontend-yaml
-}
-
-function init-frontend-prerequire()
-{
-   rm -rf /tmp/list
-   wget -P /tmp/ $frontendUrl/list
-   
-   for name in `cat /tmp/list`
-   do
-     kubectl apply -f $name
-   done
-   
-}
-
-function init-frontend-yaml()
-{
-  kubectl delete clusterrole admin
 
   # make and config config.js 
   rm -rf $config_dir
