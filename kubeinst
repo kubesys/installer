@@ -504,16 +504,10 @@ function init-backend()
  
   apply-yaml $dir $tokenFile    $backendUrl
   apply-yaml $dir $databaseFile $backendUrl
-  apply-yaml $dir $messageFile  $backendUrl
   apply-yaml $dir $mirrorFile   $backendUrl
   apply-yaml $dir $mapperFile   $backendUrl
 
-  
   token=`get-token`
-
-
-  ## arch
-  arch=`get-arch`
 
   # host and url
   host=`get-ip`
@@ -521,17 +515,13 @@ function init-backend()
 
   #@ port
   dbport="30306"
-  mqport="30304"
 
   sed -i "s/#type#/$type/g" $dir/$mirrorFile
   sed -i "s/#host#/$host/g" $dir/$mirrorFile
-  sed -i "s/#ahost#/$host/g" $dir/$mirrorFile
   sed -i "s/#port#/$dbport/g" $dir/$mirrorFile
-  sed -i "s/#aport#/$mqport/g" $dir/$mirrorFile
   sed -i "s/#url#/$url/g" $dir/$mirrorFile
   sed -i "s/#token#/$token/g" $dir/$mirrorFile
   sed -i "s/#version#/$kube_backend_version/g" $dir/$mirrorFile
-  sed -i "s/#arch#/$arch/g" $dir/$mirrorFile
 
   sed -i "s/#type#/$type/g" $dir/$mapperFile
   sed -i "s/#host#/$host/g" $dir/$mapperFile
@@ -539,7 +529,6 @@ function init-backend()
   sed -i "s/#url#/$url/g" $dir/$mapperFile
   sed -i "s/#token#/$token/g" $dir/$mapperFile
   sed -i "s/#version#/$kube_backend_version/g" $dir/$mapperFile
-  sed -i "s/#arch#/$arch/g" $dir/$mapperFile
 
   while true
   do
