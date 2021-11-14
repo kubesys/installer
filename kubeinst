@@ -582,6 +582,8 @@ function init-frontend-prerequire()
 
 function init-frontend-yaml()
 {
+  kubectl delete clusterrole admin
+
   # make and config config.js 
   rm -rf $config_dir
   mkdir -p $config_dir
