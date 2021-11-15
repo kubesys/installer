@@ -622,12 +622,13 @@ function help()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-env             :\t(Init): install conatiner/docker, kubeadm, kubelet, kubectl and helm"
-  echo -e "  init-kube            :\t(Init): initialize kubernetes and deploy dex openldap"
+  echo -e "  init-env             :\t(Init): install conatiner/docker, kubeadm, kubelet and kubectl"
+  echo -e "  init-kube            :\t(Init): initialize kubernetes cluster"
   echo -e "  init-cni             :\t(Init): deploy calico or kubeovn, see https://gitee.com/syswu/yamls/cni"
   echo -e "  init-addon           :\t(Init): deploy loki, prometheus, grafana and superset, see https://gitee.com/syswu/yamls/addon"
-  echo -e "  init-gpu             :\t(Init): deploy GPU manager"
-  echo -e "  init-virt            :\t(Init): install kvm and libvirt"
+  echo -e "  init-gpu             :\t(Init): deploy GPU manager, see https://github.com/kubesys/kube-gpu"
+  echo -e "  init-virt            :\t(Init): deploy kvm, libvirt and vmm, see https://github.com/kubesys/kube-vmm"
+  echo -e "  init-dash            :\t(Init): deploy kubernetes-based system dashboard"
 #  echo -e "  init-crds            :\t(Init): deploy crds, see https://gitee.com/syswu/yamls/crds"
 #  echo -e "  init-backend         :\t(Init): deploy backend services, see https://gitee.com/syswu/yamls/backend"
 #  echo -e "  init-frontend        :\t(Init): deploy dashboard, see https://gitee.com/syswu/yamls/frontend"
@@ -655,6 +656,9 @@ case $1 in
     ;;
   "init-virt")
     init-virt $*
+    ;;
+  "init-dash")
+    init-dash $*
     ;;
   "init-crds")
     init-crds $*
