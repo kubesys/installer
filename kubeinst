@@ -26,7 +26,7 @@ kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 #kube_runtime_version="1.4.9"             # containerd 
 kube_runtime="docker"                     # containerd or docker
 kube_runtime_version="20.10.8"            # docker
-kube_fip=""                               # if you deploy Kubernetes on a public cloud, the fip is public IP
+kube_fip="39.100.71.73"                               # if you deploy Kubernetes on a public cloud, the fip is public IP
 kube_software_repo="https://gitee.com/syswu/yamls"  
 kube_cni="calico"                         # calico or kubeovn
 kube_addon="addon"                        # loki, prometheus, grafana
@@ -553,6 +553,25 @@ function init-backend()
 
   kubectl apply -f $dir/$mirrorFile
   kubectl apply -f $dir/$mapperFile
+ 
+
+  while true
+  do
+    res=$(kubectl get po -A | grep kube-api-mapper |  grep -v Running | grep -v NAMESPACE)
+    if [[ -z "$res" ]]
+    then
+      break
+    fi
+    sleep 5s
+  done
+
+  if [[ -n $kube_fip ]]
+  then
+    host=$kube_fip
+  fi
+
+   
+  curl -H "Content-Type: application/json" -X POST -d '{"json": {"name": "admin","rules": [{"apiGroups": ["*"],"resources": ["*"],"verbs": ["*"]}]}}' "http://$host:30308/kubesys/user/createUserRole"
 }
 
 function reset-backend()
