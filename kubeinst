@@ -139,6 +139,8 @@ function init-env()
   add-$install-repository
   $install-$kube_runtime-k8s
   init-kubeadm-kubeconfig
+
+  echo 2048 > /proc/sys/net/core/somaxconn && echo never > /sys/kernel/mm/transparent_hugepage/enabled
   #install-helm 
 }
 
@@ -647,7 +649,6 @@ function help()
   echo -e "  init-addon           :\t(Init): deploy loki, prometheus, grafana and superset, see https://gitee.com/syswu/yamls/addon"
   echo -e "  init-gpu             :\t(Init): deploy GPU manager, see https://github.com/kubesys/kube-gpu"
   echo -e "  init-virt            :\t(Init): deploy kvm, libvirt and vmm, see https://github.com/kubesys/kube-vmm"
-  echo -e "  init-dash            :\t(Init): deploy kubernetes-based system dashboard"
 #  echo -e "  init-crds            :\t(Init): deploy crds, see https://gitee.com/syswu/yamls/crds"
 #  echo -e "  init-backend         :\t(Init): deploy backend services, see https://gitee.com/syswu/yamls/backend"
 #  echo -e "  init-frontend        :\t(Init): deploy dashboard, see https://gitee.com/syswu/yamls/frontend"
@@ -675,9 +676,6 @@ case $1 in
     ;;
   "init-virt")
     init-virt $*
-    ;;
-  "init-dash")
-    init-dash $*
     ;;
   "init-crds")
     init-crds $*
