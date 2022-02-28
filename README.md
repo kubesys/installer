@@ -18,8 +18,8 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 | Name        | Type      | Version |  Packages   |  Ports    |     DNS   |   command  |      
 | ------      | ------    | ------  | ------      |   -----   |    -----  |   -----   |
 | Containerd  | Container        | 1.4.9    | [Linux](https://containerd.io/docs/getting-started/)|            NA                |              NA              | init-env |
-| Kubernetes  | Orchestrator     | 1.22.2   | [Linux](https://docs.kubernetes.io/)                | 6443,12500,12501,30000-32000 |              NA              | init-env |
-| Calico      | Network solution | 3.19     | [Linux](https://docs.projectcalico.org/)            |            NA                |              NA              | init-cni |
+| Kubernetes  | Orchestrator     | 1.23.4   | [Linux](https://docs.kubernetes.io/)                | 6443,12500,12501,30000-32000 |              NA              | init-env |
+| Calico      | Network solution | 3.21     | [Linux](https://docs.projectcalico.org/)            |            NA                |              NA              | init-cni |
 | Loki        | LogCollector     | 1.6.1    | [Linux](https://grafana.com/oss/loki/)              |            NA                |              NA              |init-addon| 
 | KeyCloack   | Authentication   | 15.0.2   | [Linux](https://www.keycloak.org/)                  |         8080/31000           |              NA              |   ---    |
 | Prometheus  | Monitor          | 2.23.0   | [Linux](https://github.com/prometheus/prometheus/)  |         9090/31001           |              NA              |init-addon|
@@ -27,7 +27,7 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 | superset    | StateAnalyzer    | 1.0.0    | [Linux](https://superset.apache.org//)              |         8088/31003           |              NA              |init-addon|
 | Registry    | ImageManager     | 2.7.1    | [Linux](https://goharbor.io/)                       |     80/31004, 5000/31005     | devops-harbor-registry.devops-system    |   ---    |
 
-** Update 25/09/2021 **
+** Update 01/03/2022 **
 
 
 **Optional**
