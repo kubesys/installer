@@ -72,7 +72,7 @@ Now it support two commands
 Commands:
   init-env             :(Init): install conatiner/docker, kubeadm, kubelet, kubectl and helm
   init-kube            :(Init): initialize kubernetes and deploy dex openldap
-  init-cni             :(Init): deploy calico or kubeovn
+  init-cni             :(Init): deploy calico, flannel or kubeovn
   init-addon           :(Init): deploy loki, prometheus, grafana and superset
 ```
 
