@@ -348,6 +348,11 @@ function init-cni-kubeovn()
   curl $kube_software_repo/raw/master/cni/$kube_cni.sh | bash -
 }
 
+function init-cni-flannel()
+{
+  kubectl apply -f $kube_software_repo/raw/master/cni/$kube_cni.yaml
+}
+
 ###########################################################
 ##
 ##  init-addon
