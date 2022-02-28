@@ -35,8 +35,8 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 | Name        | Type      | Version |  Packages  |
 | ------      | ------    | ------  | ------      |
 | Docker      | Container-based virtualization | 20.10   | [redhat](https://docs.docker.com/install/linux/docker-ee/rhel/), [openSUSE/SUSE](https://docs.docker.com/install/linux/docker-ee/suse/), [centos](https://docs.docker.com/install/linux/docker-ce/centos/), [debian](https://docs.docker.com/install/linux/docker-ce/debian/), [fedora](https://docs.docker.com/install/linux/docker-ce/fedora/), [ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/) |
-| OVN         | SDNController    | 1.8.0    | [Linux](https://github.com/alauda/kube-ovn)         |          
-
+| OVN         | SDNController    | 1.8.0    | [Linux](https://github.com/alauda/kube-ovn)     |          
+| Flannel     | Network solution | 0.16.3   | [Linux](https://github.com/flannel-io/flannel/) |
 ## Structure
 
 ```
