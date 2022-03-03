@@ -27,7 +27,8 @@ kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 kube_runtime="docker"                     # containerd or docker
 kube_runtime_version="20.10.8"            # docker
 #kube_fip="39.100.71.73"                  # if you deploy Kubernetes on a public cloud, the fip is public IP
-kube_software_repo="https://gitee.com/syswu/yamls"  
+kube_software_repo="https://gitee.com/syswu/yamls" 
+# https://docs.projectcalico.org/manifests/calico.yaml 
 kube_cni="calico"                         # calico, flannel, kubeovn
 kube_addon="addon"                        # loki, prometheus, grafana
 kube_cicd="cicd"                          # gitlab
@@ -676,9 +677,6 @@ case $1 in
   "init-cicd")
     init-cicd $*
     ;;
-  "init-gpu")
-    init-gpu $*
-    ;;
   "init-virt")
     init-virt $*
     ;;
@@ -690,18 +688,6 @@ case $1 in
     ;;
   "init-frontend")
     init-frontend $*
-    ;;
-  "init-kvm-env")
-    init-kvm-env $*
-    ;;
-  "reset-kube")
-    reset-kube $*
-    ;;
-  "reset-backend")
-    reset-backend $*
-    ;;
-  "reset-frontend")
-    reset-frontend $*
     ;;
   "--help")
     help
