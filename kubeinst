@@ -8,38 +8,17 @@
 ###############################################
 
 
-VERSION="2.0.0"
+VERSION="2.1.0"
 
-###############################################
+####################
 ##
-##  System Config, you can modify it
+## Common
 ##
-###############################################
+####################
 
-########      You can modify them      ########
-
-####   Container  #### 
-kube_pod_subnet="10.244.0.0/16"
-kube_version="1.23.4"
 kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
-#kube_runtime="containerd"                # containerd or docker
-#kube_runtime_version="1.4.9"             # containerd 
-kube_runtime="docker"                     # containerd or docker
-kube_runtime_version="20.10.8"            # docker
-#kube_fip="39.100.71.73"                  # if you deploy Kubernetes on a public cloud, the fip is public IP
 kube_software_repo="https://gitee.com/syswu/yamls" 
-# https://docs.projectcalico.org/manifests/calico.yaml 
-kube_cni="calico"                         # calico, flannel, kubeovn
-kube_addon="addon"                        # loki, prometheus, grafana
-kube_cicd="cicd"                          # gitlab
-kube_crds="crds"                          # crds
 
-#### VirtualMachine ####
-kube_virt_type="kvm"                      # kvm or kata
-kube_virt_version="train"                
-
-
-########    Advanced setting       ########
 centos_docker_ce_url="https://download.docker.com/linux/centos/\$releasever/\$basearch/stable"
 centos_docker_ce_gpg="https://download.docker.com/linux/centos/gpg"
 centos_kuberentes_url="https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-\$basearch/"
@@ -51,11 +30,42 @@ ubuntu_kuberentes_url="https://mirrors.aliyun.com/kubernetes/apt/"
 ubuntu_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg"
 
 
-########    Do not modify them       ########
+#####################
+##
+## Container
+##
+#####################
 
-# Deprecated
+#kube_fip="39.100.71.73"                  # if you deploy Kubernetes on a public cloud, the fip is public IP
+kube_pod_subnet="10.244.0.0/16"
+kube_version="1.23.4"
 
-## version
+#kube_runtime="containerd"                # containerd or docker
+#kube_runtime_version="1.4.9"             # containerd 
+kube_runtime="docker"                     # containerd or docker
+kube_runtime_version="20.10.8"            # docker
+
+kube_cni="calico"                         # calico, flannel, kubeovn
+kube_addon="addon"                        # loki, prometheus, grafana
+kube_cicd="cicd"                          # gitlab
+kube_crds="crds"                          # crds
+
+#####################
+##
+## Virtual Machine
+##
+#####################
+
+kube_virt_type="kvm"                      # kvm or kata
+kube_virt_version="train"                
+
+
+#####################
+##
+## Dashboard
+##
+#####################
+
 kube_backend_version="2.0.4"
 kube_frontend_version="2.0.4"
 
