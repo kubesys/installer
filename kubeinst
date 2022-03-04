@@ -71,11 +71,12 @@ dashboard_frontend="2.0.4"
 
 ###############################################
 ##
-## Do not modify the below codes youself
-## Create a issue if you need new features,
+## Do not modify the below codes youself.
+## Create a issue if you need new features
 ## or find a bug
 ##
 ###############################################
+
 function get-token
 {
   echo $(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
@@ -152,9 +153,7 @@ function init-env()
   init-kubeadm-kubeconfig
 
   echo 2048 > /proc/sys/net/core/somaxconn && echo never > /sys/kernel/mm/transparent_hugepage/enabled
-  #install-helm 
 }
-
 
 
 function disable-centos-security()
@@ -168,7 +167,6 @@ function disable-ubuntu-security()
 {
   sudo ufw disable
 }
-
 
 
 function add-yum-repository()
@@ -193,7 +191,6 @@ function add-apt-repository()
   echo  "deb [arch=$arch signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] $ubuntu_kuberentes_url kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
 
 }
-
 
 
 function yum-docker-k8s()
@@ -229,7 +226,6 @@ function apt-containerd-k8s()
   
   config-containerd
 }
-
 
 
 function config-docker()
@@ -273,7 +269,6 @@ function config-containerd()
 }
 
 
-
 function init-kubeadm-kubeconfig()
 {
   if [[ ! -d "/etc/kubernetes" ]]
@@ -302,12 +297,6 @@ function init-kubeadm-kubeconfig()
   echo -e "imageRepository: \"${common_image_server}\"" >> /etc/kubernetes/kubeadm.yaml
 }
 
-
-
-function install-helm()
-{
-  helm plugin install git@github.com:chartmuseum/helm-push.git
-}
 
 
 ###########################################################
