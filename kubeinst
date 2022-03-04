@@ -16,8 +16,8 @@ VERSION="2.1.0"
 ##
 ####################
 
-kube_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
-kube_software_repo="https://gitee.com/syswu/yamls" 
+common_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
+common_software_repo="https://gitee.com/syswu/yamls" 
 
 centos_docker_ce_url="https://download.docker.com/linux/centos/\$releasever/\$basearch/stable"
 centos_docker_ce_gpg="https://download.docker.com/linux/centos/gpg"
@@ -56,8 +56,8 @@ kube_crds="crds"                          # crds
 ##
 #####################
 
-kube_virt_type="kvm"                      # kvm or kata
-kube_virt_version="train"                
+virt_type="kvm"                      # kvm or kata
+virt_version="train"                
 
 
 #####################
@@ -66,8 +66,8 @@ kube_virt_version="train"
 ##
 #####################
 
-kube_backend_version="2.0.4"
-kube_frontend_version="2.0.4"
+dashboard_backend="2.0.4"
+dashboard_frontend="2.0.4"
 
 ###############################################
 ##
@@ -263,7 +263,7 @@ function config-containerd()
   containerd config default | sudo tee /etc/containerd/config.toml
 
   def_repo="k8s.gcr.io"
-  real_repo=${kube_image_server/\//\\\/}
+  real_repo=${common_image_server/\//\\\/}
   old_version=$(cat /etc/containerd/config.toml | grep "k8s.gcr.io" | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
   new_version=$(kubeadm config images list | grep pause | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
   sed -ie "s/$def_repo/$real_repo/g" /etc/containerd/config.toml
@@ -299,7 +299,7 @@ function init-kubeadm-kubeconfig()
   echo -e "networking:" >> /etc/kubernetes/kubeadm.yaml
   echo -e "  podSubnet: \"${kube_pod_subnet}\"" >> /etc/kubernetes/kubeadm.yaml
   echo -e "kubernetesVersion: \"v${kube_version}\"" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "imageRepository: \"${kube_image_server}\"" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "imageRepository: \"${common_image_server}\"" >> /etc/kubernetes/kubeadm.yaml
 }
 
 
@@ -350,18 +350,18 @@ function init-cni()
 
 function init-cni-calico()
 {
-  kubectl apply -f $kube_software_repo/raw/master/cni/$kube_cni.yaml
+  kubectl apply -f $common_software_repo/raw/master/cni/$kube_cni.yaml
 }
 
 
 function init-cni-kubeovn()
 {
-  curl $kube_software_repo/raw/master/cni/$kube_cni.sh | bash -
+  curl $common_software_repo/raw/master/cni/$kube_cni.sh | bash -
 }
 
 function init-cni-flannel()
 {
-  kubectl apply -f $kube_software_repo/raw/master/cni/$kube_cni.yaml
+  kubectl apply -f $common_software_repo/raw/master/cni/$kube_cni.yaml
 }
 
 ###########################################################
@@ -373,7 +373,7 @@ function init-cni-flannel()
 function init-addon()
 {
   rm -rf /tmp/list
-  wget -P /tmp/ $kube_software_repo/raw/master/$kube_addon/list
+  wget -P /tmp/ $common_software_repo/raw/master/$kube_addon/list
   for line in `cat /tmp/list`
   do
     kubectl apply -f $line
@@ -389,7 +389,7 @@ function init-addon()
 function init-cicd()
 {
   rm -rf /tmp/list
-  wget -P /tmp/ $kube_software_repo/raw/master/$kube_addon/list
+  wget -P /tmp/ $common_software_repo/raw/master/$kube_addon/list
   for line in `cat /tmp/list`
   do
     kubectl apply -f $line
@@ -404,7 +404,7 @@ function init-cicd()
 
 function init-virt()
 {
-  init-$kube_virt_type
+  init-$virt_type
 }
 
 function init-kvm()
@@ -442,12 +442,12 @@ function yum-install()
 
 function add-kvm-yum-repository()
 {
-  yum install centos-release-openstack-$kube_virt_version -y
+  yum install centos-release-openstack-$virt_version -y
 }
 
 function add-kvm-apt-repository
 {
-  add-apt-repository cloud-archive:$kube_virt_version
+  add-apt-repository cloud-archive:$virt_version
 }
 
 
@@ -507,7 +507,7 @@ function apply-yaml()
 function init-crds()
 {
   rm -rf /tmp/list
-  wget -P /tmp/ $kube_software_repo/raw/master/$kube_crds/list
+  wget -P /tmp/ $common_software_repo/raw/master/$kube_crds/list
   for line in `cat /tmp/list`
   do
     kubectl apply -f $line
@@ -550,14 +550,14 @@ function init-backend()
   sed -i "s/#port#/$dbport/g" $dir/$mirrorFile
   sed -i "s/#url#/$url/g" $dir/$mirrorFile
   sed -i "s/#token#/$token/g" $dir/$mirrorFile
-  sed -i "s/#version#/$kube_backend_version/g" $dir/$mirrorFile
+  sed -i "s/#version#/$dashboard_backend/g" $dir/$mirrorFile
 
   sed -i "s/#type#/$type/g" $dir/$mapperFile
   sed -i "s/#host#/$host/g" $dir/$mapperFile
   sed -i "s/#port#/$dbport/g" $dir/$mapperFile
   sed -i "s/#url#/$url/g" $dir/$mapperFile
   sed -i "s/#token#/$token/g" $dir/$mapperFile
-  sed -i "s/#version#/$kube_backend_version/g" $dir/$mapperFile
+  sed -i "s/#version#/$dashboard_backend/g" $dir/$mapperFile
 
   while true
   do
@@ -628,7 +628,7 @@ function init-frontend()
   # make and config yaml
   rm -rf /$dir/$frontendFile 
   wget -P $dir/ $frontendUrl/$frontendFile
-  sed -i "s/#version#/$kube_frontend_version/g" $dir/$frontendFile
+  sed -i "s/#version#/$dashboard_frontend/g" $dir/$frontendFile
 
   # apply yaml
   kubectl apply -f /$dir/$frontendFile
