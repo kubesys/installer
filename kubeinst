@@ -131,8 +131,23 @@ function replace()
 ##
 ##########################################################
 
+function help-env()
+{
+  cmddesc
+  echo -e "Commands:"
+  echo -e "  init-env container   :\t(Init): install conatiner/docker, kubeadm, kubelet and kubectl"
+  echo -e "  init-env vm          :\t(Init): install kvm/libvirt, kubeadm, kubelet and kubectl"
+  echo -e "  init-env --help      :\t(Init): help"
+}
+
 function init-env()
 {
+  if [[ $# != 2 ]]
+  then
+     help-env
+     exit
+  fi
+ 
   install=""
   osname=""
   if [[ -n $(cat /etc/os-release | grep centos) ]]
@@ -147,12 +162,25 @@ function init-env()
     echo "only support centos and ubuntu."
     exit 1
   fi
+
   disable-$osname-security
   add-$install-repository
-  $install-$kube_runtime-k8s
-  init-kubeadm-kubeconfig
+  init-kubeadm-kubeconfig 
 
-  echo 2048 > /proc/sys/net/core/somaxconn && echo never > /sys/kernel/mm/transparent_hugepage/enabled
+  if [[ $2 == "container" ]]
+  then
+     init-env-container $install
+  elif [[ $2 == "vm" ]]
+  then
+     init-env-vm $install
+  else
+     help-env
+  fi
+}
+
+function init-env-container()
+{
+  $1-$kube_runtime-k8s
 }
 
 
@@ -638,6 +666,11 @@ function reset-frontend()
 ##########################################################
 
 
+function unsupport()
+{
+  echo -e "\n'$@' is not a valid command, see --help\n"
+}
+
 function cmddesc()
 {
   echo -e "Welcome to kubeinst ($VERSION), install Kubernetes-based systems from scratch.\n"
@@ -654,6 +687,7 @@ function help()
   echo -e "  init-addon           :\t(Init): deploy loki, prometheus, grafana and superset, see https://gitee.com/syswu/yamls/addon"
   echo -e "  init-gpu             :\t(Init): deploy GPU manager, see https://github.com/kubesys/kube-gpu"
   echo -e "  init-virt            :\t(Init): deploy kvm, libvirt and vmm, see https://github.com/kubesys/kube-vmm"
+  echo -e "  --help               :\t(Init): help"
 #  echo -e "  init-crds            :\t(Init): deploy crds, see https://gitee.com/syswu/yamls/crds"
 #  echo -e "  init-backend         :\t(Init): deploy backend services, see https://gitee.com/syswu/yamls/backend"
 #  echo -e "  init-frontend        :\t(Init): deploy dashboard, see https://gitee.com/syswu/yamls/frontend"
@@ -692,6 +726,7 @@ case $1 in
     help
     ;;
   *)
+  unsupport $@
   help
   ;;
 esac
