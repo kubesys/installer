@@ -135,8 +135,8 @@ function help-env()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-env container   :\t(Init): install conatiner/docker, kubeadm, kubelet and kubectl"
-  echo -e "  init-env vm          :\t(Init): install kvm/libvirt, kubeadm, kubelet and kubectl"
+  echo -e "  init-env container   :\t(Init): install conatinerd/docker, kubeadm, kubelet and kubectl"
+  echo -e "  init-env vm          :\t(Init): install kvm, libvirt, kubeadm, kubelet and kubectl"
   echo -e "  init-env --help      :\t(Init): help"
 }
 
@@ -333,7 +333,37 @@ function init-kubeadm-kubeconfig()
 ##
 ##########################################################
 
+function help-kube()
+{
+  cmddesc
+  echo -e "Commands:"
+  echo -e "  init-kube container   :\t(Init): install conatinerd/docker, kubeadm, kubelet and kubectl"
+  echo -e "  init-kube vm          :\t(Init): install kvm, libvirt, kubeadm, kubelet and kubectl"
+  echo -e "  init-kube --help      :\t(Init): help"
+}
+
 function init-kube()
+{
+  if [[ $# != 2 ]]
+  then
+     help-kube
+     exit
+  fi
+
+  if [[ $2 == "container" ]]
+  then
+     init-kube-container
+  elif [[ $2 == "vm" ]]
+  then
+     init-kube-container
+     init-kube-vm
+  else
+     help-kube
+  fi 
+ 
+}
+
+function init-kube-container()
 {
   # [optional] just consider performance
   swapoff -a      
@@ -681,9 +711,9 @@ function help()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-env             :\t(Init): install conatiner/docker, kubeadm, kubelet and kubectl"
-  echo -e "  init-kube            :\t(Init): initialize kubernetes cluster"
-  echo -e "  init-cni             :\t(Init): deploy calico or kubeovn, see https://gitee.com/syswu/yamls/cni"
+  echo -e "  init-env             :\t(Init): download conatiner-based or vm-based software packages"
+  echo -e "  init-kube            :\t(Init): install kubernetes-based cluster for container or vm"
+  echo -e "  init-cni             :\t(Init): install kubernetes-based cluster network calico or kubeovn, see https://gitee.com/syswu/yamls/cni"
   echo -e "  init-addon           :\t(Init): deploy loki, prometheus, grafana and superset, see https://gitee.com/syswu/yamls/addon"
   echo -e "  init-gpu             :\t(Init): deploy GPU manager, see https://github.com/kubesys/kube-gpu"
   echo -e "  init-virt            :\t(Init): deploy kvm, libvirt and vmm, see https://github.com/kubesys/kube-vmm"
