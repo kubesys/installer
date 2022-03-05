@@ -17,15 +17,13 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 
 | Name        | Type      | Version |  Packages   |  Ports    |     DNS   |   command  |      
 | ------      | ------    | ------  | ------      |   -----   |    -----  |   -----   |
-| Containerd  | Container        | 1.4.9    | [Linux](https://containerd.io/docs/getting-started/)|            NA                |              NA              | init-env |
-| Kubernetes  | Orchestrator     | 1.23.4   | [Linux](https://docs.kubernetes.io/)                | 6443,12500,12501,30000-32000 |              NA              | init-env |
-| Calico      | Network solution | 3.21     | [Linux](https://docs.projectcalico.org/)            |            NA                |              NA              | init-cni |
-| Loki        | LogCollector     | 1.6.1    | [Linux](https://grafana.com/oss/loki/)              |            NA                |              NA              |init-addon| 
-| KeyCloack   | Authentication   | 15.0.2   | [Linux](https://www.keycloak.org/)                  |         8080/31000           |              NA              |   ---    |
-| Prometheus  | Monitor          | 2.23.0   | [Linux](https://github.com/prometheus/prometheus/)  |         9090/31001           |              NA              |init-addon|
-| grafana     | StateObserver    | 7.3.4    | [Linux](https://community.grafana.com/)             |         3000/31002           |              NA              |init-addon|
-| superset    | StateAnalyzer    | 1.0.0    | [Linux](https://superset.apache.org//)              |         8088/31003           |              NA              |init-addon|
-| Registry    | ImageManager     | 2.7.1    | [Linux](https://goharbor.io/)                       |     80/31004, 5000/31005     | devops-harbor-registry.devops-system    |   ---    |
+| Containerd  | Container        | 1.4.9    | [Linux](https://containerd.io/docs/getting-started/)|            NA                |              NA              | init-env/init-kube container |
+| Kubernetes  | Orchestrator     | 1.23.4   | [Linux](https://docs.kubernetes.io/)                | 6443,12500,12501,30000-32000 |              NA              | init-env/init-kube vm |
+| Calico      | Network solution | 3.21     | [Linux](https://docs.projectcalico.org/)            |            NA                |              NA              | init-cni calico |
+| Loki        | LogCollector     | 1.6.1    | [Linux](https://grafana.com/oss/loki/)              |            NA                |              NA              |init-addon loki| 
+| Prometheus  | Monitor          | 2.23.0   | [Linux](https://github.com/prometheus/prometheus/)  |         9090/31001           |              NA              |init-addon prometheus |
+| grafana     | StateObserver    | 7.3.4    | [Linux](https://community.grafana.com/)             |         3000/31002           |              NA              |init-addon grafana|
+| superset    | StateAnalyzer    | 1.0.0    | [Linux](https://superset.apache.org//)              |         8088/31003           |              NA              |init-addon superset|
 
 ** Update 01/03/2022 **
 
@@ -60,20 +58,20 @@ chmod 777 /usr/bin/kubeinst
 ## Commands
 
 ```
-kubeinst init-env
-kubeinst init-kube
-kubeinst init-cni
-kubeinst init-addon
+kubeinst init-env container
+kubeinst init-kube container
+kubeinst init-cni calico
+kubeinst init-addon prometheus
 ```
 
 Now it support two commands
 
 ```
 Commands:
-  init-env             :(Init): install conatiner/docker, kubeadm, kubelet, kubectl and helm
-  init-kube            :(Init): initialize kubernetes and deploy dex openldap
-  init-cni             :(Init): deploy calico, flannel or kubeovn
-  init-addon           :(Init): deploy loki, prometheus, grafana and superset
+  init-env             :(Init): download conatiner-based or vm-based software packages
+  init-kube            :(Init): install kubernetes-based cluster for container or vm"
+  init-cni             :(Init): install kubernetes-based cluster network, such as calico or kubeovn
+  init-addon           :(Init): install kubernetes addons, such as loki, prometheus, grafana and superset
 ```
 
 - Using the `init-env` command, you can install Docker and Kubernetes on a just installed OS.
