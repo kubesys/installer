@@ -135,8 +135,8 @@ function help-env()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-env container   :\t(Init): install conatinerd/docker, kubeadm, kubelet and kubectl"
-  echo -e "  init-env vm          :\t(Init): install kvm, libvirt, kubeadm, kubelet and kubectl"
+  echo -e "  init-env container   :\t(Init): download conatinerd/docker, kubeadm, kubelet and kubectl"
+  echo -e "  init-env vm          :\t(Init): download kvm, libvirt, kubeadm, kubelet and kubectl"
   echo -e "  init-env --help      :\t(Init): help"
 }
 
@@ -174,6 +174,7 @@ function init-env()
   then
      init-env-vm $install
   else
+     unsupport $@
      help-env
   fi
 }
@@ -358,6 +359,7 @@ function init-kube()
      init-kube-container
      init-kube-vm
   else
+     unsupport $@
      help-kube
   fi 
  
@@ -698,7 +700,13 @@ function reset-frontend()
 
 function unsupport()
 {
-  echo -e "\n'$@' is not a valid command, see --help\n"
+  echo -n "'$@' is not a valid command, see "
+  for a in "${@:1:$# - 1}" 
+  do 
+    echo -n "$a " 
+  done 
+  echo -n "--help"
+  echo -e "\n"
 }
 
 function cmddesc()
