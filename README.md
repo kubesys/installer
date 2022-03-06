@@ -1,10 +1,9 @@
-## kube-installer
+## installer
 
 Install Kubernetes-based systems with a simple and comprehensible way.
 ** Note **
-- this script can work well on CentOS/RHEL 7.x and Ubuntu 16.x/18.x.
-- we test this script on Kubernetes >=1.16 and < 1.22
-
+- this script can work well on CentOS/RHEL 7.x/8.x and Ubuntu 18.x/20.x.
+- we test this script on Kubernetes >=1.18
 
 ## Architecture
 
@@ -17,13 +16,13 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 
 | Name        | Type      | Version |  Packages   |  Ports    |     DNS   |   command  |      
 | ------      | ------    | ------  | ------      |   -----   |    -----  |   -----   |
-| Containerd  | Container        | 1.4.9    | [Linux](https://containerd.io/docs/getting-started/)|            NA                |              NA              | init-env/init-kube container |
-| Kubernetes  | Orchestrator     | 1.23.4   | [Linux](https://docs.kubernetes.io/)                | 6443,12500,12501,30000-32000 |              NA              | init-env/init-kube vm |
-| Calico      | Network solution | 3.21     | [Linux](https://docs.projectcalico.org/)            |            NA                |              NA              | init-cni calico |
-| Loki        | LogCollector     | 1.6.1    | [Linux](https://grafana.com/oss/loki/)              |            NA                |              NA              |init-addon loki| 
-| Prometheus  | Monitor          | 2.23.0   | [Linux](https://github.com/prometheus/prometheus/)  |         9090/31001           |              NA              |init-addon prometheus |
-| grafana     | StateObserver    | 7.3.4    | [Linux](https://community.grafana.com/)             |         3000/31002           |              NA              |init-addon grafana|
-| superset    | StateAnalyzer    | 1.0.0    | [Linux](https://superset.apache.org//)              |         8088/31003           |              NA              |init-addon superset|
+| Containerd  | Container        | 1.6.x    | [Linux](https://containerd.io/docs/getting-started/)|            NA                |              NA              | init-env/init-kube container |
+| Kubernetes  | Orchestrator     | 1.23.x   | [Linux](https://docs.kubernetes.io/)                | 6443,12500,12501,30000-32000 |              NA              | init-env/init-kube vm |
+| Calico      | Network          | 3.22.x   | [Linux](https://docs.projectcalico.org/)            |            NA                |              NA              | init-cni calico |
+| Loki        | Log              | 2.4.x    | [Linux](https://grafana.com/oss/loki/)              |            NA                |              NA              |init-addon loki| 
+| Prometheus  | Monitor          | 2.33.x   | [Linux](https://github.com/prometheus/prometheus/)  |         9090/31001           |              NA              |init-addon prometheus |
+| grafana     | Observer         | 8.4.x    | [Linux](https://community.grafana.com/)             |         3000/31002           |              NA              |init-addon grafana|
+| superset    | Analyzer         | 1.4.x    | [Linux](https://superset.apache.org//)              |         8088/31003           |              NA              |init-addon superset|
 
 ** Update 01/03/2022 **
 
@@ -33,8 +32,8 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 | Name        | Type      | Version |  Packages  |
 | ------      | ------    | ------  | ------      |
 | Docker      | Container-based virtualization | 20.10   | [redhat](https://docs.docker.com/install/linux/docker-ee/rhel/), [openSUSE/SUSE](https://docs.docker.com/install/linux/docker-ee/suse/), [centos](https://docs.docker.com/install/linux/docker-ce/centos/), [debian](https://docs.docker.com/install/linux/docker-ce/debian/), [fedora](https://docs.docker.com/install/linux/docker-ce/fedora/), [ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/) |
-| OVN         | SDNController    | 1.8.0    | [Linux](https://github.com/alauda/kube-ovn)     |          
-| Flannel     | Network solution | 0.16.3   | [Linux](https://github.com/flannel-io/flannel/) |
+| OVN         | Network  | 1.9.x    | [Linux](https://github.com/alauda/kube-ovn)     |          
+| Flannel     | Network  | 0.16.3   | [Linux](https://github.com/flannel-io/flannel/) |
 ## Structure
 
 ```
@@ -48,9 +47,7 @@ kubeinst: main install file
 download the `kubeinst` tool.
 
 ```
-curl --url https://raw.githubusercontent.com/kubesys/kube-installer/master/kubeinst --output /usr/bin/kubeinst
-or
-curl --url https://gitee.com/syswu/kube-installer/raw/master/kubeinst --output /usr/bin/kubeinst
+curl --url https://raw.githubusercontent.com/kubesys/installer/master/kubeinst --output /usr/bin/kubeinst
 
 chmod 777 /usr/bin/kubeinst
 ```
@@ -137,17 +134,9 @@ Note that you can customized :
 ## Roadmap
 
 ```
-- 1.x: POC ready
-  - 1.1: support containerd
-  - 1.2: support init-kvm-env
-  - 1.3: support init-backend
-  - 1.4: support init-frontend
-  - 1.5: support common for backend and frontend
-  - 1.6: support message in backend
-  - 1.7: support init-cni and inst-addon
-  - 1.8: support inst-anth, and enable superset
 - 2.x: product ready
   - 2.0: support amd64 and arm64
+  - 2.1: calico/kubeovn
 ```
 
 ## Useage
