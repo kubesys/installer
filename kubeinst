@@ -49,6 +49,10 @@ kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manife
 kube_cni_calico_version="v3.22"                         # calico, flannel, kubeovn
 kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"    
 
+kube_cni_flannel_url="https://raw.githubusercontent.com/flannel-io/flannel/VERSION/Documentation/kube-flannel.yml"
+kube_cni_flannel_version="v0.16.3"                         # calico, flannel, kubeovn
+kube_cni_flannel_yaml="${kube_cni_flannel_url/VERSION/$kube_cni_flannel_version}"
+
 kube_addon="addon"                        # loki, prometheus, grafana
 kube_cicd="cicd"                          # gitlab
 
@@ -471,7 +475,7 @@ function init-cni-kubeovn()
 
 function init-cni-flannel()
 {
-  kubectl apply -f $common_software_repo/raw/master/cni/$kube_cni.yaml
+  kubectl apply -f $kube_cni_flannel_yaml
 }
 
 ###########################################################
