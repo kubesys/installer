@@ -45,10 +45,12 @@ kube_version="1.23.4"
 kube_runtime="docker"                     # containerd or docker
 kube_runtime_version="20.10.8"            # docker
 
-kube_cni="calico"                         # calico, flannel, kubeovn
+kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
+kube_cni_calico_version="v3.22"                         # calico, flannel, kubeovn
+kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"    
+
 kube_addon="addon"                        # loki, prometheus, grafana
 kube_cicd="cicd"                          # gitlab
-kube_crds="crds"                          # crds
 
 #####################
 ##
@@ -66,6 +68,7 @@ virt_version="train"
 ##
 #####################
 
+kube_crds="crds"                          # crds
 dashboard_backend="2.0.4"
 dashboard_frontend="2.0.4"
 
@@ -420,15 +423,44 @@ function init-kube-container()
 ##
 ##########################################################
 
+function help-cni()
+{
+  cmddesc
+  echo -e "Commands:"
+  echo -e "  init-cni calico      :\t(Init): download conatinerd/docker, kubeadm, kubelet and kubectl"
+  echo -e "  init-cni kubeovn     :\t(Init): download kvm, libvirt, kubeadm, kubelet and kubectl"
+  echo -e "  init-cni flannel     :\t(Init): download kvm, libvirt, kubeadm, kubelet and kubectl"
+  echo -e "  init-env --help      :\t(Init): help"
+}
+
+
 function init-cni()
 {
-  init-cni-$kube_cni
+  if [[ $# != 2 ]]
+  then
+     help-cni
+     exit
+  fi
+
+  if [[ $2 == "calico" ]]
+  then
+     init-cni-calico
+  elif [[ $2 == "kubeovn" ]]
+  then
+     init-cni-kubeovn
+  elif [[ $2 == "flannel" ]]
+  then
+     init-cni-flannel
+  else
+     unsupport $@
+     help-cni
+  fi
 }
 
 
 function init-cni-calico()
 {
-  kubectl apply -f $common_software_repo/raw/master/cni/$kube_cni.yaml
+  kubectl apply -f $kube_cni_calico_yaml
 }
 
 
