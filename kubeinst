@@ -184,6 +184,35 @@ function init-env-container()
   $1-$kube_runtime-k8s
 }
 
+function init-env-vm()
+{
+  add-kvm-$1-repository
+  $1-install
+  start-service libvirtd 
+}
+
+function apt-install()
+{
+  #apt-get install qemu-kvm libvirt-dev libvirt-daemon libvirt-clients -y
+  apt-get install qemu-kvm libvirt-bin -y
+}
+
+function yum-install()
+{
+  yum instal qemu-kvm libvirt -y
+}
+
+function add-kvm-yum-repository()
+{
+  yum install centos-release-openstack-$virt_version -y
+}
+
+function add-kvm-apt-repository
+{
+  add-apt-repository cloud-archive:$virt_version
+}
+
+
 
 function disable-centos-security()
 {
@@ -444,61 +473,6 @@ function init-cicd()
     kubectl apply -f $line
   done
 }
-
-###########################################################
-##
-##  init-kvm
-##
-##########################################################
-
-function init-virt()
-{
-  init-$virt_type
-}
-
-function init-kvm()
-{
-  install=""
-  osname=""
-  if [[ -n $(cat /etc/os-release | grep centos) ]]
-  then
-    install="yum"
-    osname="centos"
-  elif [[ -n $(cat /etc/os-release | grep ubuntu) ]]
-  then
-    install="apt"
-    osname="ubuntu"
-  else
-    echo "only support centos and ubuntu."
-    exit 1
-  fi
-  disable-$osname-security
-  add-kvm-$install-repository
-  $install-install
-  start-service libvirtd 
-}
-
-function apt-install()
-{
-  #apt-get install qemu-kvm libvirt-dev libvirt-daemon libvirt-clients -y
-  apt-get install qemu-kvm libvirt-bin -y
-}
-
-function yum-install()
-{
-  yum instal qemu-kvm libvirt -y
-}
-
-function add-kvm-yum-repository()
-{
-  yum install centos-release-openstack-$virt_version -y
-}
-
-function add-kvm-apt-repository
-{
-  add-apt-repository cloud-archive:$virt_version
-}
-
 
 ###########################################################
 ##
