@@ -46,12 +46,18 @@ kube_runtime="docker"                     # containerd or docker
 kube_runtime_version="20.10.8"            # docker
 
 kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
-kube_cni_calico_version="v3.22"                         # calico, flannel, kubeovn
+kube_cni_calico_version="v3.22"      
 kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"    
 
 kube_cni_flannel_url="https://raw.githubusercontent.com/flannel-io/flannel/VERSION/Documentation/kube-flannel.yml"
-kube_cni_flannel_version="v0.16.3"                         # calico, flannel, kubeovn
+kube_cni_flannel_version="v0.16.3"                 
 kube_cni_flannel_yaml="${kube_cni_flannel_url/VERSION/$kube_cni_flannel_version}"
+
+kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/release-VERSION/dist/images/install.sh"
+kube_cni_ovn_version="1.9"
+kube_cni_ovn_sh="${kube_cni_ovn_url/VERSION/$kube_cni_ovn_version}"
+
+
 
 kube_addon="addon"                        # loki, prometheus, grafana
 kube_cicd="cicd"                          # gitlab
@@ -434,7 +440,7 @@ function help-cni()
   echo -e "  init-cni calico      :\t(Init): download conatinerd/docker, kubeadm, kubelet and kubectl"
   echo -e "  init-cni kubeovn     :\t(Init): download kvm, libvirt, kubeadm, kubelet and kubectl"
   echo -e "  init-cni flannel     :\t(Init): download kvm, libvirt, kubeadm, kubelet and kubectl"
-  echo -e "  init-env --help      :\t(Init): help"
+  echo -e "  init-cni --help      :\t(Init): help"
 }
 
 
@@ -470,7 +476,7 @@ function init-cni-calico()
 
 function init-cni-kubeovn()
 {
-  curl $common_software_repo/raw/master/cni/$kube_cni.sh | bash -
+  curl $kube_cni_ovn_sh | bash -
 }
 
 function init-cni-flannel()
