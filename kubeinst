@@ -200,7 +200,7 @@ function init-env-container()
 function init-env-vm()
 {
   add-kvm-$1-repository
-  $1-install
+  $1-kvm-install
   start-service libvirtd 
 }
 
@@ -210,9 +210,9 @@ function apt-install()
   apt-get install qemu-kvm libvirt-bin -y
 }
 
-function yum-install()
+function yum-kvm-install()
 {
-  yum instal qemu-kvm libvirt -y
+  yum install qemu-kvm libvirt cloud-utils usbutils virt-install -y
 }
 
 function add-kvm-yum-repository()
@@ -398,7 +398,10 @@ function init-kube()
      init-kube-container
   elif [[ $2 == "vm" ]]
   then
-     init-kube-container
+     if [[ -z $(ps aux | grep kube-apiserver | grep -v grep) ]]
+     then
+       init-kube-container
+     fi
      init-kube-vm
   else
      unsupport $@
