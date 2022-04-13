@@ -61,9 +61,9 @@ kube_storage_ceph="storage/ceph"
 kube_storage_nfs="storage/nfs"
 
 kube_addon_prom="addon/prom"
-kube_addon_prom="addon/loki"
-kube_addon_prom="addon/grafana" 
-kube_addon_prom="addon/superset"
+kube_addon_loki="addon/loki"
+kube_addon_grafana="addon/grafana" 
+kube_addon_superset="addon/superset"
 
 kube_cicd="cicd"                          # gitlab
 
@@ -584,12 +584,16 @@ function init-addon()
      unsupport $@
      help-addon
   fi
-  #rm -rf /tmp/list
-  #wget -P /tmp/ $common_software_repo/raw/master/$kube_addon/list
-  #for line in `cat /tmp/list`
-  #do
-  #  kubectl apply -f $line
-  #done
+}
+
+function init-addon-prom()
+{
+  rm -rf /tmp/list
+  wget -P /tmp/ $common_software_repo/raw/master/$kube_addon_prom/list
+  for line in `cat /tmp/list`
+  do
+    kubectl apply -f $line
+  done
 }
 
 ###########################################################
