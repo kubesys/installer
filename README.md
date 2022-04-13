@@ -5,6 +5,10 @@ Install Kubernetes-based systems with a simple and comprehensible way.
 - this script can work well on CentOS/RHEL 7.x/8.x and Ubuntu 18.x/20.x.
 - we test this script on Kubernetes >=1.18
 
+## Supported
+
+- Provincial Key Research and Development Program of ShanDong, China (2021CXGC010101)
+
 ## Architecture
 
 Our installer is used in a shell - bare metal machine way. Its framework is shown as below:
