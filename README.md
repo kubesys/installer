@@ -7,7 +7,7 @@ Install Kubernetes-based systems with a simple and comprehensible way.
 
 ## Supported
 
-- Provincial Key Research and Development Program of ShanDong, China (2021CXGC010101)
+- ShanDong Provincial Key Research and Development Program, China (2021CXGC010101)
 
 ## Architecture
 
