@@ -58,7 +58,13 @@ kube_cni_ovn_version="1.9"
 kube_cni_ovn_sh="${kube_cni_ovn_url/VERSION/$kube_cni_ovn_version}"
 
 kube_storage_ceph="storage/ceph"
-kube_addon="addon"                        # loki, prometheus, grafana
+kube_storage_nfs="storage/nfs"
+
+kube_addon_prom="addon/prom"
+kube_addon_prom="addon/loki"
+kube_addon_prom="addon/grafana" 
+kube_addon_prom="addon/superset"
+
 kube_cicd="cicd"                          # gitlab
 
 #####################
@@ -384,7 +390,7 @@ function help-kube()
   echo -e "  init-compute --help      :\t(Init): help"
 }
 
-function init-kube()
+function init-compute()
 {
   if [[ $# != 2 ]]
   then
@@ -543,14 +549,47 @@ function init-storage-nfs()
 ##
 ##########################################################
 
+function help-addon()
+{
+  cmddesc
+  echo -e "Commands:"
+  echo -e "  init-addon prom       :\t(Init): prometheus"
+  echo -e "  init-addon loki       :\t(Init): loki"
+  echo -e "  init-addon grafana    :\t(Init): grafana"
+  echo -e "  init-addon superset   :\t(Init): superset"
+  echo -e "  init-addon --help     :\t(Init): help"
+}
+
 function init-addon()
 {
-  rm -rf /tmp/list
-  wget -P /tmp/ $common_software_repo/raw/master/$kube_addon/list
-  for line in `cat /tmp/list`
-  do
-    kubectl apply -f $line
-  done
+  if [[ $# != 2 ]]
+  then
+     help-addon
+     exit
+  fi
+
+  if [[ $2 == "prom" ]]
+  then
+     init-addon-prom
+  elif [[ $2 == "loki" ]]
+  then
+     init-addon-loki
+  elif [[ $2 == "grafana" ]]
+  then
+     init-addon-grafana
+  elif [[ $2 == "superset" ]]
+  then
+     init-addon-superset
+  else
+     unsupport $@
+     help-addon
+  fi
+  #rm -rf /tmp/list
+  #wget -P /tmp/ $common_software_repo/raw/master/$kube_addon/list
+  #for line in `cat /tmp/list`
+  #do
+  #  kubectl apply -f $line
+  #done
 }
 
 ###########################################################
