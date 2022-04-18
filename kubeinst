@@ -69,8 +69,8 @@ kube_cicd="cicd"                          # gitlab
 #####################
 
 virt_type="kvm"                      # kvm or kata
-virt_version="train"                
-
+virt_version="rocky"                
+kube_virt="virt"
 
 #####################
 ##
@@ -212,7 +212,10 @@ function apt-install()
 
 function yum-kvm-install()
 {
-  yum install qemu-kvm libvirt cloud-utils usbutils virt-install -y
+   yum install qemu-kvm libvirt cloud-utils usbutils virt-install wget docker-ce-${kube_runtime_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version} lvm2 python3 python3-devel python3-pip libcurl-devel -y
+  pip3 install --upgrade pip
+  pip3 install --ignore-installed threadpool prometheus_client kubernetes libvirt-python==5.9.0 xmljson xmltodict watchdog pyyaml grpcio grpcio-tools protobuf psutil
+  config-docker
 }
 
 function add-kvm-yum-repository()
@@ -408,6 +411,17 @@ function init-kube()
      help-kube
   fi 
  
+}
+
+
+function init-kube-vm()
+{
+  rm -rf /tmp/list
+  wget -P /tmp/ $common_software_repo/raw/master/$kube_virt/list
+  for line in `cat /tmp/list`
+  do
+    kubectl apply -f $line
+  done 
 }
 
 function init-kube-container()
