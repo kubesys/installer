@@ -20,8 +20,8 @@ Our installer is used in a shell - bare metal machine way. Its framework is show
 
 | Name        | Type      | Version |  Packages   |  Ports    |     DNS   |   command  |      
 | ------      | ------    | ------  | ------      |   -----   |    -----  |   -----   |
-| Containerd  | Container        | 1.6.x    | [Linux](https://containerd.io/docs/getting-started/)|            NA                |              NA              | init-env/init-kube container |
-| Kubernetes  | Orchestrator     | 1.23.x   | [Linux](https://docs.kubernetes.io/)                | 6443,12500,12501,30000-32000 |              NA              | init-env/init-kube vm |
+| Containerd  | Container        | 1.6.x    | [Linux](https://containerd.io/docs/getting-started/)|            NA                |              NA              | init-env/init-compute container |
+| Kubernetes  | Orchestrator     | 1.23.x   | [Linux](https://docs.kubernetes.io/)                | 6443,12500,12501,30000-32000 |              NA              | init-env/init-compute vm |
 | Calico      | Network          | 3.22.x   | [Linux](https://docs.projectcalico.org/)            |            NA                |              NA              | init-cni calico |
 | Loki        | Log              | 2.4.x    | [Linux](https://grafana.com/oss/loki/)              |            NA                |              NA              |init-addon loki| 
 | Prometheus  | Monitor          | 2.33.x   | [Linux](https://github.com/prometheus/prometheus/)  |         9090/31001           |              NA              |init-addon prometheus |
@@ -60,8 +60,8 @@ chmod 777 /usr/bin/kubeinst
 
 ```
 kubeinst init-env container
-kubeinst init-kube container
-kubeinst init-cni calico
+kubeinst init-compute container
+kubeinst init-network calico
 kubeinst init-addon prometheus
 ```
 
@@ -70,19 +70,19 @@ Now it support two commands
 ```
 Commands:
   init-env             :(Init): download conatiner-based or vm-based software packages
-  init-kube            :(Init): install kubernetes-based cluster for container or vm"
-  init-cni             :(Init): install kubernetes-based cluster network, such as calico or kubeovn
+  init-compute         :(Init): install kubernetes-based cluster for container or vm"
+  init-network         :(Init): install kubernetes-based cluster network, such as calico or kubeovn
   init-addon           :(Init): install kubernetes addons, such as loki, prometheus, grafana and superset
 ```
 
 - Using the `init-env` command, you can install Docker and Kubernetes on a just installed OS.
-- Using the `init-kube` commnad, you can install kubernetes as your want
+- Using the `init-compute` commnad, you can install kubernetes as your want
 
 ```
-kubeinst init-env    # (required)
-kubeinst init-kube   # (required)
-kubeinst init-cni    # (required)
-kubeinst init-addon  # (optinal)
+kubeinst init-env       # (required)
+kubeinst init-compute   # (required)
+kubeinst init-network   # (required)
+kubeinst init-addon     # (optinal)
 ```
 
 Note that you can customized :
