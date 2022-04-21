@@ -1,0 +1,12 @@
+#! /bin/bash
+###############################################
+##
+##  Copyright (2020, ) Institute of Software
+##      Chinese Academy of Sciences
+##          wuheng@iscas.ac.cn
+##
+###############################################
+
+bash kubeinst init-crds
+bash kubeinst init-backend
+bash kubeinst init-frontend

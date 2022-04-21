@@ -69,7 +69,10 @@ kube_tool_helm_version="v3.8.1"
 kube_tool_helm_url="https://get.helm.sh/"
 kube_tool_helm_name="helm-$kube_tool_helm_version-linux-ARCH.tar.gz"
 
-kube_cicd="cicd"                          # gitlab
+kube_devops_gitlab="devops/gitlab"          
+kube_devops_jenkins="devops/jenkins"             
+kube_devops_nexus3="devops/nexus3"                 
+kube_devops_sonar="devops/soanr"                          
 
 #####################
 ##
@@ -88,7 +91,7 @@ kube_virt="virt"
 #####################
 
 kube_crds="crds"                          # crds
-dashboard_backend="2.0.4"
+dashboard_backend="2.0.1"
 dashboard_frontend="2.0.4"
 
 ###############################################
@@ -221,10 +224,9 @@ function apt-install()
 
 function yum-kvm-install()
 {
-   yum install qemu-kvm libvirt cloud-utils usbutils virt-install wget docker-ce-${kube_runtime_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version} lvm2 python3 python3-devel python3-pip libcurl-devel -y
+   yum install qemu-kvm libvirt libvirt-devel cloud-utils usbutils virt-install  python3 python3-devel python3-pip libcurl-devel -y
   pip3 install --upgrade pip
   pip3 install --ignore-installed threadpool prometheus_client kubernetes libvirt-python==5.9.0 xmljson xmltodict watchdog pyyaml grpcio grpcio-tools protobuf psutil
-  config-docker
 }
 
 function add-kvm-yum-repository()
@@ -567,34 +569,34 @@ function init-storage-nfs()
 ##
 ##########################################################
 
-function help-tool()
+function help-command()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-tool helm          :\t(Init): helm"
-  echo -e "  init-storage --help     :\t(Init): help"
+  echo -e "  init-command helm          :\t(Init): helm"
+  echo -e "  init-command --help     :\t(Init): help"
 }
 
 
-function init-tool()
+function init-command()
 {
   if [[ $# != 2 ]]
   then
-     help-tool
+     help-command
      exit
   fi
 
   if [[ $2 == "helm" ]]
   then
-     init-tool-helm
+     init-command-helm
   else
      unsupport $@
-     help-tool
+     help-command
   fi
 
 }
 
-function init-tool-helm()
+function init-command-helm()
 {
    arch=`get-arch`
    name="${kube_tool_helm_name/ARCH/$arch}"
@@ -672,18 +674,46 @@ function init-addon-loki()
 
 ###########################################################
 ##
-##  init-cicd
+##  init-devops
 ##
 ##########################################################
 
-function init-cicd()
+function help-devops()
 {
-  rm -rf /tmp/list
-  wget -P /tmp/ $common_software_repo/raw/master/$kube_addon/list
-  for line in `cat /tmp/list`
-  do
-    kubectl apply -f $line
-  done
+  cmddesc
+  echo -e "Commands:"
+  echo -e "  init-devops gitlab        :\t(Init): gitlab"
+  echo -e "  init-devops jenkins       :\t(Init): jenkins"
+  echo -e "  init-devops nexus3        :\t(Init): nexus3"
+  echo -e "  init-devops sonar         :\t(Init): sonar"
+  echo -e "  init-devops --help        :\t(Init): help"
+}
+
+function init-devops()
+{
+  if [[ $# != 2 ]]
+  then
+     help-devops
+     exit
+  fi
+
+  if [[ $2 == "gitlab" ]]
+  then
+     init-devops-gitlab
+  elif [[ $2 == "jenkins" ]]
+  then
+     init-devops-jenkins
+  elif [[ $2 == "nexus3" ]]
+  then
+     init-devops-nexus3
+  elif [[ $2 == "sonar" ]]
+  then
+     init-devops-sonar
+  else
+     unsupport $@
+     help-devops
+  fi
+
 }
 
 ###########################################################
@@ -910,7 +940,8 @@ function help()
   echo -e "  init-network         :\t(Init): install kubernetes-based cluster network, such as calico or kubeovn"
   echo -e "  init-storage         :\t(Init): install kubernetes-based storage using rook"
   echo -e "  init-addon           :\t(Init): install kubernetes addons, such as loki, prometheus, grafana and superset"
-  echo -e "  init-tool            :\t(Init): install helm, etc"
+  echo -e "  init-command         :\t(Init): install helm, etc"
+  echo -e "  init-devops          :\t(Init): install gitlab, jenkins, nexus3, sonar"
 #  echo -e "  init-gpu             :\t(Init): deploy GPU manager, see https://github.com/kubesys/kube-gpu"
   echo -e "  --help               :\t(Init): help"
 #  echo -e "  init-crds            :\t(Init): deploy crds, see https://gitee.com/syswu/yamls/crds"
@@ -935,11 +966,11 @@ case $1 in
   "init-addon")
     init-addon $*
     ;;
-  "init-tool")
-    init-tool $*
+  "init-command")
+    init-command $*
     ;;
-  "init-cicd")
-    init-cicd $*
+  "init-devops")
+    init-devops $*
     ;;
   "init-crds")
     init-crds $*
