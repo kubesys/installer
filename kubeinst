@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="2.1.0"
+VERSION="2.0.0"
 
 ####################
 ##
@@ -45,34 +45,7 @@ kube_version="1.23.4"
 kube_runtime="docker"                     # containerd or docker
 kube_runtime_version="20.10.8"            # docker
 
-kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
-kube_cni_calico_version="v3.22"      
-kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"    
-
-kube_cni_flannel_url="https://raw.githubusercontent.com/flannel-io/flannel/VERSION/Documentation/kube-flannel.yml"
-kube_cni_flannel_version="v0.16.3"                 
-kube_cni_flannel_yaml="${kube_cni_flannel_url/VERSION/$kube_cni_flannel_version}"
-
-kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/release-VERSION/dist/images/install.sh"
-kube_cni_ovn_version="1.9"
-kube_cni_ovn_sh="${kube_cni_ovn_url/VERSION/$kube_cni_ovn_version}"
-
-kube_storage_ceph="storage/ceph"
-kube_storage_nfs="storage/nfs"
-
-kube_addon_prom="addon/prom"
-kube_addon_loki="addon/loki"
-kube_addon_grafana="addon/grafana" 
-kube_addon_superset="addon/superset"
-
-kube_tool_helm_version="v3.8.1"
-kube_tool_helm_url="https://get.helm.sh/"
-kube_tool_helm_name="helm-$kube_tool_helm_version-linux-ARCH.tar.gz"
-
-kube_devops_gitlab="devops/gitlab"          
-kube_devops_jenkins="devops/jenkins"             
-kube_devops_nexus3="devops/nexus3"                 
-kube_devops_sonar="devops/soanr"                          
+                      
 
 #####################
 ##
@@ -387,11 +360,11 @@ function init-kubeadm-kubeconfig()
 
 ###########################################################
 ##
-##  init-kube
+##  compute
 ##
 ##########################################################
 
-function help-kube()
+function help-compute()
 {
   cmddesc
   echo -e "Commands:"
@@ -404,29 +377,25 @@ function init-compute()
 {
   if [[ $# != 2 ]]
   then
-     help-kube
+     help-compute
      exit
   fi
 
   if [[ $2 == "container" ]]
   then
-     init-kube-container
+     init-compute-container
   elif [[ $2 == "vm" ]]
   then
-     if [[ -z $(ps aux | grep kube-apiserver | grep -v grep) ]]
-     then
-       init-kube-container
-     fi
-     init-kube-vm
+     init-compute-vm
   else
      unsupport $@
-     help-kube
+     help-compute
   fi 
  
 }
 
 
-function init-kube-vm()
+function init-compute-vm()
 {
   for name in `kubectl get no  | awk 'NR>1 {print$1}'`
   do
@@ -459,7 +428,7 @@ function init-kube-vm()
   done 
 }
 
-function init-kube-container()
+function init-compute-container()
 {
   # [optional] just consider performance
   swapoff -a      
@@ -481,11 +450,23 @@ function init-kube-container()
 
 ###########################################################
 ##
-##  init-cni
+##  network
 ##
 ##########################################################
 
-function help-cni()
+kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
+kube_cni_calico_version="v3.22"      
+kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"    
+
+kube_cni_flannel_url="https://raw.githubusercontent.com/flannel-io/flannel/VERSION/Documentation/kube-flannel.yml"
+kube_cni_flannel_version="v0.16.3"                 
+kube_cni_flannel_yaml="${kube_cni_flannel_url/VERSION/$kube_cni_flannel_version}"
+
+kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/release-VERSION/dist/images/install.sh"
+kube_cni_ovn_version="1.9"
+kube_cni_ovn_sh="${kube_cni_ovn_url/VERSION/$kube_cni_ovn_version}"
+
+function help-network()
 {
   cmddesc
   echo -e "Commands:"
@@ -500,47 +481,51 @@ function init-network()
 {
   if [[ $# != 2 ]]
   then
-     help-cni
+     help-network
      exit
   fi
 
   if [[ $2 == "calico" ]]
   then
-     init-cni-calico
+     init-network-calico
   elif [[ $2 == "kubeovn" ]]
   then
-     init-cni-kubeovn
+     init-network-kubeovn
   elif [[ $2 == "flannel" ]]
   then
-     init-cni-flannel
+     init-network-flannel
   else
      unsupport $@
-     help-cni
+     help-network
   fi
 }
 
 
-function init-cni-calico()
+function init-network-calico()
 {
   kubectl apply -f $kube_cni_calico_yaml
 }
 
 
-function init-cni-kubeovn()
+function init-network-kubeovn()
 {
   curl $kube_cni_ovn_sh | bash -
 }
 
-function init-cni-flannel()
+function init-network-flannel()
 {
   kubectl apply -f $kube_cni_flannel_yaml
 }
 
 ###########################################################
 ##
-##  init-storage
+##  storage
 ##
 ##########################################################
+
+kube_storage_ceph="storage/ceph"
+kube_storage_nfs="storage/nfs"
+  
 
 function help-storage()
 {
@@ -589,9 +574,15 @@ function init-storage-nfs()
 
 ###########################################################
 ##
-##  init-storage
+##  command
 ##
 ##########################################################
+
+
+kube_tool_helm_version="v3.8.1"
+kube_tool_helm_url="https://get.helm.sh/"
+kube_tool_helm_name="helm-$kube_tool_helm_version-linux-ARCH.tar.gz"
+
 
 function help-command()
 {
@@ -635,9 +626,14 @@ function init-command-helm()
 
 ###########################################################
 ##
-##  init-addon
+##  addon
 ##
 ##########################################################
+
+kube_addon_prom="addon/prom"
+kube_addon_loki="addon/loki"
+kube_addon_grafana="addon/grafana" 
+kube_addon_superset="addon/superset"
 
 function help-addon()
 {
@@ -701,6 +697,11 @@ function init-addon-loki()
 ##  init-devops
 ##
 ##########################################################
+
+kube_devops_gitlab="devops/gitlab"          
+kube_devops_jenkins="devops/jenkins"             
+kube_devops_nexus3="devops/nexus3"                 
+kube_devops_sonar="devops/soanr"  
 
 function help-devops()
 {
