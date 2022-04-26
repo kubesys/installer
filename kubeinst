@@ -57,6 +57,7 @@ virt_type="kvm"                      # kvm or kata
 virt_version="rocky"                
 kube_virt="virt"
 
+
 #####################
 ##
 ## Dashboard
@@ -123,9 +124,19 @@ function replace()
    sed -ie "s/$1/$2/g" $3
 }
 
+function check-kube()
+{
+   status=`systemctl status kubelet | grep Active | grep running`
+   if [[ -z $status ]]
+   then
+     echo -e "Please install container and Kubernetes first."
+     exit
+   fi
+}
+
 ###########################################################
 ##
-##  init-env
+##  env
 ##
 ##########################################################
 
@@ -184,6 +195,7 @@ function init-env-container()
 
 function init-env-vm()
 {
+  check-kube
   add-kvm-$1-repository
   $1-kvm-install
   start-service libvirtd 
@@ -397,6 +409,8 @@ function init-compute()
 
 function init-compute-vm()
 {
+  check-kube
+
   for name in `kubectl get no  | awk 'NR>1 {print$1}'`
   do
     kubectl label no $name "doslab/virt.tool="
