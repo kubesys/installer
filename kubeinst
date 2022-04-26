@@ -740,6 +740,11 @@ function init-devops()
 
 }
 
+function init-devops-jenkins()
+{
+  kubectl apply -f $common_software_repo/raw/master/$kube_devops_jenkins/jenkins.yaml
+}
+
 ###########################################################
 ##
 ##  kube-backend
