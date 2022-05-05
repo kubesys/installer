@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="2.0.0"
+VERSION="2.1.0"
 
 ####################
 ##
@@ -654,7 +654,7 @@ function help-addon()
   cmddesc
   echo -e "Commands:"
   echo -e "  init-addon prom       :\t(Init): prometheus"
-  echo -e "  init-addon loki       :\t(Init): loki"
+#  echo -e "  init-addon loki       :\t(Init): loki"
   echo -e "  init-addon grafana    :\t(Init): grafana"
   echo -e "  init-addon superset   :\t(Init): superset"
   echo -e "  init-addon --help     :\t(Init): help"
@@ -705,6 +705,17 @@ function init-addon-loki()
     kubectl apply -f $line
   done
 }
+
+function init-addon-superset()
+{
+  rm -rf /tmp/list
+  wget -P /tmp/ $common_software_repo/raw/master/$kube_addon_superset/list
+  for line in `cat /tmp/list`
+  do
+    kubectl apply -f $line
+  done
+}
+
 
 ###########################################################
 ##
