@@ -119,6 +119,16 @@ function start-service()
   done 
 }
 
+function apply-from()
+{
+  rm -rf /tmp/list
+  wget -P /tmp/ $1
+  for line in `cat /tmp/list`
+  do
+    kubectl apply -f $line
+  done
+}
+
 function replace()
 {
    sed -ie "s/$1/$2/g" $3
@@ -741,7 +751,7 @@ function init-addon-superset()
 kube_devops_gitlab="devops/gitlab"          
 kube_devops_jenkins="devops/jenkins"             
 kube_devops_nexus3="devops/nexus3"                 
-kube_devops_sonar="devops/soanr"  
+kube_devops_sonar="devops/sonar"  
 
 function help-devops()
 {
@@ -788,9 +798,16 @@ function init-devops()
 
 }
 
+function init-devops-gitlab()
+{
+  url=$common_software_repo/raw/master/$kube_devops_gitlab/list
+  apply-from $url 
+}
+
 function init-devops-jenkins()
 {
-  kubectl apply -f $common_software_repo/raw/master/$kube_devops_jenkins/jenkins.yaml
+  url=$common_software_repo/raw/master/$kube_devops_jenkins/list
+  apply-from $url
 }
 
 ###########################################################
