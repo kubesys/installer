@@ -762,6 +762,13 @@ function init-devops()
      exit
   fi
 
+  ns=$(kubectl get ns kube-devops)
+
+  if [[ -z $ns ]]
+  then
+    kubectl create ns kube-devops
+  fi
+
   if [[ $2 == "gitlab" ]]
   then
      init-devops-gitlab
