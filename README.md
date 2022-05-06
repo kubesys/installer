@@ -17,7 +17,7 @@ curl --url https://raw.githubusercontent.com/kubesys/installer/master/kubeinst -
 chmod 777 /usr/bin/kubeinst
 ```
 
-### Kubernetes
+### Kubernetes container
 
 ```
 kubeinst init-env container
@@ -25,7 +25,10 @@ kubeinst init-compute container
 kubeinst init-network calico
 ```
 
-### VM
+### Kubernetes VM
+
+Experimental.
+After install Kubernetes container, you can install [VM](https://github.com/KubeVMMgr/kube-vm) on your cluster
 
 ```
 kubeinst init-env vm
