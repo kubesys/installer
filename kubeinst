@@ -537,16 +537,17 @@ function init-network-flannel()
 ##
 ##########################################################
 
+kube_storage_postgres="storage/postgres"
 kube_storage_ceph="storage/ceph"
 kube_storage_nfs="storage/nfs"
   
-
 function help-storage()
 {
   cmddesc
   echo -e "Commands:"
+  echo -e "  init-storage postgres   :\t(Init): postgres"
   echo -e "  init-storage ceph       :\t(Init): ceph"
-  echo -e "  init-storage nfs        :\t(Init): nfs"
+#  echo -e "  init-storage nfs        :\t(Init): nfs"
   echo -e "  init-storage --help     :\t(Init): help"
 }
 
@@ -559,7 +560,10 @@ function init-storage()
      exit
   fi
 
-  if [[ $2 == "ceph" ]]
+  if [[ $2 == "postgres" ]]
+  then
+     init-storage-postgres
+  elif [[ $2 == "ceph" ]]
   then
      init-storage-ceph
   elif [[ $2 == "nfs" ]]
@@ -570,6 +574,17 @@ function init-storage()
      help-storage
   fi
 }
+
+function init-storage-postgres()
+{
+  rm -rf /tmp/list
+  wget -P /tmp/ $common_software_repo/raw/master/$kube_storage_postgres/list
+  for line in `cat /tmp/list`
+  do
+    kubectl apply -f $line
+  done
+}
+
 
 function init-storage-ceph()
 {
