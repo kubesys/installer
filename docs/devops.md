@@ -8,7 +8,7 @@
 | gitlab      | code repository      |  14.10.2 | [Linux](https://hub.docker.com/r/gitlab/gitlab-ce)            |  31013       |
 | sonar       | quality manager      |  8.6.0   | [Linux](https://docs.sonarqube.org/latest/)    |  31014       |
 | kanboard    | task manager         |  v1.2.8  | [Linux](https://github.com/kanboard/kanboard)    |  31015       |
-| nexus3      | jar repository       |  3.29.0  | [Linux](https://hub.docker.com/r/sonatype/nexus3)             |  31016       |
+| nexus3      | jar repository       |  3.38.1  | [Linux](https://hub.docker.com/r/sonatype/nexus3)             |  31016       |
 | jenkins     | full pipeline        |  2.346   | [Linux](https://www.jenkins.io)               |  31017       |
 
 
