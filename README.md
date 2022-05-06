@@ -28,6 +28,7 @@ chmod 777 /usr/bin/kubeinst
 kubeinst init-env container
 kubeinst init-compute container
 kubeinst init-network calico
+kubeinst init-storage postgres
 ```
 
 ### Kubernetes VM
