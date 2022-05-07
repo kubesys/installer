@@ -752,6 +752,7 @@ kube_devops_gitlab="devops/gitlab"
 kube_devops_jenkins="devops/jenkins"             
 kube_devops_nexus3="devops/nexus3"                 
 kube_devops_sonar="devops/sonar"  
+kube_devops_kanboard="devops/kanboard"  
 
 function help-devops()
 {
@@ -761,6 +762,7 @@ function help-devops()
   echo -e "  init-devops jenkins       :\t(Init): jenkins"
   echo -e "  init-devops nexus3        :\t(Init): nexus3"
   echo -e "  init-devops sonar         :\t(Init): sonar"
+  echo -e "  init-devops kanboard      :\t(Init): kanboard"
   echo -e "  init-devops --help        :\t(Init): help"
 }
 
@@ -791,6 +793,9 @@ function init-devops()
   elif [[ $2 == "sonar" ]]
   then
      init-devops-sonar
+  elif [[ $2 == "kanboard" ]]
+  then
+     init-devops-kanboard
   else
      unsupport $@
      help-devops
@@ -807,6 +812,24 @@ function init-devops-gitlab()
 function init-devops-jenkins()
 {
   url=$common_software_repo/raw/master/$kube_devops_jenkins/list
+  apply-from $url
+}
+
+function init-devops-nexus3()
+{
+  url=$common_software_repo/raw/master/$kube_devops_nexus3/list
+  apply-from $url
+}
+
+function init-devops-sonar()
+{
+  url=$common_software_repo/raw/master/$kube_devops_sonar/list
+  apply-from $url
+}
+
+function init-devops-kanboard()
+{
+  url=$common_software_repo/raw/master/$kube_devops_kanboard/list
   apply-from $url
 }
 
@@ -1035,7 +1058,7 @@ function help()
   echo -e "  init-storage         :\t(Init): install kubernetes-based storage using rook"
   echo -e "  init-addon           :\t(Init): install kubernetes addons, such as loki, prometheus, grafana and superset"
   echo -e "  init-command         :\t(Init): install helm, etc"
-  echo -e "  init-devops          :\t(Init): install gitlab, jenkins, nexus3, sonar"
+  echo -e "  init-devops          :\t(Init): install gitlab, jenkins, nexus3, sonar, kanboard"
 #  echo -e "  init-gpu             :\t(Init): deploy GPU manager, see https://github.com/kubesys/kube-gpu"
   echo -e "  --help               :\t(Init): help"
 #  echo -e "  init-crds            :\t(Init): deploy crds, see https://gitee.com/syswu/yamls/crds"
