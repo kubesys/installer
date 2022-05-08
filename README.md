@@ -1,10 +1,11 @@
 ## installer
 
-Install Kubernetes-based systems with a simple and comprehensible way.
+Install Kubernetes and containerized software with a simple and comprehensible way.
 
 ** Note **
-- this script can work well on CentOS/RHEL 7.x/8.x and Ubuntu 18.x/20.x.
-- we test this script on Kubernetes >=1.18
+- work well on CentOS/RHEL 7.x/8.x and Ubuntu 18.x/20.x.
+- support amd64 (such as intel, amd) and arm64 (such as phytium, kunpeng). 
+- for Kubernetes >= 1.18
 
 ## Supported
 
