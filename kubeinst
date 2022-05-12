@@ -1034,10 +1034,10 @@ function reset-frontend()
 function unsupport()
 {
   echo -n "'$@' is not a valid command, see "
-  for a in "${@:1:$# - 1}" 
-  do 
-    echo -n "$a " 
-  done 
+  #for a in "${@:1:$# - 1}" 
+  #do 
+  #  echo -n "$a " 
+  #done 
   echo -n "--help"
   echo -e "\n"
 }
