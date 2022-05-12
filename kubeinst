@@ -122,7 +122,7 @@ function start-service()
 function apply-from()
 {
   rm -rf /tmp/list
-  wget -P /tmp/ $1
+  wget --no-check-certificate -P /tmp/ $1
   for line in `cat /tmp/list`
   do
     kubectl apply -f $line
