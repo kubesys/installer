@@ -587,23 +587,15 @@ function init-storage()
 
 function init-storage-postgres()
 {
-  rm -rf /tmp/list
-  wget -P /tmp/ $common_software_repo/raw/master/$kube_storage_postgres/list
-  for line in `cat /tmp/list`
-  do
-    kubectl apply -f $line
-  done
+  url=$common_software_repo/raw/master/$kube_storage_postgres/list	
+  apply-from $url
 }
 
 
 function init-storage-ceph()
 {
-  rm -rf /tmp/list
-  wget -P /tmp/ $common_software_repo/raw/master/$kube_storage_ceph/list
-  for line in `cat /tmp/list`
-  do
-    kubectl apply -f $line
-  done
+  url=$common_software_repo/raw/master/$kube_storage_ceph/list
+  apply-from $url
 }
 
 function init-storage-nfs()
@@ -713,32 +705,20 @@ function init-addon()
 
 function init-addon-prom()
 {
-  rm -rf /tmp/list
-  wget -P /tmp/ $common_software_repo/raw/master/$kube_addon_prom/list
-  for line in `cat /tmp/list`
-  do
-    kubectl apply -f $line
-  done
+  url=$common_software_repo/raw/master/$kube_addon_prom/list
+  apply-from $url
 }
 
 function init-addon-loki()
 {
-  rm -rf /tmp/list
-  wget -P /tmp/ $common_software_repo/raw/master/$kube_addon_loki/list
-  for line in `cat /tmp/list`
-  do
-    kubectl apply -f $line
-  done
+  url=$common_software_repo/raw/master/$kube_addon_loki/list
+  apply-from $url
 }
 
 function init-addon-superset()
 {
-  rm -rf /tmp/list
-  wget -P /tmp/ $common_software_repo/raw/master/$kube_addon_superset/list
-  for line in `cat /tmp/list`
-  do
-    kubectl apply -f $line
-  done
+  url=$common_software_repo/raw/master/$kube_addon_superset/list
+  apply-from $url
 }
 
 
