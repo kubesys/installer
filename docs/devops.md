@@ -3,8 +3,8 @@
 
 | Name        | Type      | Version |  Packages  |   Port |
 | ------      | ------    | ------  | ------      | ------ |
-| theia       | object-oriented ide  |  next    | [Linux](https://theia-ide.org/docs/)                         |  31011       |
-| jupyter     | data-oriented  ide   | latest   | [Linux](https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html),[Chinese](https://www.cnblogs.com/zeryter/p/11331811.html)                                                              |  31012       |
+| ~~theia~~       | object-oriented ide  |  next    | [Linux](https://theia-ide.org/docs/)                         |  31011       |
+| ~~jupyter~~     | data-oriented  ide   | latest   | [Linux](https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html),[Chinese](https://www.cnblogs.com/zeryter/p/11331811.html)                                                              |  31012       |
 | gitlab      | code repository      |  14.10.2 | [Linux](https://hub.docker.com/r/gitlab/gitlab-ce)            |  31013       |
 | sonar       | quality manager      |  9.4.0   | [Linux](https://docs.sonarqube.org/latest/)    |  31014       |
 | kanboard    | task manager         |  v1.2.8  | [Linux](https://github.com/kanboard/kanboard)    |  31015       |
