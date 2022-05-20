@@ -47,6 +47,7 @@ kubeinst init-compute vm
 - [Kubernetes](docs/kube.md)
 - [devops](docs/devops.md)
 - [addon](docs/addon.md)
+- [dashboard](docs/dashboard.md)
 
 
 ## Roadmap
