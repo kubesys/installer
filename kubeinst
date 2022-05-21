@@ -615,41 +615,41 @@ kube_tool_helm_url="https://get.helm.sh/"
 kube_tool_helm_name="helm-$kube_tool_helm_version-linux-ARCH.tar.gz"
 
 
-function help-command()
+function help-tool()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-command helm          :\t(Init): helm"
-  echo -e "  init-command --help     :\t(Init): help"
+  echo -e "  init-tool helm       :\t(Init): helm"
+  echo -e "  init-tool --help     :\t(Init): help"
 }
 
 
-function init-command()
+function init-tool()
 {
   if [[ $# != 2 ]]
   then
-     help-command
+     help-tool
      exit
   fi
 
   if [[ $2 == "helm" ]]
   then
-     init-command-helm
+     init-tool-helm
   else
      unsupport $@
-     help-command
+     help-tool
   fi
 
 }
 
-function init-command-helm()
+function init-tool-helm()
 {
    arch=`get-arch`
    name="${kube_tool_helm_name/ARCH/$arch}"
    echo $kube_tool_helm_url$name
-   wget $kube_tool_helm_url$name
+   wget --no-check-certificate $kube_tool_helm_url$name
    tar zxvf $name
-   \cp linux-$arch/helm /usr/bin/helm
+   mv -f linux-$arch/helm /usr/bin/helm
    chmod 777 /usr/bin/helm
    rm -rf linux-$arch
    rm -rf $name
@@ -1086,8 +1086,8 @@ function help()
   echo -e "  init-compute         :\t(Init): install kubernetes-based cluster for container or vm"
   echo -e "  init-network         :\t(Init): install kubernetes-based cluster network, such as calico or kubeovn"
   echo -e "  init-storage         :\t(Init): install kubernetes-based storage using rook"
+  echo -e "  init-tool            :\t(Init): install helm, etc"
   echo -e "  init-addon           :\t(Init): install kubernetes addons, such as loki, prometheus, grafana and superset"
-  echo -e "  init-command         :\t(Init): install helm, etc"
   echo -e "  init-devops          :\t(Init): install gitlab, jenkins, nexus3, sonar, kanboard"
   echo -e "  init-dashboard       :\t(Init): install kubeboard, kubeapps"
 #  echo -e "  init-gpu             :\t(Init): deploy GPU manager, see https://github.com/kubesys/kube-gpu"
@@ -1111,11 +1111,11 @@ case $1 in
   "init-storage")
     init-storage $*
     ;;
+  "init-tool")
+    init-tool $*
+    ;;
   "init-addon")
     init-addon $*
-    ;;
-  "init-command")
-    init-command $*
     ;;
   "init-devops")
     init-devops $*
