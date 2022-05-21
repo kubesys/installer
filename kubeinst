@@ -129,6 +129,19 @@ function apply-from()
   done
 }
 
+function useage-info()
+{
+  ip=""
+  if [[ -n $kube_fip ]]
+  then 
+    ip=$kube_fip
+  else
+    ip=`get-ip`
+  fi  
+
+  echo -e "\033[41;36m  website: $1://$ip:$2 \n  username: $3, password: $4 \033[0m"
+}
+
 function replace()
 {
    sed -ie "s/$1/$2/g" $3
@@ -837,6 +850,7 @@ function init-devops-gitlab()
 {
   url=$common_software_repo/raw/master/$kube_devops_gitlab/list
   apply-from $url 
+  useage-info http 31013 admin admin
 }
 
 function init-devops-jenkins()
