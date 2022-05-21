@@ -850,7 +850,7 @@ function init-devops-gitlab()
 {
   url=$common_software_repo/raw/master/$kube_devops_gitlab/list
   apply-from $url 
-  useage-info http 31013 admin admin
+  useage-info http 31013 root @Devops@
 }
 
 function init-devops-jenkins()
