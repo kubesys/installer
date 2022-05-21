@@ -1103,7 +1103,7 @@ function help()
   echo -e "  init-tool            :\t(Init): install helm, etc"
   echo -e "  init-addon           :\t(Init): install kubernetes addons, such as loki, prometheus, grafana and superset"
   echo -e "  init-devops          :\t(Init): install gitlab, jenkins, nexus3, sonar, kanboard"
-  echo -e "  init-dashboard       :\t(Init): install kubeboard, kubeapps"
+  echo -e "  init-dashboard       :\t(Init): install kubeboard, harbor, fabric8"
 #  echo -e "  init-gpu             :\t(Init): deploy GPU manager, see https://github.com/kubesys/kube-gpu"
   echo -e "  --help               :\t(Init): help"
 #  echo -e "  init-crds            :\t(Init): deploy crds, see https://gitee.com/syswu/yamls/crds"
