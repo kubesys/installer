@@ -920,7 +920,6 @@ function init-k8s-plugins()
 
 backendUrl="https://gitee.com/syswu/yamls/raw/master/backend"
 tokenFile="kube-token.yaml"
-databaseFile="kube-database-postgres.yaml"
 messageFile="kube-message-rabbitmq.yaml"
 mirrorFile="kube-runtime-mirror.yaml"
 mapperFile="kube-api-mapper.yaml"
@@ -937,7 +936,7 @@ function config-dir()
 function apply-yaml()
 {
   rm -rf $1/$2
-  wget -P $1/ $3/$2
+  wget --no-check-certificate -P $1/ $3/$2
   kubectl apply -f $1/$2
 }
 
@@ -945,7 +944,7 @@ function apply-yaml()
 function init-crds()
 {
   rm -rf /tmp/list
-  wget -P /tmp/ $common_software_repo/raw/master/$kube_crds/list
+  wget --no-check-certificate -P /tmp/ $common_software_repo/raw/master/$kube_crds/list
   for line in `cat /tmp/list`
   do
     kubectl apply -f $line
@@ -954,7 +953,7 @@ function init-crds()
   kubectl delete clusterrole admin
 
   rm -rf /tmp/list
-  wget -P /tmp/ $frontendUrl/list
+  wget --no-check-certificate -P /tmp/ $frontendUrl/list
 
   for name in `cat /tmp/list`
   do
@@ -970,7 +969,6 @@ function init-backend()
   config-dir /var/lib/doslab/yamls
  
   apply-yaml $dir $tokenFile    $backendUrl
-  apply-yaml $dir $databaseFile $backendUrl
   apply-yaml $dir $mirrorFile   $backendUrl
   apply-yaml $dir $mapperFile   $backendUrl
 
@@ -997,15 +995,12 @@ function init-backend()
   sed -i "s/#token#/$token/g" $dir/$mapperFile
   sed -i "s/#version#/$dashboard_backend/g" $dir/$mapperFile
 
-  while true
-  do
-    res=$(kubectl get po -A | grep kube-database |  grep -v Running | grep -v NAMESPACE)
-    if [[ -z "$res" ]]
-    then
-      break
-    fi
-    sleep 5s
-  done
+  res=$(kubectl get po -A | grep kube-database |  grep  Running)
+  if [[ -z "$res" ]]
+  then
+    echo "firstly execute 'kubeinst init-addon postgres'"
+    exit 1
+  fi
 
   kubectl apply -f $dir/$mirrorFile
   kubectl apply -f $dir/$mapperFile
@@ -1026,6 +1021,7 @@ function init-backend()
     host=$kube_fip
   fi
 
+  sleep 10
    
   curl -H "Content-Type: application/json" -X POST -d '{"json": {"name": "admin","rules": [{"apiGroups": ["*"],"resources": ["*"],"verbs": ["*"]}]}}' "http://$host:30308/kubesys/user/createUserRole"
 }
@@ -1065,7 +1061,7 @@ function init-frontend()
   
   # make and config yaml
   rm -rf /$dir/$frontendFile 
-  wget -P $dir/ $frontendUrl/$frontendFile
+  wget --no-check-certificate -P $dir/ $frontendUrl/$frontendFile
   sed -i "s/#version#/$dashboard_frontend/g" $dir/$frontendFile
 
   # apply yaml
