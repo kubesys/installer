@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="2.2.0"
+VERSION="2.3.0"
 
 ####################
 ##
@@ -36,9 +36,9 @@ ubuntu_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg
 ##
 #####################
 
-#kube_fip="39.100.71.73"                  # if you deploy Kubernetes on a public cloud, the fip is public IP
+#kube_fip="120.46.180.58"                  # if you deploy Kubernetes on a public cloud, the fip is public IP
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.23.4"
+kube_version="1.23.9"
 
 #kube_runtime="containerd"                # containerd or docker
 #kube_runtime_version="1.4.13"             # containerd 
@@ -65,8 +65,8 @@ kube_virt="virt"
 #####################
 
 kube_crds="crds"                          # crds
-dashboard_backend="2.0.1"
-dashboard_frontend="2.0.4"
+dashboard_backend="2.3.0"
+dashboard_frontend="2.3.0"
 
 ###############################################
 ##
@@ -492,7 +492,7 @@ function init-compute-container()
 ##########################################################
 
 kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
-kube_cni_calico_version="v3.22"      
+kube_cni_calico_version="v3.23"      
 kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"    
 
 kube_cni_flannel_url="https://raw.githubusercontent.com/flannel-io/flannel/VERSION/Documentation/kube-flannel.yml"
