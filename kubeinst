@@ -41,7 +41,7 @@ kube_pod_subnet="10.244.0.0/16"
 kube_version="1.24.3"
 
 kube_runtime="containerd"                # containerd or docker
-kube_runtime_version="1.6.6"             # containerd 
+kube_runtime_version="1.6.7"             # containerd 
 #kube_runtime="docker"                     # containerd or docker
 #kube_runtime_version="20.10.8"            # docker
 
@@ -377,7 +377,7 @@ function init-kubeadm-kubeconfig()
   if [[ $kube_runtime = "containerd" ]]
   then
     echo -e "nodeRegistration:" >> /etc/kubernetes/kubeadm.yaml
-    echo -e "  criSocket: /run/containerd/containerd.sock" >> /etc/kubernetes/kubeadm.yaml
+    echo -e "  criSocket: unix:///run/containerd/containerd.sock" >> /etc/kubernetes/kubeadm.yaml
   fi
   echo -e "---" >> /etc/kubernetes/kubeadm.yaml
   echo -e "apiVersion: kubeadm.k8s.io/v1beta2" >> /etc/kubernetes/kubeadm.yaml
