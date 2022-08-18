@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="2.3.0"
+VERSION="2209"
 
 ####################
 ##
@@ -38,12 +38,12 @@ ubuntu_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg
 
 #kube_fip="120.46.180.58"                  # if you deploy Kubernetes on a public cloud, the fip is public IP
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.23.9"
+kube_version="1.24.3"
 
-#kube_runtime="containerd"                # containerd or docker
-#kube_runtime_version="1.4.13"             # containerd 
-kube_runtime="docker"                     # containerd or docker
-kube_runtime_version="20.10.8"            # docker
+kube_runtime="containerd"                # containerd or docker
+kube_runtime_version="1.6.6"             # containerd 
+#kube_runtime="docker"                     # containerd or docker
+#kube_runtime_version="20.10.8"            # docker
 
                       
 
@@ -314,9 +314,10 @@ function yum-containerd-k8s()
 function apt-containerd-k8s()
 {
 
+  cVer=$(apt-cache madison containerd.io | grep $kube_runtime_version | awk -F"|" '{print$2}' | sed 's/ //g')	
   kVer=$(apt-cache madison kubelet | grep $kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
   apt-get update
-  apt-get install containerd.io kubectl=$kVer kubelet=$kVer kubeadm=$kVer lvm2 -y
+  apt-get install containerd.io=$cVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer lvm2 -y
   
   config-containerd
 }
