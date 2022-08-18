@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="2209"
+VERSION="22.09"
 
 ####################
 ##
@@ -167,7 +167,7 @@ function help-env()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-env container   :\t(Init): download conatinerd/docker, kubeadm, kubelet and kubectl"
+  echo -e "  init-env ctr         :\t(Init): download conatinerd/docker, kubeadm, kubelet and kubectl"
   echo -e "  init-env vm          :\t(Init): download kvm, libvirt, kubeadm, kubelet and kubectl"
   echo -e "  init-env --help      :\t(Init): help"
 }
@@ -199,7 +199,7 @@ function init-env()
   add-$install-repository
   init-kubeadm-kubeconfig 
 
-  if [[ $2 == "container" ]]
+  if [[ $2 == "ctr" ]]
   then
      init-env-container $install
   elif [[ $2 == "vm" ]]
@@ -404,7 +404,7 @@ function help-compute()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-compute container   :\t(Init): install conatinerd/docker, kubeadm, kubelet and kubectl"
+  echo -e "  init-compute ctr   :\t(Init): install conatinerd/docker, kubeadm, kubelet and kubectl"
   echo -e "  init-compute vm          :\t(Init): install kvm, libvirt, kubeadm, kubelet and kubectl"
   echo -e "  init-compute --help      :\t(Init): help"
 }
@@ -417,7 +417,7 @@ function init-compute()
      exit
   fi
 
-  if [[ $2 == "container" ]]
+  if [[ $2 == "ctr" ]]
   then
      init-compute-container
   elif [[ $2 == "vm" ]]
