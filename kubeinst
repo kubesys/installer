@@ -157,6 +157,16 @@ function check-kube()
    fi
 }
 
+function create-namespace()
+{
+  ns=$(kubectl get ns $1)
+
+  if [[ -z $ns ]]
+  then
+    kubectl create ns $1
+  fi
+}
+
 ###########################################################
 ##
 ##  env
@@ -492,6 +502,7 @@ function init-compute-container()
 ##
 ##########################################################
 
+
 kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
 kube_cni_calico_version="v3.24"      
 kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"    
@@ -564,12 +575,14 @@ function init-network-flannel()
 kube_storage_postgres="storage/postgres"
 kube_storage_ceph="storage/ceph"
 kube_storage_nfs="storage/nfs"
-  
+kube_storage_minio="storage/minio"
+
 function help-storage()
 {
   cmddesc
   echo -e "Commands:"
   echo -e "  init-storage postgres   :\t(Init): postgres"
+  echo -e "  init-storage minio      :\t(Init): minio"
 #  echo -e "  init-storage ceph       :\t(Init): ceph"
 #  echo -e "  init-storage nfs        :\t(Init): nfs"
   echo -e "  init-storage --help     :\t(Init): help"
@@ -593,6 +606,9 @@ function init-storage()
   elif [[ $2 == "nfs" ]]
   then
      init-storage-nfs
+  elif [[ $2 == "minio" ]]
+  then
+     init-storage-minio
   else
      unsupport $@
      help-storage
@@ -601,6 +617,7 @@ function init-storage()
 
 function init-storage-postgres()
 {
+  create-namespace kube-storage	
   url=$common_software_repo/raw/master/$kube_storage_postgres/list	
   apply-from $url
 }
@@ -617,6 +634,17 @@ function init-storage-nfs()
    echo -e "support later"
 }
 
+function init-storage-minio()
+{
+#   generate yaml
+#   ---------------------------------------
+#   create-namespace kube-storage
+#   kubectl minio init --namespace kube-operator --image minio/operator:v4.4.28 --console-image minio/console:v0.19.5 --default-minio-image minio/minio:RELEASE.2022-05-08T23-50-31Z.hotfix.5c13750dd --default-console-image minio/console:v0.19.5 --namespace-to-watch kube-storage --default-kes-image minio/kes:v0.20.0 -o
+    create-namespace kube-storage
+    url=$common_software_repo/raw/master/$kube_storage_minio/list
+    apply-from $url
+}
+
 ###########################################################
 ##
 ##  command
@@ -624,16 +652,13 @@ function init-storage-nfs()
 ##########################################################
 
 
-kube_tool_helm_version="v3.8.1"
-kube_tool_helm_url="https://get.helm.sh/"
-kube_tool_helm_name="helm-$kube_tool_helm_version-linux-ARCH.tar.gz"
-
 
 function help-tool()
 {
   cmddesc
   echo -e "Commands:"
   echo -e "  init-tool helm       :\t(Init): helm"
+  echo -e "  init-tool minio       :\t(Init): minio"
   echo -e "  init-tool --help     :\t(Init): help"
 }
 
@@ -649,12 +674,19 @@ function init-tool()
   if [[ $2 == "helm" ]]
   then
      init-tool-helm
+  elif [[ $2 == "minio" ]]
+  then
+     init-tool-minio
   else
      unsupport $@
      help-tool
   fi
 
 }
+
+kube_tool_helm_version="v3.8.1"
+kube_tool_helm_url="https://get.helm.sh/"
+kube_tool_helm_name="helm-$kube_tool_helm_version-linux-ARCH.tar.gz"
 
 function init-tool-helm()
 {
@@ -667,6 +699,21 @@ function init-tool-helm()
    chmod 777 /usr/bin/helm
    rm -rf linux-$arch
    rm -rf $name
+}
+
+kube_tool_minio_version="4.4.28"
+kube_tool_minio_url="https://github.com/minio/operator/releases/download/v$kube_tool_minio_version/"
+kube_tool_minio_name="kubectl-minio_${kube_tool_minio_version}_linux_ARCH"
+
+function init-tool-minio()
+{
+   arch=`get-arch`
+   echo $kube_tool_minio_name
+   name="${kube_tool_minio_name/ARCH/$arch}"
+   echo $kube_tool_minio_url$name
+   wget --no-check-certificate $kube_tool_minio_url$name -O kubectl-minio
+   chmod +x kubectl-minio
+   mv kubectl-minio /usr/local/bin/
 }
 
 ###########################################################
@@ -773,12 +820,7 @@ function init-dashboard()
      exit
   fi
 
-  ns=$(kubectl get ns kube-dashboard)
-
-  if [[ -z $ns ]]
-  then
-    kubectl create ns kube-dashboard
-  fi
+  create-namespace kube-dashboard
 
   if [[ $2 == "kuboard" ]]
   then
