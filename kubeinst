@@ -119,6 +119,15 @@ function start-service()
   done 
 }
 
+function restart-service()
+{
+  for ser in "$@"
+  do
+    systemctl restart $ser
+  done
+}
+
+
 function apply-from()
 {
   rm -rf /tmp/list
@@ -371,6 +380,7 @@ function config-containerd()
   sed -ie "s/$old_version/$new_version/g" /etc/containerd/config.toml 
 
   start-service containerd kubelet
+  restart-service containerd kubelet
 }
 
 
@@ -629,20 +639,18 @@ function init-storage-ceph()
   apply-from $url
 }
 
-function init-storage-nfs()
-{
-   echo -e "support later"
-}
-
 function init-storage-minio()
 {
-#   generate yaml
+#   generate operator yaml
 #   ---------------------------------------
-#   create-namespace kube-storage
 #   kubectl minio init --namespace kube-operator --image minio/operator:v4.4.28 --console-image minio/console:v0.19.5 --default-minio-image minio/minio:RELEASE.2022-05-08T23-50-31Z.hotfix.5c13750dd --default-console-image minio/console:v0.19.5 --namespace-to-watch kube-storage --default-kes-image minio/kes:v0.20.0 -o
+#   generate object storage  yaml
+#   ---------------------------------------
+#   kubectl minio tenant create kube-objects --servers 1 --volumes 1 --capacity 20G --namespace kube-storage --output
     create-namespace kube-storage
     url=$common_software_repo/raw/master/$kube_storage_minio/list
     apply-from $url
+    echo "JWT: eyJhbGciOiJSUzI1NiIsImtpZCI6IldvOEhxZm9RUG94azZuRlZkYWVsYTZpM05ud0Z1bDBwSkUxT2ZVU25BTVUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLW9wZXJhdG9yIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImNvbnNvbGUtc2Etc2VjcmV0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImNvbnNvbGUtc2EiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI5ODYxZjE0My0zMGJkLTRkODctYWY0Yy1mOWFmYjVmZmZmY2UiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1vcGVyYXRvcjpjb25zb2xlLXNhIn0.nW91fOwTnDEgE6r-SnfpsNjJRzVmJjjWCROXQA6PaQbmPDGt1up7vcmdVgcBkJdHuHJE_OOChAFvo1zte2OliPIKiQO4dX69cdxhlvXWBiiqw50wstavVG_2BPh_l-8aLeNiu8I5qXkwhOatgk3v5THgYNQptvopXAYAYSXxP-0gQuPOa6OMvMpekTjI6n3uC18QW8nVaYyWJodh4gVmnLarHJgF4192F5tJblfe8J8nTj-on0ZFZec0R4x1vhiuqxbwNt5A0DPtsEeoMD4gZTP40Xv9xSTp1DH0_GnycsU3sAWcoOX8Y73icW-xGIAR3SDzsyNktLYIzmA7CaKlfQ"
 }
 
 ###########################################################

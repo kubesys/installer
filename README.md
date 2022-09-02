@@ -26,8 +26,8 @@ chmod 777 /usr/bin/kubeinst
 ### Kubernetes container
 
 ```
-kubeinst init-env container
-kubeinst init-compute container
+kubeinst init-env ctr
+kubeinst init-compute ctr
 kubeinst init-network calico
 kubeinst init-storage postgres
 ```
