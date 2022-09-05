@@ -816,8 +816,8 @@ function help-dashboard()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-dashboard kuboard        :\t(Init): kuboard"
-  echo -e "  init-dashboard kubeapps       :\t(Init): kubeapps"
+  echo -e "  init-webui kuboard        :\t(Init): kuboard"
+  echo -e "  init-webui kubeapps       :\t(Init): kubeapps"
 }
 
 function init-dashboard()
@@ -1162,7 +1162,7 @@ function help()
   echo -e "  init-tool            :\t(Init): install helm, etc"
   echo -e "  init-addon           :\t(Init): install kubernetes addons, such as loki, supertokens, prometheus, grafana and superset"
   echo -e "  init-devops          :\t(Init): install gitlab, jenkins, nexus3, sonar, kanboard"
-  echo -e "  init-dashboard       :\t(Init): install kubeboard, harbor, fabric8"
+  echo -e "  init-webui           :\t(Init): install kubeboard, harbor, fabric8"
 #  echo -e "  init-gpu             :\t(Init): deploy GPU manager, see https://github.com/kubesys/kube-gpu"
   echo -e "  --help               :\t(Init): help"
 #  echo -e "  init-crds            :\t(Init): deploy crds, see https://gitee.com/syswu/yamls/crds"
@@ -1193,7 +1193,7 @@ case $1 in
   "init-devops")
     init-devops $*
     ;;
-  "init-dashboard")
+  "init-webui")
     init-dashboard $*
     ;;
   "init-crds")
