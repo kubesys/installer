@@ -522,7 +522,7 @@ kube_cni_flannel_version="v0.19.1"
 kube_cni_flannel_yaml="${kube_cni_flannel_url/VERSION/$kube_cni_flannel_version}"
 
 kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/release-VERSION/dist/images/install.sh"
-kube_cni_ovn_version="1.9"
+kube_cni_ovn_version="1.10.6"
 kube_cni_ovn_sh="${kube_cni_ovn_url/VERSION/$kube_cni_ovn_version}"
 
 function help-network()
