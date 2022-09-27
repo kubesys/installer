@@ -457,7 +457,7 @@ function init-compute-vm()
 
   for name in `kubectl get no  | awk 'NR>1 {print$1}'`
   do
-    kubectl label no $name "doslab/virt.tool="
+    kubectl label no $name "doslab/virt.tool=\"\""
   done
 
   rm -rf /tmp/node.yaml
