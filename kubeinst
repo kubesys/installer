@@ -462,7 +462,8 @@ function init-compute-vm()
 
   rm -rf /tmp/node.yaml
   wget -P /tmp/ $common_software_repo/raw/master/$kube_virt/node.yaml
-  for name in `kubectl get no  | awk 'NR>1 {print$1}'`
+  # filter master
+  for name in `kubectl get no | grep -v control | awk 'NR>1 {print$1}'`
   do
     if [[ -n `echo $name | grep "vm."`  ]]
     then
