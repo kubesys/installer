@@ -473,7 +473,7 @@ function init-compute-vm()
     rm -rf /tmp/$name.yaml
     cp /tmp/node.yaml /tmp/$name.yaml
     sed -i "s/#HOST#/$name/g" /tmp/$name.yaml
-    ip=`kubectl get no node32 -o wide | awk 'NR>1 {print$6}'`
+    ip=`kubectl get no $name -o wide | awk 'NR>1 {print$6}'`
     sed -i "s/#IP#/$ip/g" /tmp/$name.yaml
 
     kubectl apply -f /tmp/$name.yaml
@@ -484,14 +484,14 @@ function init-compute-vm()
   for line in `cat /tmp/list`
   do
     kubectl apply -f $line
-  done 
+  done
 }
 
 function init-compute-container()
 {
   # [optional] just consider performance
-  swapoff -a      
-  
+  swapoff -a
+
   # [required] prerequires
   systemctl restart kubelet
   echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
@@ -515,11 +515,11 @@ function init-compute-container()
 
 
 kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
-kube_cni_calico_version="v3.24"      
-kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"    
+kube_cni_calico_version="v3.24"
+kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"
 
 kube_cni_flannel_url="https://raw.githubusercontent.com/flannel-io/flannel/VERSION/Documentation/kube-flannel.yml"
-kube_cni_flannel_version="v0.19.1"                 
+kube_cni_flannel_version="v0.19.1"
 kube_cni_flannel_yaml="${kube_cni_flannel_url/VERSION/$kube_cni_flannel_version}"
 
 kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/VERSION/dist/images/install.sh"
@@ -629,8 +629,8 @@ function init-storage()
 
 function init-storage-postgres()
 {
-  create-namespace kube-storage	
-  url=$common_software_repo/raw/master/$kube_storage_postgres/list	
+  create-namespace kube-storage
+  url=$common_software_repo/raw/master/$kube_storage_postgres/list
   apply-from $url
 }
 
@@ -734,7 +734,7 @@ function init-tool-minio()
 
 kube_addon_prom="addon/prom"
 kube_addon_loki="addon/loki"
-kube_addon_grafana="addon/grafana" 
+kube_addon_grafana="addon/grafana"
 kube_addon_superset="addon/superset"
 kube_addon_superset="addon/tokens"
 
@@ -857,11 +857,11 @@ function init-dashboard-kuboard()
 ##
 ##########################################################
 
-kube_devops_gitlab="devops/gitlab"          
-kube_devops_jenkins="devops/jenkins"             
-kube_devops_nexus3="devops/nexus3"                 
-kube_devops_sonar="devops/sonar"  
-kube_devops_kanboard="devops/kanboard"  
+kube_devops_gitlab="devops/gitlab"
+kube_devops_jenkins="devops/jenkins"
+kube_devops_nexus3="devops/nexus3"
+kube_devops_sonar="devops/sonar"
+kube_devops_kanboard="devops/kanboard"
 
 function help-devops()
 {
@@ -915,7 +915,7 @@ function init-devops()
 function init-devops-gitlab()
 {
   url=$common_software_repo/raw/master/$kube_devops_gitlab/list
-  apply-from $url 
+  apply-from $url
   useage-info http 31013 root @Devops@
 }
 
@@ -1021,7 +1021,7 @@ function init-backend()
 
   config-dir $dir
   config-dir /var/lib/doslab/yamls
- 
+
   apply-yaml $dir $tokenFile    $backendUrl
   apply-yaml $dir $mirrorFile   $backendUrl
   apply-yaml $dir $mapperFile   $backendUrl
@@ -1058,7 +1058,7 @@ function init-backend()
 
   kubectl apply -f $dir/$mirrorFile
   kubectl apply -f $dir/$mapperFile
- 
+
 
   while true
   do
@@ -1076,7 +1076,7 @@ function init-backend()
   fi
 
   sleep 10
-   
+
   curl -H "Content-Type: application/json" -X POST -d '{"json": {"name": "admin","rules": [{"apiGroups": ["*"],"resources": ["*"],"verbs": ["*"]}]}}' "http://$host:30308/kubesys/user/createUserRole"
 }
 
@@ -1101,7 +1101,7 @@ frontendFile="kube-frontend.yaml"
 function init-frontend()
 {
 
-  # make and config config.js 
+  # make and config config.js
   rm -rf $config_dir
   mkdir -p $config_dir
   echo "window.g = {" > $config_dir/$config_name
@@ -1112,9 +1112,9 @@ function init-frontend()
     echo "    baseURL: 'http://`get-ip`:30308/kubesys'" >> $config_dir/$config_name
   fi
   echo "}" >> $config_dir/$config_name
-  
+
   # make and config yaml
-  rm -rf /$dir/$frontendFile 
+  rm -rf /$dir/$frontendFile
   wget --no-check-certificate -P $dir/ $frontendUrl/$frontendFile
   sed -i "s/#version#/$dashboard_frontend/g" $dir/$frontendFile
 
@@ -1140,10 +1140,10 @@ function reset-frontend()
 function unsupport()
 {
   echo -n "'$@' is not a valid command, see "
-  #for a in "${@:1:$# - 1}" 
-  #do 
-  #  echo -n "$a " 
-  #done 
+  #for a in "${@:1:$# - 1}"
+  #do
+  #  echo -n "$a "
+  #done
   echo -n "--help"
   echo -e "\n"
 }
