@@ -390,6 +390,34 @@ function init-kubeadm-kubeconfig()
   then
     mkdir /etc/kubernetes
   fi
+  echo -e "apiVersion: kubeadm.k8s.io/v1beta3" > /etc/kubernetes/kubeadm.yaml
+  echo -e "kind: InitConfiguration" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "bootstrapTokens:" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "  - ttl: \"0\"" >> /etc/kubernetes/kubeadm.yaml
+  if [[ $kube_runtime = "containerd" ]]
+  then
+    echo -e "nodeRegistration:" >> /etc/kubernetes/kubeadm.yaml
+    echo -e "  criSocket: unix:///run/containerd/containerd.sock" >> /etc/kubernetes/kubeadm.yaml
+  fi
+  echo -e "---" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "apiVersion: kubeadm.k8s.io/v1beta3" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "kind: ClusterConfiguration" >> /etc/kubernetes/kubeadm.yaml
+  if [[ -n $kube_fip ]]
+  then
+  echo -e "controlPlaneEndpoint: \"$kube_fip:6443\"" >> /etc/kubernetes/kubeadm.yaml
+  fi
+  echo -e "networking:" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "  podSubnet: \"${kube_pod_subnet}\"" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "kubernetesVersion: \"v${kube_version}\"" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "imageRepository: \"${common_image_server}\"" >> /etc/kubernetes/kubeadm.yaml
+}
+
+function init-kubeadm-kubeconfig_v2()
+{
+  if [[ ! -d "/etc/kubernetes" ]]
+  then
+    mkdir /etc/kubernetes
+  fi
   echo -e "apiVersion: kubeadm.k8s.io/v1beta2" > /etc/kubernetes/kubeadm.yaml
   echo -e "kind: InitConfiguration" >> /etc/kubernetes/kubeadm.yaml
   echo -e "bootstrapTokens:" >> /etc/kubernetes/kubeadm.yaml
@@ -411,7 +439,6 @@ function init-kubeadm-kubeconfig()
   echo -e "kubernetesVersion: \"v${kube_version}\"" >> /etc/kubernetes/kubeadm.yaml
   echo -e "imageRepository: \"${common_image_server}\"" >> /etc/kubernetes/kubeadm.yaml
 }
-
 
 
 ###########################################################
