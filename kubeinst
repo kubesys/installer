@@ -38,7 +38,7 @@ ubuntu_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg
 
 #kube_fip="120.46.180.58"                  # if you deploy Kubernetes on a public cloud, the fip is public IP
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.25.0"
+kube_version="1.25.2"
 
 kube_runtime="containerd"                # containerd or docker
 kube_runtime_version="1.6.8"             # containerd 
@@ -531,9 +531,9 @@ function help-network()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-network calico      :\t(Init): download conatinerd/docker, kubeadm, kubelet and kubectl"
-#  echo -e "  init-network kubeovn     :\t(Init): download kvm, libvirt, kubeadm, kubelet and kubectl"
-  echo -e "  init-network flannel     :\t(Init): download kvm, libvirt, kubeadm, kubelet and kubectl"
+  echo -e "  init-network kubeovn     :\t(Init): kubeovn"
+  echo -e "  init-network calico      :\t(Init): calico"
+  echo -e "  init-network flannel     :\t(Init): flannel"
   echo -e "  init-network --help      :\t(Init): help"
 }
 
