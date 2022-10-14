@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="22.09"
+VERSION="2.2.0"
 
 ####################
 ##
@@ -243,16 +243,16 @@ function init-env-vm()
   start-service libvirtd 
 }
 
-function apt-install()
+function apt-kvm-install()
 {
   #apt-get install qemu-kvm libvirt-dev libvirt-daemon libvirt-clients -y
-  apt-get install qemu-kvm libvirt-bin -y
+  apt-get install qemu-kvm libvirt-bin openvswitch  -y
 }
 
 function yum-kvm-install()
 {
 #   yum install qemu-kvm libvirt libvirt-devel cloud-utils usbutils virt-install  python3 python3-devel python3-pip libcurl-devel -y
-   yum install qemu-kvm libvirt cloud-utils usbutils virt-install  python3 python3-devel python3-pip  -y
+   yum install qemu-kvm libvirt cloud-utils usbutils virt-install  python3 python3-devel python3-pip openvswitch  -y
 #  pip3 install --upgrade pip
 #  pip3 install --ignore-installed threadpool prometheus_client kubernetes libvirt-python==5.9.0 xmljson xmltodict watchdog pyyaml grpcio grpcio-tools protobuf psutil
 }
