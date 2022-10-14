@@ -488,7 +488,7 @@ function init-compute-vm()
   done
 
   rm -rf /tmp/node.yaml
-  wget -P /tmp/ $common_software_repo/raw/master/$kube_virt/node.yaml
+  wget --no-check-certificate -P /tmp/ $common_software_repo/raw/master/$kube_virt/node.yaml
   # filter master
   for name in `kubectl get no | grep -v control | awk 'NR>1 {print$1}'`
   do
@@ -507,11 +507,15 @@ function init-compute-vm()
   done
 
   rm -rf /tmp/list
-  wget -P /tmp/ $common_software_repo/raw/master/$kube_virt/list
+  wget --no-check-certificate -P /tmp/ $common_software_repo/raw/master/$kube_virt/list
   for line in `cat /tmp/list`
   do
     kubectl apply -f $line
   done
+
+  wget --no-check-certificate -P /usr/bin/ https://gitee.com/syswu/ovnctl/raw/master/src/kubeovn-adm
+  chmod 777 /usr/bin/kubeovn-adm
+
 }
 
 function init-compute-container()
