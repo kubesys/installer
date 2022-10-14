@@ -55,7 +55,7 @@ kube_runtime_version="1.6.8"             # containerd
 
 virt_type="kvm"                      # kvm or kata
 virt_version="rocky"                
-kube_virt="virt"
+kube_virt="compute/libvirt"
 
 
 #####################
