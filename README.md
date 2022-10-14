@@ -13,8 +13,10 @@ Install Kubernetes and containerized software with a simple and comprehensible w
 
 ## Authors
 
-- wuheng@otcaix.iscsa.ac.cn
-- wuyuewen@otcaix.iscas.ac.cn
+- wuheng@iscsa.ac.cn
+- wuyuewen@iscas.ac.cn
+- zhujianxing21@otcaix.iscas.ac.cn
+- guohao21@otcaix.iscas.ac.cn
 
 ## Quick start
 
@@ -25,12 +27,16 @@ chmod 777 /usr/bin/kubeinst
 
 ### Kubernetes container
 
+1. Requried
+
 ```
 kubeinst init-env ctr
 kubeinst init-compute ctr
-kubeinst init-network calico
-kubeinst init-storage postgres
+kubeinst init-network kube-ovn
+kubeinst init-storage ceph
 ```
+
+2. optional
 
 ### Kubernetes VM
 
