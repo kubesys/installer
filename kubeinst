@@ -895,6 +895,47 @@ function init-dashboard-kuboard()
 
 ###########################################################
 ##
+##  init-operator
+##
+##########################################################
+
+kube_operator_jenkins="operator/jenkins"
+
+function help-operator()
+{
+  cmddesc
+  echo -e "Commands:"
+  echo -e "  init-operator jenkins   :\t(Init): jenkins operator"
+  echo -e "  init-operator --help    :\t(Init): help"
+}
+
+function init-operator()
+{
+  if [[ $# != 2 ]]
+  then
+     help-operator
+     exit
+  fi
+
+  if [[ $2 == "jenkins" ]]
+  then
+     init-operator-jenkins
+  else
+     unsupport $@
+     help-operator
+  fi
+
+}
+
+
+function init-operator-jenkins()
+{
+  url=$common_software_repo/raw/master/$kube_operator_jenkins/list
+  apply-from $url
+}
+
+###########################################################
+##
 ##  init-security
 ##
 ##########################################################
@@ -1246,11 +1287,12 @@ function help()
   echo -e "  init-network         :\t(Init): install kubernetes-based cluster network, such as calico or flannel"
   echo -e "  init-storage         :\t(Init): install kubernetes-based storage using rook"
   echo -e "  init-security        :\t(Init): install falco"
-  echo -e "  init-tool            :\t(Init): install helm, etc"
+  echo -e "  init-operator        :\t(Init): install Kubernetes' operators"
   echo -e "  init-addon           :\t(Init): install kubernetes addons, such as loki, supertokens, prometheus, grafana and superset"
   echo -e "  init-devops          :\t(Init): install gitlab, jenkins, nexus3, sonar, kanboard"
-  echo -e "  init-dashboatd       :\t(Init): install kubeboard, harbor, fabric8"
+  echo -e "  init-dashboard       :\t(Init): install kubeboard, harbor, fabric8"
   echo -e "  --help               :\t(Init): help"
+#  echo -e "  init-tool            :\t(Init): install helm, etc"
 #  echo -e "  init-crds            :\t(Init): deploy crds, see https://gitee.com/syswu/yamls/crds"
 #  echo -e "  init-backend         :\t(Init): deploy backend services, see https://gitee.com/syswu/yamls/backend"
 #  echo -e "  init-frontend        :\t(Init): deploy dashboard, see https://gitee.com/syswu/yamls/frontend"
@@ -1273,8 +1315,8 @@ case $1 in
   "init-security")
     init-security $*
     ;;
-  "init-tool")
-    init-tool $*
+  "init-operator")
+    init-operator $*
     ;;
   "init-addon")
     init-addon $*
@@ -1285,15 +1327,18 @@ case $1 in
   "init-dashboard")
     init-dashboard $*
     ;;
-  "init-crds")
-    init-crds $*
-    ;;
-  "init-backend")
-    init-backend $*
-    ;;
-  "init-frontend")
-    init-frontend $*
-    ;;
+#  "init-tool")
+#    init-tool $*
+#    ;;
+#  "init-crds")
+#    init-crds $*
+#    ;;
+#  "init-backend")
+#    init-backend $*
+#    ;;
+#  "init-frontend")
+#    init-frontend $*
+#    ;;
   "--help")
     help
     ;;
