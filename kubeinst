@@ -624,7 +624,7 @@ function help-storage()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-storage postgres   :\t(Init): postgres"
+  echo -e "  init-storage postgres   :\t(Init): postgres (Deprecated, see init-addon postgres)"
   echo -e "  init-storage minio      :\t(Init): minio"
 #  echo -e "  init-storage ceph       :\t(Init): ceph"
 #  echo -e "  init-storage nfs        :\t(Init): nfs"
@@ -764,6 +764,7 @@ function init-tool-minio()
 ##########################################################
 
 kube_addon_prom="addon/prom"
+kube_addon_postgres="addon/postgres"
 kube_addon_loki="addon/loki"
 kube_addon_grafana="addon/grafana"
 kube_addon_superset="addon/superset"
@@ -774,6 +775,7 @@ function help-addon()
   cmddesc
   echo -e "Commands:"
   echo -e "  init-addon prom       :\t(Init): prometheus"
+  echo -e "  init-addon postgres   :\t(Init): postgres"
   echo -e "  init-addon tokens     :\t(Init): supertokens"
 #  echo -e "  init-addon loki       :\t(Init): loki"
   echo -e "  init-addon grafana    :\t(Init): grafana"
@@ -792,6 +794,9 @@ function init-addon()
   if [[ $2 == "prom" ]]
   then
      init-addon-prom
+  elif [[ $2 == "postgres" ]]
+  then
+     init-addon-postgres
   elif [[ $2 == "tokens" ]]
   then
      init-addon-tokens
@@ -808,6 +813,12 @@ function init-addon()
      unsupport $@
      help-addon
   fi
+}
+
+function init-addon-postgres()
+{
+  url=$common_software_repo/raw/master/$kube_addon_postgres/list
+  apply-from $url
 }
 
 function init-addon-prom()
