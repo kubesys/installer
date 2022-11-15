@@ -626,8 +626,8 @@ function help-storage()
   echo -e "Commands:"
   echo -e "  init-storage postgres   :\t(Init): postgres (Deprecated, see init-addon postgres)"
   echo -e "  init-storage minio      :\t(Init): minio"
-#  echo -e "  init-storage ceph       :\t(Init): ceph"
-#  echo -e "  init-storage nfs        :\t(Init): nfs"
+  echo -e "  init-storage ceph       :\t(Init): ceph"
+  echo -e "  init-storage nfs        :\t(Init): nfs"
   echo -e "  init-storage --help     :\t(Init): help"
 }
 
@@ -670,6 +670,51 @@ function init-storage-ceph()
 {
   url=$common_software_repo/raw/master/$kube_storage_ceph/list
   apply-from $url
+}
+
+function init-storage-nfs()
+{
+  # apply rgw + nfs yaml
+  url=$common_software_repo/raw/master/$kube_storage_nfs/list
+  apply-from $url
+
+  # wait for nfs cluster ready
+  res=$(ceph nfs cluster ls | wc -l)
+  for i in `seq 1 20`
+  do
+    if [[ $res != 1 ]]
+    then
+      sleep 3
+    else
+      break
+    fi
+    if [ $i == 20 ]
+    then
+      echo 'fail to start nfs cluster'
+      exit 1
+    fi
+  done
+
+  # wait for rgw ready
+  res=$(kubectl -n rook-ceph get pod -l app=rook-ceph-rgw | grep "2/2" | wc -l)
+  for i in `seq 1 20`
+  do
+    if [[ $res != 1 ]]
+    then
+      sleep 3
+    else
+      break
+    fi
+    if [ $i == 20 ]
+      then
+        echo 'fail to start ceph rgw'
+        exit 1
+      fi
+  done
+
+  # create dir /volumes/share
+  ceph fs subvolumegroup create myfs share
+  ceph nfs export create cephfs my-nfs /share myfs /volumes/share
 }
 
 function init-storage-minio()
