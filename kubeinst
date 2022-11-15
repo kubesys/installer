@@ -628,6 +628,7 @@ function help-storage()
   echo -e "  init-storage postgres   :\t(Init): postgres (Deprecated, see init-addon postgres)"
   echo -e "  init-storage minio      :\t(Init): minio"
   echo -e "  init-storage ceph       :\t(Init): ceph"
+  echo -e "  init-storage cephfs     :\t(Init): ceph"
   echo -e "  init-storage nfs        :\t(Init): nfs"
   echo -e "  init-storage --help     :\t(Init): help"
 }
@@ -650,6 +651,9 @@ function init-storage()
   elif [[ $2 == "rook" ]]
   then
       init-storage-rook
+  elif [[ $2 == "cephfs" ]]
+    then
+       init-storage-cephfs
   elif [[ $2 == "nfs" ]]
   then
      init-storage-nfs
