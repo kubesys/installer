@@ -679,8 +679,8 @@ function init-storage-nfs()
   apply-from $url
 
   # wait for nfs cluster ready
-  res=$(ceph nfs cluster ls | wc -l)
   for i in `seq 1 20`
+  res=$(ceph nfs cluster ls | wc -l)
   do
     if [[ $res != 1 ]]
     then
@@ -696,12 +696,12 @@ function init-storage-nfs()
   done
 
   # wait for rgw ready
-  res=$(kubectl -n rook-ceph get pod -l app=rook-ceph-rgw | grep "2/2" | wc -l)
   for i in `seq 1 20`
+  res=$(kubectl -n rook-ceph get pod -l app=rook-ceph-rgw | grep "2/2" | wc -l)
   do
     if [[ $res != 1 ]]
     then
-      sleep 3
+      sleep 5
     else
       break
     fi
