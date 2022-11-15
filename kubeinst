@@ -652,7 +652,7 @@ function init-storage()
   then
       init-storage-rook
   elif [[ $2 == "cephfs" ]]
-    then
+  then
        init-storage-cephfs
   elif [[ $2 == "nfs" ]]
   then
