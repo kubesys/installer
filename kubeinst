@@ -617,6 +617,7 @@ function init-network-flannel()
 
 kube_storage_postgres="storage/postgres"
 kube_storage_ceph="storage/ceph"
+kube_storage_cephfs="storage/cephfs"
 kube_storage_nfs="storage/nfs"
 kube_storage_minio="storage/minio"
 
@@ -646,6 +647,9 @@ function init-storage()
   elif [[ $2 == "ceph" ]]
   then
      init-storage-ceph
+  elif [[ $2 == "rook" ]]
+  then
+      init-storage-rook
   elif [[ $2 == "nfs" ]]
   then
      init-storage-nfs
@@ -665,10 +669,20 @@ function init-storage-postgres()
   apply-from $url
 }
 
+function init-storage-rook()
+{
+  echo 1
+}
 
 function init-storage-ceph()
 {
   url=$common_software_repo/raw/master/$kube_storage_ceph/list
+  apply-from $url
+}
+
+function init-storage-cephfs()
+{
+  url=$common_software_repo/raw/master/$kube_storage_cephfs/list
   apply-from $url
 }
 
