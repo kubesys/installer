@@ -616,6 +616,7 @@ function init-network-flannel()
 ##########################################################
 
 kube_storage_postgres="storage/postgres"
+kube_storage_rook="storage/rook"
 kube_storage_ceph="storage/ceph"
 kube_storage_cephfs="storage/cephfs"
 kube_storage_nfs="storage/nfs"
@@ -628,7 +629,8 @@ function help-storage()
   echo -e "  init-storage postgres   :\t(Init): postgres (Deprecated, see init-addon postgres)"
   echo -e "  init-storage minio      :\t(Init): minio"
   echo -e "  init-storage ceph       :\t(Init): ceph"
-  echo -e "  init-storage cephfs     :\t(Init): ceph"
+  echo -e "  init-storage rook       :\t(Init): rook"
+  echo -e "  init-storage cephfs     :\t(Init): cephfs"
   echo -e "  init-storage nfs        :\t(Init): nfs"
   echo -e "  init-storage --help     :\t(Init): help"
 }
@@ -675,7 +677,8 @@ function init-storage-postgres()
 
 function init-storage-rook()
 {
-  echo 1
+  url=$common_software_repo/raw/master/$kube_storage_rook/list
+  apply-from $url
 }
 
 function init-storage-ceph()
