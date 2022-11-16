@@ -410,10 +410,11 @@ function config-containerd()
 
   containerd config default | sudo tee /etc/containerd/config.toml
 
-
-  def_repo="k8s.gcr.io"
+  # fix for container v1.6.7→v1.6.9
+  # sandbox_image = "registry.k8s.io/pause:3.6"
+  def_repo="registry.k8s.io"
   real_repo=${common_image_server/\//\\\/}
-  old_version=$(cat /etc/containerd/config.toml | grep "k8s.gcr.io" | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
+  old_version=$(cat /etc/containerd/config.toml | grep "registry.k8s.io" | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
   new_version=$(kubeadm config images list | grep pause | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
   sed -ie "s/$def_repo/$real_repo/g" /etc/containerd/config.toml
   sed -ie "s/$old_version/$new_version/g" /etc/containerd/config.toml
