@@ -187,6 +187,7 @@ function help-env()
   cmddesc
   echo -e "Commands:"
   echo -e "  init-env ctr         :\t(Init): download conatinerd/docker, kubeadm, kubelet and kubectl"
+  echo -e "  init-env rook        :\t(Init): download ceph"
   echo -e "  init-env vm          :\t(Init): download kvm, libvirt, kubeadm, kubelet and kubectl"
   echo -e "  init-env --help      :\t(Init): help"
 }
@@ -221,6 +222,9 @@ function init-env()
   if [[ $2 == "ctr" ]]
   then
      init-env-container $install
+  elif [[ $2 == "rook" ]]
+  then
+     init-env-rook $install
   elif [[ $2 == "vm" ]]
   then
      init-env-vm $install
@@ -235,6 +239,12 @@ function init-env-container()
   $1-$kube_runtime-k8s
 }
 
+function init-env-rook()
+{
+  add-ceph-$1-repository
+  $1-ceph-install
+}
+
 function init-env-vm()
 {
   check-kube
@@ -247,6 +257,12 @@ function apt-kvm-install()
 {
   #apt-get install qemu-kvm libvirt-dev libvirt-daemon libvirt-clients -y
   apt-get install qemu-kvm libvirt-bin openvswitch  -y
+}
+
+function yum-ceph-install()
+{
+  yum install epel-release -y
+  yum install ceph -y
 }
 
 function yum-kvm-install()
@@ -267,8 +283,6 @@ function add-kvm-apt-repository
   add-apt-repository cloud-archive:$virt_version
 }
 
-
-
 function disable-centos-security()
 {
   sed -ie 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config
@@ -281,12 +295,36 @@ function disable-ubuntu-security()
   sudo ufw disable
 }
 
+function add-ceph-yum-repository()
+{
+cat <<EOF > /etc/yum.repos.d/ceph.repo
+[ceph]
+name=ceph
+baseurl=http://mirrors.aliyun.com/ceph/rpm-nautilus/el7/x86_64/
+gpgcheck=0
+priority=1
+
+[ceph-noarch]
+name=cephnoarch
+baseurl=http://mirrors.aliyun.com/ceph/rpm-nautilus/el7/noarch/
+gpgcheck=0
+priority=1
+
+[ceph-source]
+name=Ceph source packages
+baseurl=http://mirrors.aliyun.com/ceph/rpm-nautilus/el7/SRPMS
+enabled=0
+gpgcheck=1
+type=rpm-md
+gpgkey=http://mirrors.aliyun.com/ceph/keys/release.asc
+priority=1
+EOF
+}
 
 function add-yum-repository()
 {
   echo -e "[docker-ce-stable]\nname=Docker CE Stable - \$basearch \nbaseurl=$centos_docker_ce_url\nenabled=1 \ngpgcheck=1 \ngpgkey=$centos_docker_ce_gpg" > /etc/yum.repos.d/docker-ce.repo
   echo -e "[kubernetes] \nname=Kubernetes - \$basearch \nbaseurl=$centos_kuberentes_url \nenabled=1 \ngpgcheck=0 \nrepo_gpgcheck=0 \ngpgkey=$centos_kuberentes_gpg" > /etc/yum.repos.d/kubernetes.repo
-
 }
 
 function add-apt-repository()
@@ -372,12 +410,13 @@ function config-containerd()
 
   containerd config default | sudo tee /etc/containerd/config.toml
 
+
   def_repo="k8s.gcr.io"
   real_repo=${common_image_server/\//\\\/}
   old_version=$(cat /etc/containerd/config.toml | grep "k8s.gcr.io" | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
   new_version=$(kubeadm config images list | grep pause | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
   sed -ie "s/$def_repo/$real_repo/g" /etc/containerd/config.toml
-  sed -ie "s/$old_version/$new_version/g" /etc/containerd/config.toml 
+  sed -ie "s/$old_version/$new_version/g" /etc/containerd/config.toml
 
   start-service containerd kubelet
   restart-service containerd kubelet
