@@ -41,7 +41,7 @@ kube_pod_subnet="10.244.0.0/16"
 kube_version="1.25.2"
 
 kube_runtime="containerd"                # containerd or docker
-kube_runtime_version="1.6.8"             # containerd 
+kube_runtime_version="1.6.9"             # containerd
 #kube_runtime="docker"                     # containerd or docker
 #kube_runtime_version="20.10.8"            # docker
 
@@ -263,6 +263,7 @@ function yum-ceph-install()
 {
   yum install epel-release -y
   yum install ceph -y
+  yum install nfs-utils -y
 }
 
 function yum-kvm-install()
