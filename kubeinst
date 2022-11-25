@@ -660,6 +660,8 @@ kube_storage_postgres="storage/postgres"
 kube_storage_rook="storage/rook"
 kube_storage_ceph="storage/ceph"
 kube_storage_cephfs="storage/cephfs"
+kube_storage_cephrgw="storage/cephrgw"
+kube_storage_cephrbd="storage/cephrbd"
 kube_storage_nfs="storage/nfs"
 kube_storage_minio="storage/minio"
 
@@ -672,6 +674,8 @@ function help-storage()
   echo -e "  init-storage ceph       :\t(Init): ceph"
   echo -e "  init-storage rook       :\t(Init): rook"
   echo -e "  init-storage cephfs     :\t(Init): cephfs"
+  echo -e "  init-storage cephrgw    :\t(Init): cephrgw"
+  echo -e "  init-storage cephrbd    :\t(Init): cephrbd"
   echo -e "  init-storage nfs        :\t(Init): nfs"
   echo -e "  init-storage --help     :\t(Init): help"
 }
@@ -687,22 +691,28 @@ function init-storage()
 
   if [[ $2 == "postgres" ]]
   then
-     init-storage-postgres
+    init-storage-postgres
   elif [[ $2 == "ceph" ]]
   then
-     init-storage-ceph
+    init-storage-ceph
   elif [[ $2 == "rook" ]]
   then
-      init-storage-rook
+    init-storage-rook
   elif [[ $2 == "cephfs" ]]
   then
-       init-storage-cephfs
+    init-storage-cephfs
+  elif [[ $2 == "cephrgw" ]]
+  then
+    init-storage-cephrgw
+  elif [[ $2 == "cephrbd" ]]
+  then
+    init-storage-cephrbd
   elif [[ $2 == "nfs" ]]
   then
-     init-storage-nfs
+    init-storage-nfs
   elif [[ $2 == "minio" ]]
   then
-     init-storage-minio
+    init-storage-minio
   else
      unsupport $@
      help-storage
@@ -716,21 +726,33 @@ function init-storage-postgres()
   apply-from $url
 }
 
-function init-storage-rook()
-{
-  url=$common_software_repo/raw/master/$kube_storage_rook/list
-  apply-from $url
-}
-
 function init-storage-ceph()
 {
   url=$common_software_repo/raw/master/$kube_storage_ceph/list
   apply-from $url
 }
 
+function init-storage-rook()
+{
+  url=$common_software_repo/raw/master/$kube_storage_rook/list
+  apply-from $url
+}
+
 function init-storage-cephfs()
 {
   url=$common_software_repo/raw/master/$kube_storage_cephfs/list
+  apply-from $url
+}
+
+function init-storage-cephrgw()
+{
+  url=$common_software_repo/raw/master/$kube_storage_cephrgw/list
+  apply-from $url
+}
+
+function init-storage-cephrbd()
+{
+  url=$common_software_repo/raw/master/$kube_storage_cephrbd/list
   apply-from $url
 }
 
