@@ -1176,6 +1176,17 @@ function init-devops-jenkins()
 {
   url=$common_software_repo/raw/master/$kube_devops_jenkins/list
   apply-from $url
+  pwd=$(cat /var/lib/doslab/jenkin/secrets/initialAdminPassword)
+  while true
+  do
+    if [[ -f "/var/lib/doslab/jenkin/secrets/initialAdminPassword" ]]
+    then
+      break
+    fi
+    echo "retry after 5 seconds"
+    sleep 5
+  done
+  useage-info http 31017 default $pwd
 }
 
 function init-devops-nexus3()
