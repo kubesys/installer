@@ -156,6 +156,20 @@ function replace()
    sed -ie "s/$1/$2/g" $3
 }
 
+
+function retry()
+{
+  while true
+  do
+    if [[ -f $1 ]]
+    then
+      break
+    fi
+    echo "retry after 5 seconds"
+    sleep 5
+  done
+}
+
 function check-kube()
 {
    status=`systemctl status kubelet | grep Active | grep running`
@@ -1176,16 +1190,9 @@ function init-devops-jenkins()
 {
   url=$common_software_repo/raw/master/$kube_devops_jenkins/list
   apply-from $url
-  pwd=$(cat /var/lib/doslab/jenkin/secrets/initialAdminPassword)
-  while true
-  do
-    if [[ -f "/var/lib/doslab/jenkin/secrets/initialAdminPassword" ]]
-    then
-      break
-    fi
-    echo "retry after 5 seconds"
-    sleep 5
-  done
+  path="/var/lib/doslab/jenkin/secrets/initialAdminPassword"
+  retry $path
+  pwd=$(cat $path)
   useage-info http 31017 default $pwd
 }
 
@@ -1193,6 +1200,10 @@ function init-devops-nexus3()
 {
   url=$common_software_repo/raw/master/$kube_devops_nexus3/list
   apply-from $url
+  path="/var/lib/doslab/nexus3/admin.password"
+  retry $path
+  pwd=$(cat $path)
+  useage-info http 31016 admin $pwd
 }
 
 function init-devops-sonar()
