@@ -685,7 +685,6 @@ function help-storage()
   echo -e "Commands:"
   echo -e "  init-storage postgres   :\t(Init): postgres (Deprecated, see init-addon postgres)"
   echo -e "  init-storage minio      :\t(Init): minio"
-  echo -e "  init-storage ceph       :\t(Init): ceph"
   echo -e "  init-storage rook       :\t(Init): rook"
   echo -e "  init-storage cephfs     :\t(Init): cephfs"
   echo -e "  init-storage cephrgw    :\t(Init): cephrgw"
@@ -706,9 +705,6 @@ function init-storage()
   if [[ $2 == "postgres" ]]
   then
     init-storage-postgres
-  elif [[ $2 == "ceph" ]]
-  then
-    init-storage-ceph
   elif [[ $2 == "rook" ]]
   then
     init-storage-rook
@@ -737,12 +733,6 @@ function init-storage-postgres()
 {
   create-namespace kube-storage
   url=$common_software_repo/raw/master/$kube_storage_postgres/list
-  apply-from $url
-}
-
-function init-storage-ceph()
-{
-  url=$common_software_repo/raw/master/$kube_storage_ceph/list
   apply-from $url
 }
 
