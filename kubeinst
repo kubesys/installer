@@ -766,6 +766,11 @@ function init-storage-nfs()
   url=$common_software_repo/raw/master/$kube_storage_nfs/list
   apply-from $url
 
+  # set backend
+  ceph mgr module enable rook
+  ceph mgr module enable nfs
+  ceph orch set backend rook
+
   # wait for nfs cluster ready
   for i in `seq 1 20`
   do
