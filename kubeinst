@@ -599,19 +599,6 @@ function init-compute-container()
 ##
 ##########################################################
 
-
-kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
-kube_cni_calico_version="v3.24"
-kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"
-
-kube_cni_flannel_url="https://raw.githubusercontent.com/flannel-io/flannel/VERSION/Documentation/kube-flannel.yml"
-kube_cni_flannel_version="v0.20.2"
-kube_cni_flannel_yaml="${kube_cni_flannel_url/VERSION/$kube_cni_flannel_version}"
-
-kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/VERSION/dist/images/install.sh"
-kube_cni_ovn_version="v1.10.6"
-kube_cni_ovn_sh="${kube_cni_ovn_url/VERSION/$kube_cni_ovn_version}"
-
 function help-network()
 {
   cmddesc
@@ -646,17 +633,27 @@ function init-network()
   fi
 }
 
+kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
+kube_cni_calico_version="v3.24"
+kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"
 
 function init-network-calico()
 {
   kubectl apply -f $kube_cni_calico_yaml
 }
 
+kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/VERSION/dist/images/install.sh"
+kube_cni_ovn_version="v1.10.6"
+kube_cni_ovn_sh="${kube_cni_ovn_url/VERSION/$kube_cni_ovn_version}"
 
 function init-network-kubeovn()
 {
   curl $kube_cni_ovn_sh | bash -
 }
+
+kube_cni_flannel_url="https://raw.githubusercontent.com/flannel-io/flannel/VERSION/Documentation/kube-flannel.yml"
+kube_cni_flannel_version="v0.20.2"
+kube_cni_flannel_yaml="${kube_cni_flannel_url/VERSION/$kube_cni_flannel_version}"
 
 function init-network-flannel()
 {
