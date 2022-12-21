@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="2.2.0"
+VERSION="2.3.0"
 
 ####################
 ##
@@ -38,10 +38,10 @@ ubuntu_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg
 
 #kube_fip="120.46.180.58"                  # if you deploy Kubernetes on a public cloud, the fip is public IP
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.25.2"
+kube_version="1.25.5"
 
 kube_runtime="containerd"                # containerd or docker
-kube_runtime_version="1.6.9"             # containerd
+kube_runtime_version="1.6.13"             # containerd
 #kube_runtime="docker"                     # containerd or docker
 #kube_runtime_version="20.10.8"            # docker
 
@@ -605,12 +605,11 @@ kube_cni_calico_version="v3.24"
 kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"
 
 kube_cni_flannel_url="https://raw.githubusercontent.com/flannel-io/flannel/VERSION/Documentation/kube-flannel.yml"
-kube_cni_flannel_version="v0.19.1"
+kube_cni_flannel_version="v0.20.2"
 kube_cni_flannel_yaml="${kube_cni_flannel_url/VERSION/$kube_cni_flannel_version}"
 
 kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/VERSION/dist/images/install.sh"
 kube_cni_ovn_version="v1.10.6"
-#kube_cni_ovn_version="release-1.10"
 kube_cni_ovn_sh="${kube_cni_ovn_url/VERSION/$kube_cni_ovn_version}"
 
 function help-network()
