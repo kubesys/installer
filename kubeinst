@@ -1115,6 +1115,7 @@ function init-security-falco()
 ##
 ##########################################################
 
+kube_devops_harbor="devops/harbor"
 kube_devops_gitlab="devops/gitlab"
 kube_devops_jenkins="devops/jenkins"
 kube_devops_nexus3="devops/nexus3"
@@ -1125,6 +1126,7 @@ function help-devops()
 {
   cmddesc
   echo -e "Commands:"
+  echo -e "  init-devops harbor        :\t(Init): harbor"
   echo -e "  init-devops gitlab        :\t(Init): gitlab"
   echo -e "  init-devops jenkins       :\t(Init): jenkins"
   echo -e "  init-devops nexus3        :\t(Init): nexus3"
@@ -1151,6 +1153,9 @@ function init-devops()
   if [[ $2 == "gitlab" ]]
   then
      init-devops-gitlab
+  elif [[ $2 == "harbor" ]]
+  then
+     init-devops-harbor
   elif [[ $2 == "jenkins" ]]
   then
      init-devops-jenkins
@@ -1168,6 +1173,13 @@ function init-devops()
      help-devops
   fi
 
+}
+
+function init-devops-harbor()
+{
+  url=$common_software_repo/raw/master/$kube_devops_harbor/list
+  apply-from $url
+  useage-info http 31010 admin Harbor12345
 }
 
 function init-devops-gitlab()
