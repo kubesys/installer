@@ -643,7 +643,7 @@ function init-network-calico()
 }
 
 kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/VERSION/dist/images/install.sh"
-kube_cni_ovn_version="v1.10.6"
+kube_cni_ovn_version="v1.10.7"
 kube_cni_ovn_sh="${kube_cni_ovn_url/VERSION/$kube_cni_ovn_version}"
 
 function init-network-kubeovn()
@@ -1029,47 +1029,6 @@ function init-dashboard-kuboard()
 
 ###########################################################
 ##
-##  init-operator
-##
-##########################################################
-
-kube_operator_jenkins="operator/jenkins"
-
-function help-operator()
-{
-  cmddesc
-  echo -e "Commands:"
-  echo -e "  init-operator jenkins   :\t(Init): jenkins operator"
-  echo -e "  init-operator --help    :\t(Init): help"
-}
-
-function init-operator()
-{
-  if [[ $# != 2 ]]
-  then
-     help-operator
-     exit
-  fi
-
-  if [[ $2 == "jenkins" ]]
-  then
-     init-operator-jenkins
-  else
-     unsupport $@
-     help-operator
-  fi
-
-}
-
-
-function init-operator-jenkins()
-{
-  url=$common_software_repo/raw/master/$kube_operator_jenkins/list
-  apply-from $url
-}
-
-###########################################################
-##
 ##  init-security
 ##
 ##########################################################
@@ -1436,16 +1395,15 @@ function help()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-env             :\t(Init): download conatiner-based or vm-based software packages"
-  echo -e "  init-compute         :\t(Init): install kubernetes-based cluster for container or vm"
-  echo -e "  init-network         :\t(Init): install kubernetes-based cluster network, such as calico or flannel"
-  echo -e "  init-storage         :\t(Init): install kubernetes-based storage using rook"
-  echo -e "  init-security        :\t(Init): install falco"
-  echo -e "  init-operator        :\t(Init): install Kubernetes' operators"
-  echo -e "  init-addon           :\t(Init): install kubernetes addons, such as loki, supertokens, prometheus, grafana and superset"
-  echo -e "  init-devops          :\t(Init): install gitlab, jenkins, nexus3, sonar, kanboard"
-  echo -e "  init-dashboard       :\t(Init): install kubeboard, harbor, fabric8"
-  echo -e "  --help               :\t(Init): help"
+  echo -e "  init-env             :download conatiner-based or vm-based software packages"
+  echo -e "  init-compute         :install container or vm"
+  echo -e "  init-network         :install kubernetes network, such as kubeovn, calico or flannel"
+  echo -e "  init-storage         :install kubernetes storage, such as postgres, "
+  echo -e "  init-security        :install falco"
+  echo -e "  init-addon           :install kubernetes addons, such as loki, supertokens, prometheus, grafana and superset"
+  echo -e "  init-devops          :install gitlab, jenkins, nexus3, sonar, kanboard"
+  echo -e "  init-dashboard       :install kubeboard, harbor, fabric8"
+  echo -e "  --help               :help"
 #  echo -e "  init-tool            :\t(Init): install helm, etc"
 #  echo -e "  init-crds            :\t(Init): deploy crds, see https://gitee.com/syswu/yamls/crds"
 #  echo -e "  init-backend         :\t(Init): deploy backend services, see https://gitee.com/syswu/yamls/backend"
@@ -1468,9 +1426,6 @@ case $1 in
     ;;
   "init-security")
     init-security $*
-    ;;
-  "init-operator")
-    init-operator $*
     ;;
   "init-addon")
     init-addon $*
