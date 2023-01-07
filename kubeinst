@@ -157,7 +157,7 @@ function replace()
 }
 
 
-function retry()
+function wait-and-retry()
 {
   while true
   do
@@ -168,6 +168,21 @@ function retry()
     echo "retry after 5 seconds"
     sleep 5
   done
+}
+
+function make-dir()
+{
+  mkdir -p $1
+}
+
+function wget-to-local()
+{
+  wget --no-check-certificate -P $2/ $1
+}
+
+function gitlab-url()
+{
+  echo $common_software_repo/raw/master/$1
 }
 
 function check-kube()
@@ -1048,7 +1063,6 @@ function init-security()
   if [[ $# != 2 ]]
   then
      help-security
-     exit
   fi
 
   if [[ $2 == "falco" ]]
@@ -1073,13 +1087,6 @@ function init-security-falco()
 ##  init-devops
 ##
 ##########################################################
-
-kube_devops_harbor="devops/harbor"
-kube_devops_gitlab="devops/gitlab"
-kube_devops_jenkins="devops/jenkins"
-kube_devops_nexus3="devops/nexus3"
-kube_devops_sonar="devops/sonar"
-kube_devops_kanboard="devops/kanboard"
 
 function help-devops()
 {
@@ -1134,6 +1141,8 @@ function init-devops()
 
 }
 
+kube_devops_harbor="devops/harbor"
+
 function init-devops-harbor()
 {
   url=$common_software_repo/raw/master/$kube_devops_harbor/list
@@ -1141,22 +1150,32 @@ function init-devops-harbor()
   useage-info http 31010 admin Harbor12345
 }
 
+kube_devops_gitlab="devops/gitlab"
+
 function init-devops-gitlab()
 {
-  url=$common_software_repo/raw/master/$kube_devops_gitlab/list
-  apply-from $url
+  path="/var/lib/doslab/gitlab/config"
+  make-dir $path
+  url=$(gitlab-url $kube_devops_gitlab)
+  wget-to-local $url/gitlab.rb $path
+  apply-from $url/list
   useage-info http 31013 root @Devops@
 }
+
+kube_devops_jenkins="devops/jenkins"
 
 function init-devops-jenkins()
 {
   url=$common_software_repo/raw/master/$kube_devops_jenkins/list
   apply-from $url
   path="/var/lib/doslab/jenkin/secrets/initialAdminPassword"
-  retry $path
+  wait-and-retry $path
   pwd=$(cat $path)
   useage-info http 31017 default $pwd
 }
+
+
+kube_devops_nexus3="devops/nexus3"
 
 function init-devops-nexus3()
 {
@@ -1168,11 +1187,15 @@ function init-devops-nexus3()
   useage-info http 31016 admin $pwd
 }
 
+kube_devops_sonar="devops/sonar"
+
 function init-devops-sonar()
 {
   url=$common_software_repo/raw/master/$kube_devops_sonar/list
   apply-from $url
 }
+
+kube_devops_kanboard="devops/kanboard"
 
 function init-devops-kanboard()
 {
