@@ -60,7 +60,7 @@ kubeinst init-compute vm
 
 ```
 - 2.x: product ready
-  - 2.0: support VM
-  - 2.1: support devops tools
-  - 2.2: support dashboard
+  - 2.0: support devops
+  - 2.1: support mlops
+  - 2.2: support kubestack
 ```
