@@ -694,7 +694,6 @@ function help-storage()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-storage postgres   :\t(Init): postgres (Deprecated, see init-addon postgres)"
   echo -e "  init-storage minio      :\t(Init): minio"
   echo -e "  init-storage rook       :\t(Init): rook"
   echo -e "  init-storage cephfs     :\t(Init): cephfs"
@@ -713,10 +712,7 @@ function init-storage()
      exit
   fi
 
-  if [[ $2 == "postgres" ]]
-  then
-    init-storage-postgres
-  elif [[ $2 == "rook" ]]
+  if [[ $2 == "rook" ]]
   then
     init-storage-rook
   elif [[ $2 == "cephfs" ]]
@@ -738,13 +734,6 @@ function init-storage()
      unsupport $@
      help-storage
   fi
-}
-
-function init-storage-postgres()
-{
-  create-namespace kube-storage
-  url=$common_software_repo/raw/master/$kube_storage_postgres/list
-  apply-from $url
 }
 
 function init-storage-rook()
@@ -928,6 +917,7 @@ function help-addon()
   echo -e "  init-addon tokens     :\t(Init): supertokens"
 #  echo -e "  init-addon loki       :\t(Init): loki"
   echo -e "  init-addon grafana    :\t(Init): grafana"
+  echo -e "  init-addon falco      :\t(Init): falco"
   echo -e "  init-addon superset   :\t(Init): superset"
   echo -e "  init-addon --help     :\t(Init): help"
 }
@@ -958,10 +948,21 @@ function init-addon()
   elif [[ $2 == "superset" ]]
   then
      init-addon-superset
+  elif [[ $2 == "falco" ]]
+  then
+     init-addon-falco
   else
      unsupport $@
      help-addon
   fi
+}
+
+kube_addon_falco="security/falco"
+
+function init-addon-falco()
+{
+  url=$common_software_repo/raw/master/$kube_addon_falco/list
+  apply-from $url
 }
 
 function init-addon-postgres()
@@ -1040,45 +1041,6 @@ function init-dashboard-kuboard()
   url=$common_software_repo/raw/master/$kube_dashboard_kuboard/list
   apply-from $url
   useage-info http 31020 admin Kuboard123
-}
-
-###########################################################
-##
-##  init-security
-##
-##########################################################
-
-kube_security_falco="security/falco"
-
-function help-security()
-{
-  cmddesc
-  echo -e "Commands:"
-  echo -e "  init-security falco        :\t(Init): falco"
-  echo -e "  init-security --help       :\t(Init): help"
-}
-
-function init-security()
-{
-  if [[ $# != 2 ]]
-  then
-     help-security
-  fi
-
-  if [[ $2 == "falco" ]]
-  then
-     init-security-falco
-  else
-     unsupport $@
-     help-security
-  fi
-
-}
-
-function init-security-falco()
-{
-  url=$common_software_repo/raw/master/$kube_security_falco/list
-  apply-from $url
 }
 
 
@@ -1422,8 +1384,7 @@ function help()
   echo -e "  init-compute         :install container or vm"
   echo -e "  init-network         :install kubernetes network, such as kubeovn, calico or flannel"
   echo -e "  init-storage         :install kubernetes storage, such as postgres, "
-  echo -e "  init-security        :install falco"
-  echo -e "  init-addon           :install kubernetes addons, such as loki, supertokens, prometheus, grafana and superset"
+  echo -e "  init-addon           :install kubernetes addons, such as loki, supertokens, prometheus, grafana and superset,falco"
   echo -e "  init-devops          :install gitlab, jenkins, nexus3, sonar, kanboard"
   echo -e "  init-dashboard       :install kubeboard, harbor, fabric8"
   echo -e "  --help               :help"
