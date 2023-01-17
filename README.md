@@ -50,17 +50,16 @@ kubeinst init-compute vm
 
 ## Software
 
-- [Kubernetes](docs/kube.md)
+- [Kube](docs/kube.md)
 - [devops](docs/devops.md)
 - [addon](docs/addon.md)
-- [dashboard](docs/dashboard.md)
+- [stack](docs/stack.md)
+- [yamls](https://gitee.com/syswu/yamls)
 
 
 ## Roadmap
 
 ```
-- 2.x: product ready
-  - 2.0: support devops
-  - 2.1: support mlops
-  - 2.2: support kubestack
+- 2.3: support devops
+- 2.4: support stack
 ```
