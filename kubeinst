@@ -681,7 +681,6 @@ function init-network-flannel()
 ##
 ##########################################################
 
-kube_storage_postgres="storage/postgres"
 kube_storage_rook="storage/rook"
 kube_storage_ceph="storage/ceph"
 kube_storage_cephfs="storage/cephfs"
@@ -1386,7 +1385,7 @@ function help()
   echo -e "  init-storage         :install kubernetes storage, such as postgres, "
   echo -e "  init-addon           :install kubernetes addons, such as loki, supertokens, prometheus, grafana and superset,falco"
   echo -e "  init-devops          :install gitlab, jenkins, nexus3, sonar, kanboard"
-  echo -e "  init-dashboard       :install kubeboard, harbor, fabric8"
+#  echo -e "  init-dashboard       :install kubeboard, harbor, fabric8"
   echo -e "  --help               :help"
 #  echo -e "  init-tool            :\t(Init): install helm, etc"
 #  echo -e "  init-crds            :\t(Init): deploy crds, see https://gitee.com/syswu/yamls/crds"
