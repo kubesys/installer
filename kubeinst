@@ -217,7 +217,7 @@ function help-env()
   echo -e "Commands:"
   echo -e "  init-env ctr         :\t(Init): download conatinerd/docker, kubeadm, kubelet and kubectl"
   echo -e "  init-env rook        :\t(Init): download ceph"
-  echo -e "  init-env vm          :\t(Init): download kvm, libvirt, kubeadm, kubelet and kubectl"
+  echo -e "  init-env vm          :\t(Init): download kvm and libvirt"
   echo -e "  init-env --help      :\t(Init): help"
 }
 
@@ -521,8 +521,9 @@ function help-compute()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-compute ctr   :\t(Init): install conatinerd/docker, kubeadm, kubelet and kubectl"
-  echo -e "  init-compute vm          :\t(Init): install kvm, libvirt, kubeadm, kubelet and kubectl"
+  echo -e "  init-compute ctr         :\t(Init): setup container runtime"
+  echo -e "  init-compute vm          :\t(Init): setup vm runtime "
+  echo -e "  init-compute baremetal   :\t(Init): setup baremetal runtime "
   echo -e "  init-compute --help      :\t(Init): help"
 }
 
@@ -540,13 +541,24 @@ function init-compute()
   elif [[ $2 == "vm" ]]
   then
      init-compute-vm
-  else
+elif [[ $2 == "baremetal" ]]
+  then
+     init-compute-baremetal
+else
      unsupport $@
      help-compute
   fi 
  
 }
 
+kube_compute_baremetal="compute/baremetal"
+
+function init-compute-baremetal()
+{
+  check-kube
+  url=$common_software_repo/raw/master/$kube_compute_baremetal/list
+  apply-from $url
+}
 
 function init-compute-vm()
 {
