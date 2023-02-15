@@ -41,7 +41,7 @@ kube_pod_subnet="10.244.0.0/16"
 kube_version="1.26.0"
 
 kube_runtime="containerd"                # containerd or docker
-kube_runtime_version="1.6.14"             # containerd
+kube_runtime_version="1.6.16"             # containerd
 #kube_runtime="docker"                     # containerd or docker
 #kube_runtime_version="20.10.8"            # docker
 
