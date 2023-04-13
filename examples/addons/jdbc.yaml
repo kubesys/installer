@@ -1,0 +1,68 @@
+--- 
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata: 
+  name: "kube-jdbc"
+  namespace: "kube-system"
+  labels: 
+    name: "kube-jdbc"
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels:
+      name: "kube-jdbc"
+  template: 
+    metadata: 
+      labels: 
+        name: "kube-jdbc"
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+      - name: "postgres"
+        image: "postgres:13.3-alpine"
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 5432
+        env:
+        - name: "POSTGRES_PASSWORD"
+          value: "onceas"
+        volumeMounts:
+        - name: "data"
+          mountPath: "/var/lib/postgresql"
+      - name: "adminer"
+        image: "adminer:4.8.0-standalone"
+        imagePullPolicy: "IfNotPresent"
+        ports: 
+        - containerPort: 8080
+      volumes: 
+      - name: "data"
+        hostPath:
+          path: "/var/lib/doslab/postgresql"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-jdbc
+  namespace: kube-system
+  labels: 
+    name: kube-jdbc
+spec:
+  type: NodePort
+  ports:
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432
+    name: postgre-port
+    nodePort: 30306
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+    name: adminer-port
+    nodePort: 30307
+  selector:
+    name: kube-jdbc
+
