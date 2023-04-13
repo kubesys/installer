@@ -1,0 +1,78 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: kube-amqp
+  namespace: kube-system
+data:
+  HOST: kube-amqp.kube-system
+  USER: root
+  PASSWORD: onceas
+  PORT: "5672"
+  QUEUE: frontend-events
+--- 
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata: 
+  name: "kube-amqp"
+  namespace: "kube-system"
+  labels: 
+    name: "kube-amqp"
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels:
+      name: "kube-amqp"
+  template: 
+    metadata: 
+      labels: 
+        name: "kube-amqp"
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+      containers:
+      - name: "rabbitmq"
+        image: "bitnami/rabbitmq:3.8.21"
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 15672  
+        - containerPort: 5672  
+        env:
+        - name: "RABBITMQ_USERNAME"
+          value: "root"
+        - name: "RABBITMQ_PASSWORD"
+          value: "onceas" 
+        volumeMounts:
+        - name: "rabbit-persistent-storage"
+          mountPath: "/bitnami"
+      volumes: 
+      - name: "rabbit-persistent-storage"
+        hostPath:
+          path: "/var/lib/doslab/rabbitmq"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-amqp
+  namespace: kube-system
+  labels: 
+    name: kube-amqp
+spec:
+  type: NodePort
+  ports:
+  - name: rabbitmq-management-port
+    nodePort: 30305  
+    port: 15672  
+    protocol: TCP  
+    targetPort: 15672  
+  - name: rabbitmq-port 
+    nodePort: 30304   
+    port: 5672   
+    protocol: TCP   
+    targetPort: 5672
+  selector:
+    name: kube-amqp
+
