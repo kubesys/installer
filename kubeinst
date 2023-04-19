@@ -8,7 +8,7 @@
 ###############################################
 
 
-VERSION="2.3.0"
+VERSION="2.3.1"
 
 ####################
 ##
@@ -38,10 +38,10 @@ ubuntu_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg
 
 #kube_fip="120.46.180.58"                  # if you deploy Kubernetes on a public cloud, the fip is public IP
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.26.0"
+kube_version="1.27.1"
 
 kube_runtime="containerd"                # containerd or docker
-kube_runtime_version="1.6.16"             # containerd
+kube_runtime_version="1.6.20"             # containerd
 #kube_runtime="docker"                     # containerd or docker
 #kube_runtime_version="20.10.8"            # docker
 
@@ -661,7 +661,7 @@ function init-network()
 }
 
 kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
-kube_cni_calico_version="v3.24"
+kube_cni_calico_version="v3.25.1"
 kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"
 
 function init-network-calico()
@@ -670,7 +670,7 @@ function init-network-calico()
 }
 
 kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/VERSION/dist/images/install.sh"
-kube_cni_ovn_version="v1.10.7"
+kube_cni_ovn_version="v1.11.3"
 kube_cni_ovn_sh="${kube_cni_ovn_url/VERSION/$kube_cni_ovn_version}"
 
 function init-network-kubeovn()
@@ -679,7 +679,7 @@ function init-network-kubeovn()
 }
 
 kube_cni_flannel_url="https://raw.githubusercontent.com/flannel-io/flannel/VERSION/Documentation/kube-flannel.yml"
-kube_cni_flannel_version="v0.20.2"
+kube_cni_flannel_version="v0.21.4"
 kube_cni_flannel_yaml="${kube_cni_flannel_url/VERSION/$kube_cni_flannel_version}"
 
 function init-network-flannel()
