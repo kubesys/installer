@@ -667,7 +667,7 @@ function init-network-calico()
 }
 
 kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/VERSION/dist/images/install.sh"
-kube_cni_ovn_version="v1.11.3"
+kube_cni_ovn_version="v1.11.5"
 kube_cni_ovn_sh="${kube_cni_ovn_url/VERSION/$kube_cni_ovn_version}"
 
 function init-network-kubeovn()
