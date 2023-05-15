@@ -40,8 +40,8 @@ ubuntu_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg
 kube_pod_subnet="10.244.0.0/16"
 kube_version="1.27.1"
 
-kube_runtime="containerd"                # containerd or docker
-kube_runtime_version="1.6.21"             # containerd
+kube_runtime="containerd"                  # containerd or docker
+kube_runtime_version="1.6.21"              # containerd
 #kube_runtime="docker"                     # containerd or docker
 #kube_runtime_version="20.10.8"            # docker
 
@@ -56,13 +56,6 @@ kube_runtime_version="1.6.21"             # containerd
 virt_type="kvm"                      # kvm or kata
 virt_version="rocky"                
 kube_virt="compute/libvirt"
-
-
-#####################
-##
-## Dashboard
-##
-#####################
 
 
 ###############################################
@@ -1007,53 +1000,6 @@ function init-addon-superset()
 
 ###########################################################
 ##
-##  init-dashboard
-##
-##########################################################
-
-kube_dashboard_kuboard="dashboard/kuboard"
-kube_dashboard_kubeapps="dashboard/kubeapps"
-
-function help-dashboard()
-{
-  cmddesc
-  echo -e "Commands:"
-  echo -e "  init-webui kuboard        :\t(Init): kuboard"
-  echo -e "  init-webui kubeapps       :\t(Init): kubeapps"
-}
-
-function init-dashboard()
-{
-  if [[ $# != 2 ]]
-  then
-     help-dashboard
-     exit
-  fi
-
-  create-namespace kube-dashboard
-
-  if [[ $2 == "kuboard" ]]
-  then
-     init-dashboard-kuboard
-  elif [[ $2 == "kubeapps" ]]
-  then
-     init-dashboard-kubeapps
-  else
-     unsupport $@
-     help-dashboard
-  fi
-}
-
-function init-dashboard-kuboard()
-{
-  url=$common_software_repo/raw/master/$kube_dashboard_kuboard/list
-  apply-from $url
-  useage-info http 31020 admin Kuboard123
-}
-
-
-###########################################################
-##
 ##  init-devops
 ##
 ##########################################################
@@ -1225,17 +1171,11 @@ case $1 in
   "init-storage")
     init-storage $*
     ;;
-  "init-security")
-    init-security $*
-    ;;
   "init-addon")
     init-addon $*
     ;;
   "init-devops")
     init-devops $*
-    ;;
-  "init-dashboard")
-    init-dashboard $*
     ;;
 #  "init-tool")
 #    init-tool $*
