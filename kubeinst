@@ -64,9 +64,6 @@ kube_virt="compute/libvirt"
 ##
 #####################
 
-kube_crds="crds"                          # crds
-dashboard_backend="2.3.0"
-dashboard_frontend="2.3.0"
 
 ###############################################
 ##
@@ -1178,193 +1175,6 @@ function init-devops-kanboard()
 
 ###########################################################
 ##
-##  kube-backend
-##
-##########################################################
-
-yamlUrl="https://gitee.com/syswu/yamls/raw/master/"
-plugins="collector/list"
-
-function init-k8s-plugins()
-{
-   rm -rf /etc/kubernetes/kubeenv.list
-   array=(${plugins//,/ })
-   for var in ${array[@]}
-   do
-     curl $yamlUrl$var > /tmp/list
-     for line in `cat /tmp/list`
-     do
-       echo ${line} >> /etc/kubernetes/kubeenv.list
-     done
-   done
-}
-
-###########################################################
-##
-##  kube-backend
-##
-##########################################################
-
-backendUrl="https://gitee.com/syswu/yamls/raw/master/backend"
-tokenFile="kube-token.yaml"
-messageFile="kube-message-rabbitmq.yaml"
-mirrorFile="kube-runtime-mirror.yaml"
-mapperFile="kube-api-mapper.yaml"
-dir="/opt/yamls"
-type="postgres"
-
-function config-dir()
-{
-   rm -rf $1
-   mkdir -p $1
-   chmod 777 $1
-}
-
-function apply-yaml()
-{
-  rm -rf $1/$2
-  wget --no-check-certificate -P $1/ $3/$2
-  kubectl apply -f $1/$2
-}
-
-
-function init-crds()
-{
-  rm -rf /tmp/list
-  wget --no-check-certificate -P /tmp/ $common_software_repo/raw/master/$kube_crds/list
-  for line in `cat /tmp/list`
-  do
-    kubectl apply -f $line
-  done
-
-  kubectl delete clusterrole admin
-
-  rm -rf /tmp/list
-  wget --no-check-certificate -P /tmp/ $frontendUrl/list
-
-  for name in `cat /tmp/list`
-  do
-    kubectl apply -f $name
-  done
-
-}
-
-function init-backend()
-{
-
-  config-dir $dir
-  config-dir /var/lib/doslab/yamls
-
-  apply-yaml $dir $tokenFile    $backendUrl
-  apply-yaml $dir $mirrorFile   $backendUrl
-  apply-yaml $dir $mapperFile   $backendUrl
-
-  token=`get-token`
-
-  # host and url
-  host=`get-ip`
-  url="https:\/\/"$host":6443"
-
-  #@ port
-  dbport="30306"
-
-  sed -i "s/#type#/$type/g" $dir/$mirrorFile
-  sed -i "s/#host#/$host/g" $dir/$mirrorFile
-  sed -i "s/#port#/$dbport/g" $dir/$mirrorFile
-  sed -i "s/#url#/$url/g" $dir/$mirrorFile
-  sed -i "s/#token#/$token/g" $dir/$mirrorFile
-  sed -i "s/#version#/$dashboard_backend/g" $dir/$mirrorFile
-
-  sed -i "s/#type#/$type/g" $dir/$mapperFile
-  sed -i "s/#host#/$host/g" $dir/$mapperFile
-  sed -i "s/#port#/$dbport/g" $dir/$mapperFile
-  sed -i "s/#url#/$url/g" $dir/$mapperFile
-  sed -i "s/#token#/$token/g" $dir/$mapperFile
-  sed -i "s/#version#/$dashboard_backend/g" $dir/$mapperFile
-
-  res=$(kubectl get po -A | grep kube-database |  grep  Running)
-  if [[ -z "$res" ]]
-  then
-    echo "firstly execute 'kubeinst init-addon postgres'"
-    exit 1
-  fi
-
-  kubectl apply -f $dir/$mirrorFile
-  kubectl apply -f $dir/$mapperFile
-
-
-  while true
-  do
-    res=$(kubectl get po -A | grep kube-api-mapper |  grep -v Running | grep -v NAMESPACE)
-    if [[ -z "$res" ]]
-    then
-      break
-    fi
-    sleep 5s
-  done
-
-  if [[ -n $kube_fip ]]
-  then
-    host=$kube_fip
-  fi
-
-  sleep 10
-
-  curl -H "Content-Type: application/json" -X POST -d '{"json": {"name": "admin","rules": [{"apiGroups": ["*"],"resources": ["*"],"verbs": ["*"]}]}}' "http://$host:30308/kubesys/user/createUserRole"
-}
-
-function reset-backend()
-{
-  kubectl delete deploy kube-runtime-mirror -n kube-system
-  kubectl delete deploy kube-api-mapper -n kube-system
-  kubectl delete svc kube-api-mapper -n kube-system
-}
-
-###########################################################
-##
-##  kube-frontend
-##
-##########################################################
-
-frontendUrl="https://gitee.com/syswu/yamls/raw/master/frontend"
-config_dir="/var/lib/doslab/frontend"
-config_name="config.js"
-frontendFile="kube-frontend.yaml"
-
-function init-frontend()
-{
-
-  # make and config config.js
-  rm -rf $config_dir
-  mkdir -p $config_dir
-  echo "window.g = {" > $config_dir/$config_name
-  if [[ -n $kube_fip ]]
-  then
-    echo "    baseURL: 'http://$kube_fip:30308/kubesys'" >> $config_dir/$config_name
-  else
-    echo "    baseURL: 'http://`get-ip`:30308/kubesys'" >> $config_dir/$config_name
-  fi
-  echo "}" >> $config_dir/$config_name
-
-  # make and config yaml
-  rm -rf /$dir/$frontendFile
-  wget --no-check-certificate -P $dir/ $frontendUrl/$frontendFile
-  sed -i "s/#version#/$dashboard_frontend/g" $dir/$frontendFile
-
-  # apply yaml
-  kubectl apply -f /$dir/$frontendFile
-}
-
-
-function reset-frontend()
-{
-  kubectl delete deploy kube-frontend -n kube-system
-  kubectl delete svc kube-frontend -n kube-system
-}
-
-
-###########################################################
-##
 ##  help
 ##
 ##########################################################
@@ -1397,12 +1207,8 @@ function help()
   echo -e "  init-storage         :setup kubernetes storage"
   echo -e "  init-addon           :setup loki, prometheus/grafana,  superset,falco"
   echo -e "  init-devops          :setup gitlab, jenkins, nexus3, sonar, kanboard"
-#  echo -e "  init-dashboard       :install kubeboard, harbor, fabric8"
   echo -e "  --help               :help"
 #  echo -e "  init-tool            :\t(Init): install helm, etc"
-#  echo -e "  init-crds            :\t(Init): deploy crds, see https://gitee.com/syswu/yamls/crds"
-#  echo -e "  init-backend         :\t(Init): deploy backend services, see https://gitee.com/syswu/yamls/backend"
-#  echo -e "  init-frontend        :\t(Init): deploy dashboard, see https://gitee.com/syswu/yamls/frontend"
 }
 
 
@@ -1433,15 +1239,6 @@ case $1 in
     ;;
 #  "init-tool")
 #    init-tool $*
-#    ;;
-#  "init-crds")
-#    init-crds $*
-#    ;;
-#  "init-backend")
-#    init-backend $*
-#    ;;
-#  "init-frontend")
-#    init-frontend $*
 #    ;;
   "--help")
     help
