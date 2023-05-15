@@ -57,6 +57,83 @@ virt_type="kvm"                      # kvm or kata
 virt_version="rocky"                
 kube_virt="compute/libvirt"
 
+#####################
+##
+## Baremetal
+##
+#####################
+kube_compute_baremetal="compute/baremetal"
+
+
+#####################
+##
+## Network
+##
+#####################
+kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
+kube_cni_calico_version="v3.25.1"
+kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"
+
+kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/VERSION/dist/images/install.sh"
+kube_cni_ovn_version="v1.11.5"
+kube_cni_ovn_sh="${kube_cni_ovn_url/VERSION/$kube_cni_ovn_version}"
+
+kube_cni_flannel_url="https://raw.githubusercontent.com/flannel-io/flannel/VERSION/Documentation/kube-flannel.yml"
+kube_cni_flannel_version="v0.21.4"
+kube_cni_flannel_yaml="${kube_cni_flannel_url/VERSION/$kube_cni_flannel_version}"
+
+
+#####################
+##
+## Storage
+##
+#####################
+kube_storage_rook="storage/rook"
+kube_storage_ceph="storage/ceph"
+kube_storage_cephfs="storage/cephfs"
+kube_storage_cephrgw="storage/cephrgw"
+kube_storage_cephrbd="storage/cephrbd"
+kube_storage_nfs="storage/nfs"
+kube_storage_minio="storage/minio"
+
+#####################
+##
+## Tool
+##
+#####################
+kube_tool_helm_version="v3.8.1"
+kube_tool_helm_url="https://get.helm.sh/"
+kube_tool_helm_name="helm-$kube_tool_helm_version-linux-ARCH.tar.gz"
+
+kube_tool_minio_version="4.4.28"
+kube_tool_minio_url="https://github.com/minio/operator/releases/download/v$kube_tool_minio_version/"
+kube_tool_minio_name="kubectl-minio_${kube_tool_minio_version}_linux_ARCH"
+
+#####################
+##
+## addon
+##
+#####################
+kube_addon_prom="addon/prom"
+kube_addon_postgres="addon/postgres"
+kube_addon_loki="addon/loki"
+kube_addon_grafana="addon/grafana"
+kube_addon_superset="addon/superset"
+kube_addon_superset="addon/tokens"
+kube_addon_falco="security/falco"
+
+
+#####################
+##
+## DevOps
+##
+#####################
+kube_devops_harbor="devops/harbor"
+kube_devops_gitlab="devops/gitlab"
+kube_devops_jenkins="devops/jenkins"
+kube_devops_nexus3="devops/nexus3"
+kube_devops_sonar="devops/sonar"
+kube_devops_kanboard="devops/kanboard"
 
 ###############################################
 ##
@@ -541,7 +618,6 @@ else
  
 }
 
-kube_compute_baremetal="compute/baremetal"
 
 function init-compute-baremetal()
 {
@@ -650,27 +726,16 @@ function init-network()
   fi
 }
 
-kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
-kube_cni_calico_version="v3.25.1"
-kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"
-
 function init-network-calico()
 {
   kubectl apply -f $kube_cni_calico_yaml
 }
 
-kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/VERSION/dist/images/install.sh"
-kube_cni_ovn_version="v1.11.5"
-kube_cni_ovn_sh="${kube_cni_ovn_url/VERSION/$kube_cni_ovn_version}"
 
 function init-network-kubeovn()
 {
   curl $kube_cni_ovn_sh | bash -
 }
-
-kube_cni_flannel_url="https://raw.githubusercontent.com/flannel-io/flannel/VERSION/Documentation/kube-flannel.yml"
-kube_cni_flannel_version="v0.21.4"
-kube_cni_flannel_yaml="${kube_cni_flannel_url/VERSION/$kube_cni_flannel_version}"
 
 function init-network-flannel()
 {
@@ -683,13 +748,6 @@ function init-network-flannel()
 ##
 ##########################################################
 
-kube_storage_rook="storage/rook"
-kube_storage_ceph="storage/ceph"
-kube_storage_cephfs="storage/cephfs"
-kube_storage_cephrgw="storage/cephrgw"
-kube_storage_cephrbd="storage/cephrbd"
-kube_storage_nfs="storage/nfs"
-kube_storage_minio="storage/minio"
 
 function help-storage()
 {
@@ -864,9 +922,6 @@ function init-tool()
 
 }
 
-kube_tool_helm_version="v3.8.1"
-kube_tool_helm_url="https://get.helm.sh/"
-kube_tool_helm_name="helm-$kube_tool_helm_version-linux-ARCH.tar.gz"
 
 function init-tool-helm()
 {
@@ -881,9 +936,6 @@ function init-tool-helm()
    rm -rf $name
 }
 
-kube_tool_minio_version="4.4.28"
-kube_tool_minio_url="https://github.com/minio/operator/releases/download/v$kube_tool_minio_version/"
-kube_tool_minio_name="kubectl-minio_${kube_tool_minio_version}_linux_ARCH"
 
 function init-tool-minio()
 {
@@ -902,12 +954,6 @@ function init-tool-minio()
 ##
 ##########################################################
 
-kube_addon_prom="addon/prom"
-kube_addon_postgres="addon/postgres"
-kube_addon_loki="addon/loki"
-kube_addon_grafana="addon/grafana"
-kube_addon_superset="addon/superset"
-kube_addon_superset="addon/tokens"
 
 function help-addon()
 {
@@ -957,8 +1003,6 @@ function init-addon()
      help-addon
   fi
 }
-
-kube_addon_falco="security/falco"
 
 function init-addon-falco()
 {
@@ -1057,16 +1101,12 @@ function init-devops()
 
 }
 
-kube_devops_harbor="devops/harbor"
-
 function init-devops-harbor()
 {
   url=$common_software_repo/raw/master/$kube_devops_harbor/list
   apply-from $url
   useage-info http 31010 admin Harbor12345
 }
-
-kube_devops_gitlab="devops/gitlab"
 
 function init-devops-gitlab()
 {
@@ -1078,8 +1118,6 @@ function init-devops-gitlab()
   useage-info http 31013 root @Devops@
 }
 
-kube_devops_jenkins="devops/jenkins"
-
 function init-devops-jenkins()
 {
   url=$common_software_repo/raw/master/$kube_devops_jenkins/list
@@ -1089,9 +1127,6 @@ function init-devops-jenkins()
   pwd=$(cat $path)
   useage-info http 31017 default $pwd
 }
-
-
-kube_devops_nexus3="devops/nexus3"
 
 function init-devops-nexus3()
 {
@@ -1103,15 +1138,11 @@ function init-devops-nexus3()
   useage-info http 31016 admin $pwd
 }
 
-kube_devops_sonar="devops/sonar"
-
 function init-devops-sonar()
 {
   url=$common_software_repo/raw/master/$kube_devops_sonar/list
   apply-from $url
 }
-
-kube_devops_kanboard="devops/kanboard"
 
 function init-devops-kanboard()
 {
