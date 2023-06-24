@@ -65,6 +65,11 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 kubectl taint nodes [node] node-role.kubernetes.io/master=true:NoSchedule
 ```
 
+## More
+
+- https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta3/
+- https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/
+
 ## Roadmap
 
 ```
