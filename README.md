@@ -53,7 +53,6 @@ kubeinst init-compute vm
 - [Kube](docs/kube.md)
 - [devops](docs/devops.md)
 - [addon](docs/addon.md)
-- [stack](docs/stack.md)
 - [yamls](https://gitee.com/syswu/yamls)
 
 ## Command
