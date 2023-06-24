@@ -70,9 +70,10 @@ kubectl taint nodes [node] node-role.kubernetes.io/master=true:NoSchedule
 - https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta3/
 - https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/
 
+- https://github.com/Mirantis/cri-dockerd
+- 
 ## Roadmap
 
 ```
-- 2.3: support devops
-- 2.4: support stack
+- 2.4: support docker
 ```
