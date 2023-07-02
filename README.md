@@ -25,7 +25,7 @@ curl --url https://raw.githubusercontent.com/kubesys/installer/master/kubeinst -
 chmod 777 /usr/bin/kubeinst
 kubeinst init-env ctr
 kubeinst init-compute ctr
-kubeinst init-network kube-ovn
+kubeinst init-network kubeovn
 ```
 
 ### Optional(kubevm)
