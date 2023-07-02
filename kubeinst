@@ -40,10 +40,10 @@ ubuntu_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg
 kube_pod_subnet="10.244.0.0/16"
 kube_version="1.27.3"
 
-#kube_runtime="containerd"                  # containerd or docker
-#kube_runtime_version="1.6.21"              # containerd
-kube_runtime="docker"                     # containerd or docker
-kube_runtime_version="23.0.6"            # docker
+kube_runtime="containerd"                  # containerd or docker
+kube_runtime_version="1.6.21"              # containerd
+#kube_runtime="docker"                     # containerd or docker
+#kube_runtime_version="23.0.6"            # docker
 
                       
 
