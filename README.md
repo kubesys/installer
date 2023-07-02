@@ -23,22 +23,12 @@ Install Kubernetes and containerized software with a simple and comprehensible w
 ```
 curl --url https://raw.githubusercontent.com/kubesys/installer/master/kubeinst --output /usr/bin/kubeinst
 chmod 777 /usr/bin/kubeinst
-```
-
-### Kubernetes container
-
-1. Requried
-
-```
 kubeinst init-env ctr
 kubeinst init-compute ctr
 kubeinst init-network kube-ovn
-kubeinst init-storage ceph
 ```
 
-2. optional
-
-### Kubernetes VM
+### Optional(kubevm)
 
 Experimental.
 After install Kubernetes container, you can install [VM](https://github.com/KubeVMMgr/kube-vm) on your cluster
