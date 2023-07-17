@@ -26,6 +26,7 @@ chmod 777 /usr/bin/kubeinst
 kubeinst init-env ctr
 kubeinst init-compute ctr
 kubeinst init-network kubeovn
+kubeinst init-addon postgres
 ```
 
 ### Optional(kubevm)
