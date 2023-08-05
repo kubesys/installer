@@ -7,7 +7,6 @@
 | Prometheus  | status Observer       | 2.45.0  | [Linux](https://github.com/prometheus/prometheus/)  |  9090/30301, 9100/30302, 9090/30303 | NA |init-addon prometheus |
 | rabbitmq    | message middleware    | 3.12.0  | [Linux](https://www.rabbitmq.com/)                  |   5672/30304,15672/30305            | NA |init-addon rabbitmq|
 | postgres    | Relational database   | 15.3    | [Linux](https://www.postgresql.org/)                |   5432/30306,8080/30307             | NA |init-addon postgres|
-| keycloak    | identity management   |  21.1   | [Linux](https://www.keycloak.org/)                  |         8080:30308                  | NA | init-addon keycloak |
-| Habor       | Repositories          |  21.1   | [Linux](https://www.keycloak.org/)                  |         8080:30308                  | NA | init-addon harbor |
+| Habor       | Repositories          | 2.8.3   | [Linux](https://www.habor.com/en/)                  |         8080:30308                  | NA | init-addon harbor |
 
 updated: 2023-06-24
