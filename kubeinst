@@ -70,8 +70,9 @@ kube_compute_baremetal="compute/baremetal"
 ## Network
 ##
 #####################
-kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
-kube_cni_calico_version="v3.25.1"
+#kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
+kube_cni_calico_url="https://github.com/projectcalico/calico/blob/VERSION/manifests/calico.yaml"
+kube_cni_calico_version="v3.26.1"
 kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"
 
 kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/VERSION/dist/images/install.sh"
