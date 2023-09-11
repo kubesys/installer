@@ -40,10 +40,10 @@ ubuntu_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg
 kube_pod_subnet="10.244.0.0/16"
 kube_version="1.27.3"
 
-kube_runtime="containerd"                  # containerd or docker
-kube_runtime_version="1.6.21"              # containerd
-#kube_runtime="docker"                     # containerd or docker
-#kube_runtime_version="23.0.6"            # docker
+#kube_runtime="containerd"                  # containerd or docker
+#kube_runtime_version="1.6.21"              # containerd
+kube_runtime="docker"                       # containerd or docker
+kube_runtime_version="24.0.6"               # docker
 
                       
 
@@ -445,7 +445,6 @@ function add-apt-repository()
 function yum-docker-k8s()
 {
   yum install -y wget docker-ce-${kube_runtime_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version} lvm2
-  rpm --force -Uvh https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.3/cri-dockerd-0.3.3-3.el7.x86_64.rpm
   config-docker 
 }
 
@@ -488,7 +487,7 @@ function config-docker()
   echo "}" >> /etc/docker/daemon.json
   systemctl daemon-reload
 
-  start-service docker cri-docker kubelet
+  start-service docker kubelet
 }
 
 function config-containerd()
