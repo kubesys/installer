@@ -300,7 +300,7 @@ function init-env()
  
   install=""
   osname=""
-  if [[ -n $(cat /etc/os-release | grep centos) ]]
+  if [[ -n $(cat /etc/os-release | grep "centos\|openEuler") ]]
   then
     install="yum"
     osname="centos"
