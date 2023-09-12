@@ -460,7 +460,7 @@ function apt-docker-k8s()
   apt-get update
   apt-get install docker-ce=$dVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer lvm2 -y
 
-  wget -P /usr/bin/cri-dockerd $cri_dockerd_url/cri-dockerd-$(arch)
+  wget -P /usr/bin/ $cri_dockerd_url/cri-dockerd-$(arch)
   mv /usr/bin/cri-dockerd-$(arch) /usr/bin/cri-dockerd
   wget -P /etc/systemd/system/ $cri_dockerd_url/cri-docker.service
   config-docker
