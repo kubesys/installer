@@ -448,7 +448,9 @@ function yum-docker-k8s()
   yum install -y wget docker-ce-${kube_runtime_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version} lvm2
   wget -P /usr/bin/ $cri_dockerd_url/cri-dockerd-$(arch)
   mv /usr/bin/cri-dockerd-$(arch) /usr/bin/cri-dockerd
+  chmod 777 /usr/bin/cri-dockerd
   wget -P /etc/systemd/system/ $cri_dockerd_url/cri-docker.service
+  
   config-docker 
 }
 
@@ -462,7 +464,9 @@ function apt-docker-k8s()
 
   wget -P /usr/bin/ $cri_dockerd_url/cri-dockerd-$(arch)
   mv /usr/bin/cri-dockerd-$(arch) /usr/bin/cri-dockerd
+  chmod 777 /usr/bin/cri-dockerd
   wget -P /etc/systemd/system/ $cri_dockerd_url/cri-docker.service
+  
   config-docker
 }
 
