@@ -39,7 +39,7 @@ cri_dockerd_url="http://139.9.165.93/binary"
 
 #kube_fip="120.46.180.58"                  # if you deploy Kubernetes on a public cloud, the fip is public IP
 kube_pod_subnet="10.244.0.0/16"
-kube_version="1.27.3"
+kube_version="1.28.1"
 
 #kube_runtime="containerd"                  # containerd or docker
 #kube_runtime_version="1.6.21"              # containerd
