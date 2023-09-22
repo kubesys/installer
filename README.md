@@ -60,11 +60,11 @@ kubectl taint nodes [node] node-role.kubernetes.io/master=true:NoSchedule
 
 - https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta3/
 - https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/
-
+- https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/
 - https://github.com/Mirantis/cri-dockerd
-- 
 ## Roadmap
 
 ```
 - 2.4: support docker
+- 2.5: support cluster HA (Kube, OVN and Ceph)
 ```
