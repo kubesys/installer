@@ -1,0 +1,7 @@
+---
+apiVersion: doslab.io/v1
+kind: VirtualMachine
+metadata:
+  name: virtualmachines.doslab.io
+spec:
+  group: doslab.io
