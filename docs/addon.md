@@ -7,6 +7,8 @@
 | Prometheus  | status Observer       | 2.45.0  | [Linux](https://github.com/prometheus/prometheus/)  |  9090/30301, 9100/30302, 9090/30303 | NA |init-addon prometheus |
 | rabbitmq    | message middleware    | 3.12.0  | [Linux](https://www.rabbitmq.com/)                  |   5672/30304,15672/30305            | NA |init-addon rabbitmq|
 | postgres    | Relational database   | 15.3    | [Linux](https://www.postgresql.org/)                |   5432/30306,8080/30307             | NA |init-addon postgres|
-| Habor       | Repositories          | 2.8.3   | [Linux](https://www.habor.com/en/)                  |         8080:30308                  | NA | init-addon harbor |
+| Habor       | Repositories          | 2.8.3   | [Linux](https://www.habor.com/en/)                  |         8080/30308                  | NA | init-addon harbor |
+| webssh2     | web console           | 0.4.7   | [Linux](https://github.com/billchurch/webssh2)      |         2222/30200                  | NA | init-addon webssh |
+| web-tty     | web console           | 0.4.7   | [Linux](https://github.com/wrfly/container-web-tty) |         8080/30201                  | NA | init-addon webtty  |
 
 updated: 2023-06-24
