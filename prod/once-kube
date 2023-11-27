@@ -32,6 +32,11 @@ kube_runtime_version="24.0.6"               # runc
 kube_runtime="docker"                       # runc, or containerd, or docker
 kube_runtime_version="24.0.6"               # docker
 
+declare -A pkgMgrs
+pkgMgrs['centos']='yum'
+pkgMgrs['openEuler']='yum'
+pkgMgrs['ubuntu']='apt'
+
                      
 
 ###############################################
@@ -113,7 +118,7 @@ function check-kube()
 ##
 ##  env
 ##
-##########################################################
+###########################################################
 
 
 function init-env()
@@ -128,8 +133,6 @@ function disable-centos-security()
 {
   replace SELINUX=permissive SELINUX=disabled /etc/selinux/config
   replace SELINUX=enforcing SELINUX=disabled /etc/selinux/config
-  #sed -ie 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config
-  #sed -ie 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
   stop-service firewalld
 }
 
@@ -147,58 +150,60 @@ function disable-openEuler-security()
 ##
 ##  runtime
 ##
-##########################################################
+###########################################################
+
+function help-runtime()
+{
+  cmddesc
+  echo -e "Commands:"
+  echo -e "  init-runtime runc         :\t(runtime): download runc and cri-o"
+  echo -e "  init-runtime containerd   :\t(runtime): download containerd"
+  echo -e "  init-runtime docker       :\t(runtime): download docker and cri-docker"
+  echo -e "  init-runtime --help       :\t(runtime): help"
+}
 
 function init-runtime()
 {
   if [[ $# != 2 ]]
   then
-     help-env
+     help-runtime
      exit
   fi
  
-  install=""
-  osname=""
-  if [[ -n $(cat /etc/os-release | grep "centos") ]]
+  osname=$(get-os)
+  install=${pkgMgrs[$osname]}
+
+  if [[ -z $install ]];
   then
-    install="yum"
-    osname="centos"
-  elif [[ -n $(cat /etc/os-release | grep ubuntu) ]]
-  then
-    install="apt"
-    osname="ubuntu"
-  elif [[ -n $(cat /etc/os-release | grep openEuler) ]]
-  then
-    install="yum"
-    osname="openEuler"
-  else
-    echo "only support centos, ubuntu and openEuler."
-    exit 1
+    unsupport $@
+	help-runtime
   fi
-
-  disable-$osname-security
-  #add-$install-repository
+  
+  
+  add-$osname-repository
+  $install-$kube_runtime
   #init-kubeadm-kubeconfig 
-
-  #if [[ $2 == "ctr" ]]
-  #then
-  #   init-env-container $install
-  #else
-  #   unsupport $@
-  #   help-env
-  #fi
 }
 
 ## add repository
 
-function add-yum-repository()
+function add-centos-repository()
 {
   yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
   yum-config-manager --enable docker-ce-nightly
   yum-config-manager --disable docker-ce-test
 }
 
-function add-apt-repository()
+function add-openEuler-repository()
+{
+  wget-to-local https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/openEuler-docker?version=23.12 /etc/yum.repos.d
+  mv /etc/yum.repos.d/openEuler-docker\?version\=23.12 /etc/yum.repos.d/openEuler-docker.repo
+  yum-config-manager --enable docker-ce-nightly
+  yum-config-manager --disable docker-ce-test
+}
+
+# TODO
+function add-ubuntu-repository()
 {
   arch=`get-arch`
 
@@ -214,16 +219,38 @@ function add-apt-repository()
 
 }
 
+function yum-containerd()
+{
+  yum install -y wget containerd.io-${kube_runtime_version} lvm2
+}
 
+function yum-docker()
+{
+  yum install -y wget docker-ce-${kube_runtime_version}  lvm2
+  config-docker
+}
+
+
+function config-docker()
+{
+  ## kubernetes >= 1.22 only supports systemd
+  mkdir -p /etc/docker
+  echo "{" > /etc/docker/daemon.json
+  echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
+  echo "}" >> /etc/docker/daemon.json
+  systemctl daemon-reload
+
+  start-service docker
+}
+
+###########################################################
+##
+##  orchestration
+##
+###########################################################
 function init-env-container()
 {
   $1-$kube_runtime-k8s
-}
-
-function init-env-rook()
-{
-  add-ceph-$1-repository
-  $1-ceph-install
 }
 
 function yum-docker-k8s()
@@ -272,17 +299,7 @@ function apt-containerd-k8s()
 }
 
 
-function config-docker()
-{
-  ## kubernetes >= 1.22 only supports systemd
-  mkdir -p /etc/docker
-  echo "{" > /etc/docker/daemon.json
-  echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
-  echo "}" >> /etc/docker/daemon.json
-  systemctl daemon-reload
 
-  start-service docker cri-docker kubelet
-}
 
 function config-containerd()
 {
@@ -389,7 +406,6 @@ function help()
   echo -e "  init-compute         :setup container"
   echo -e "  --help               :help"
 }
-
 
 case $1 in
   "init-env")
