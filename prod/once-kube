@@ -1,0 +1,414 @@
+#! /bin/bash
+###############################################
+##
+##  Copyright (2023, ) Institute of Software
+##      Chinese Academy of Sciences
+##          wuheng@iscas.ac.cn
+##
+###############################################
+
+
+VERSION="0.1.0"
+
+####################
+##
+## Common
+##
+####################
+
+common_image_server="g-ubjg5602-docker.pkg.coding.net/iscas-system/containers"
+
+
+#####################
+##
+## Container
+##
+#####################
+
+kube_runtime="runc"                       # runc, or containerd, or docker
+kube_runtime_version="24.0.6"               # runc
+#kube_runtime="containerd"                  # runc, or containerd, or docker
+#kube_runtime_version="1.6.21"              # containerd
+kube_runtime="docker"                       # runc, or containerd, or docker
+kube_runtime_version="24.0.6"               # docker
+
+                     
+
+###############################################
+##
+## Do not modify the below codes youself.
+## Create a issue if you need new features
+## or find a bug
+##
+###############################################
+
+function get-os()
+{
+  echo $(cat /etc/os-release  | grep ID | head -1 | awk -F'"' '{print$2}')
+}
+
+function get-arch()
+{
+  if [[ $(arch) == "x86_64" ]]
+  then
+    echo "amd64"
+  elif [[ $(arch) == "aarch64" ]]
+  then
+    echo "arm64"
+  else
+    echo "only support x86_64(amd64) and aarch64(arm64)"
+    exit 1
+  fi
+}
+
+function stop-service()
+{
+  for ser in "$@"
+  do
+    systemctl stop $ser
+    systemctl disable $ser
+  done 
+}
+
+function start-service()
+{
+  for ser in "$@"
+  do
+    systemctl start $ser
+    systemctl enable $ser
+  done 
+}
+
+function restart-service()
+{
+  for ser in "$@"
+  do
+    systemctl restart $ser
+  done
+}
+
+
+function replace()
+{
+   sed -ie "s/$1/$2/g" $3
+}
+
+function wget-to-local()
+{
+  wget --no-check-certificate -P $2/ $1
+}
+
+function check-kube()
+{
+   status=`systemctl status kubelet | grep Active | grep running`
+   if [[ -z $status ]]
+   then
+     echo -e "Please install container and Kubernetes first."
+     exit
+   fi
+}
+
+
+###########################################################
+##
+##  env
+##
+##########################################################
+
+
+function init-env()
+{
+  
+  disable-$(get-os)-security
+}
+
+## disable security
+
+function disable-centos-security()
+{
+  replace SELINUX=permissive SELINUX=disabled /etc/selinux/config
+  replace SELINUX=enforcing SELINUX=disabled /etc/selinux/config
+  #sed -ie 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config
+  #sed -ie 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+  stop-service firewalld
+}
+
+function disable-ubuntu-security()
+{
+  sudo ufw disable
+}
+
+function disable-openEuler-security()
+{
+  disable-centos-security
+}
+
+###########################################################
+##
+##  runtime
+##
+##########################################################
+
+function init-runtime()
+{
+  if [[ $# != 2 ]]
+  then
+     help-env
+     exit
+  fi
+ 
+  install=""
+  osname=""
+  if [[ -n $(cat /etc/os-release | grep "centos") ]]
+  then
+    install="yum"
+    osname="centos"
+  elif [[ -n $(cat /etc/os-release | grep ubuntu) ]]
+  then
+    install="apt"
+    osname="ubuntu"
+  elif [[ -n $(cat /etc/os-release | grep openEuler) ]]
+  then
+    install="yum"
+    osname="openEuler"
+  else
+    echo "only support centos, ubuntu and openEuler."
+    exit 1
+  fi
+
+  disable-$osname-security
+  #add-$install-repository
+  #init-kubeadm-kubeconfig 
+
+  #if [[ $2 == "ctr" ]]
+  #then
+  #   init-env-container $install
+  #else
+  #   unsupport $@
+  #   help-env
+  #fi
+}
+
+## add repository
+
+function add-yum-repository()
+{
+  yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  yum-config-manager --enable docker-ce-nightly
+  yum-config-manager --disable docker-ce-test
+}
+
+function add-apt-repository()
+{
+  arch=`get-arch`
+
+  apt-get install apt-transport-https ca-certificates curl gnupg lsb-release lrzsz -y
+
+  rm -rf /usr/share/keyrings/docker-archive-keyring.gpg
+  curl -fsSL $ubuntu_docker_ce_gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+  echo  "deb [arch=$arch signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] $ubuntu_docker_ce_url $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+  rm -rf /usr/share/keyrings/kubernetes-archive-keyring.gpg
+  curl -fsSL $ubuntu_kuberentes_gpg | sudo gpg --dearmor -o /usr/share/keyrings/kubernetes-archive-keyring.gpg
+  echo  "deb [arch=$arch signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] $ubuntu_kuberentes_url kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
+
+}
+
+
+function init-env-container()
+{
+  $1-$kube_runtime-k8s
+}
+
+function init-env-rook()
+{
+  add-ceph-$1-repository
+  $1-ceph-install
+}
+
+function yum-docker-k8s()
+{
+  yum install -y wget docker-ce-${kube_runtime_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version} lvm2
+  wget -P /usr/bin/ $cri_dockerd_url/cri-dockerd-$(arch)
+  mv /usr/bin/cri-dockerd-$(arch) /usr/bin/cri-dockerd
+  chmod 777 /usr/bin/cri-dockerd
+  wget -P /etc/systemd/system/ $cri_dockerd_url/cri-docker.service
+  
+  config-docker 
+}
+
+
+function apt-docker-k8s()
+{
+  dVer=$(apt-cache madison docker-ce | grep $kube_runtime_version | awk -F"|" '{print$2}' | sed 's/ //g' | head -1)
+  kVer=$(apt-cache madison kubelet | grep $kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
+  apt-get update
+  apt-get install docker-ce=$dVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer lvm2 -y
+
+  wget -P /usr/bin/ $cri_dockerd_url/cri-dockerd-$(arch)
+  mv /usr/bin/cri-dockerd-$(arch) /usr/bin/cri-dockerd
+  chmod 777 /usr/bin/cri-dockerd
+  wget -P /etc/systemd/system/ $cri_dockerd_url/cri-docker.service
+  
+  config-docker
+}
+
+function yum-containerd-k8s()
+{
+  yum install -y wget containerd.io-${kube_runtime_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version} lvm2
+  
+  config-containerd
+}
+
+function apt-containerd-k8s()
+{
+
+  cVer=$(apt-cache madison containerd.io | grep $kube_runtime_version | awk -F"|" '{print$2}' | sed 's/ //g')	
+  kVer=$(apt-cache madison kubelet | grep $kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
+  apt-get update
+  apt-get install containerd.io=$cVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer lvm2 -y
+  
+  config-containerd
+}
+
+
+function config-docker()
+{
+  ## kubernetes >= 1.22 only supports systemd
+  mkdir -p /etc/docker
+  echo "{" > /etc/docker/daemon.json
+  echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
+  echo "}" >> /etc/docker/daemon.json
+  systemctl daemon-reload
+
+  start-service docker cri-docker kubelet
+}
+
+function config-containerd()
+{
+  echo "overlay" > /etc/modules-load.d/containerd.conf
+  echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
+  
+  modprobe overlay
+  modprobe br_netfilter
+
+  echo "net.bridge.bridge-nf-call-iptables  = 1" > /etc/sysctl.d/99-kubernetes-cri.conf
+  echo "net.ipv4.ip_forward                 = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
+  echo "net.bridge.bridge-nf-call-ip6tables = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
+
+  sysctl --system
+
+  echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
+
+  containerd config default | sudo tee /etc/containerd/config.toml
+
+  # fix for container v1.6.7
+  # sandbox_image = "registry.k8s.io/pause:3.6"
+  def_repo="registry.k8s.io"
+  real_repo=${common_image_server/\//\\\/}
+  old_version=$(cat /etc/containerd/config.toml | grep "registry.k8s.io" | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
+  new_version=$(kubeadm config images list | grep pause | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
+  sed -ie "s/$def_repo/$real_repo/g" /etc/containerd/config.toml
+  sed -ie "s/$old_version/$new_version/g" /etc/containerd/config.toml
+
+  start-service containerd kubelet
+  restart-service containerd kubelet
+}
+
+
+function init-kubeadm-kubeconfig()
+{
+  if [[ ! -d "/etc/kubernetes" ]]
+  then
+    mkdir /etc/kubernetes
+  fi
+  echo -e "apiVersion: kubeadm.k8s.io/v1beta3" > /etc/kubernetes/kubeadm.yaml
+  echo -e "kind: InitConfiguration" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "bootstrapTokens:" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "  - ttl: \"0\"" >> /etc/kubernetes/kubeadm.yaml
+  if [[ $kube_runtime = "containerd" ]]
+  then
+    echo -e "nodeRegistration:" >> /etc/kubernetes/kubeadm.yaml
+    echo -e "  criSocket: unix:///run/containerd/containerd.sock" >> /etc/kubernetes/kubeadm.yaml
+  fi
+  if [[ $kube_runtime = "docker" ]]
+  then
+    echo -e "nodeRegistration:" >> /etc/kubernetes/kubeadm.yaml
+    echo -e "  criSocket: \"/var/run/cri-dockerd.sock\"" >> /etc/kubernetes/kubeadm.yaml
+  fi
+  echo -e "---" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "apiVersion: kubeadm.k8s.io/v1beta3" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "kind: ClusterConfiguration" >> /etc/kubernetes/kubeadm.yaml
+  if [[ -n $kube_fip ]]
+  then
+  echo -e "controlPlaneEndpoint: \"$kube_fip:6443\"" >> /etc/kubernetes/kubeadm.yaml
+  fi
+  echo -e "networking:" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "  podSubnet: \"${kube_pod_subnet}\"" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "kubernetesVersion: \"v${kube_version}\"" >> /etc/kubernetes/kubeadm.yaml
+  echo -e "imageRepository: \"${common_image_server}\"" >> /etc/kubernetes/kubeadm.yaml
+  if [[ $kube_runtime = "docker" ]]
+  then
+    echo -e "---" >> /etc/kubernetes/kubeadm.yaml
+    echo -e "apiVersion: kubelet.config.k8s.io/v1beta1" >> /etc/kubernetes/kubeadm.yaml
+    echo -e "kind: KubeletConfiguration" >> /etc/kubernetes/kubeadm.yaml
+    echo -e "containerRuntimeEndpoint: \"unix:///var/run/cri-dockerd.sock\"" >> /etc/kubernetes/kubeadm.yaml
+  fi
+}
+
+
+###########################################################
+##
+##  help
+##
+##########################################################
+
+function unsupport()
+{
+  echo -n "'$@' is not a valid command, see "
+  #for a in "${@:1:$# - 1}"
+  #do
+  #  echo -n "$a "
+  #done
+  echo -n "--help"
+  echo -e "\n"
+}
+
+function cmddesc()
+{
+  echo -e "Welcome to ONCE-kube ($VERSION), install Kubernetes-based systems from scratch.\n"
+}
+
+
+function help()
+{
+  cmddesc
+  echo -e "Commands:"
+  echo -e "  init-env             :disable security configuration"
+  echo -e "  init-runtime         :download runc, or containerd, or docker packages"
+  echo -e "  init-compute         :setup container"
+  echo -e "  --help               :help"
+}
+
+
+case $1 in
+  "init-env")
+    init-env $*
+    ;;
+  "init-runtime")
+    init-runtime $*
+    ;;	
+  "init-compute")
+    init-compute $*
+    ;;
+  "init-network")
+    init-network $*
+    ;;
+  "--help")
+    help
+    ;;
+  *)
+  unsupport $@
+  help
+  ;;
+esac
