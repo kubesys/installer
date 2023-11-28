@@ -26,12 +26,14 @@ common_file_server="https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files
 ##
 #####################
 
+kube_version="1.28.2"
+
 kube_runtime="runc"                       # runc, or containerd, or docker
 kube_runtime_version="24.0.6"               # runc
-#kube_runtime="containerd"                  # runc, or containerd, or docker
-#kube_runtime_version="1.6.21"              # containerd
-kube_runtime="docker"                       # runc, or containerd, or docker
-kube_runtime_version="24.0.6"               # docker
+kube_runtime="containerd"                  # runc, or containerd, or docker
+kube_runtime_version="1.6.25"              # containerd
+#kube_runtime="docker"                       # runc, or containerd, or docker
+#kube_runtime_version="24.0.6"               # docker
 
 declare -A pkgMgrs
 pkgMgrs['centos']='yum'
@@ -196,15 +198,13 @@ function init-runtime()
 function add-centos-repository()
 {
   yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-  yum-config-manager --enable docker-ce-nightly
-  yum-config-manager --disable docker-ce-test
+  yum-from-coding kubernetes 23.12
 }
 
 function add-openEuler-repository()
 {
   yum-from-coding openEuler-docker 23.12
-  yum-config-manager --enable docker-ce-nightly
-  yum-config-manager --disable docker-ce-test
+  yum-from-coding kubernetes 23.12
 }
 
 # TODO
@@ -226,7 +226,35 @@ function add-ubuntu-repository()
 
 function yum-containerd()
 {
-  yum install -y wget containerd.io-${kube_runtime_version} lvm2
+  yum install -y wget containerd.io-${kube_runtime_version} kubeadm-${kube_version} lvm2
+  config-containerd
+}
+
+function config-containerd()
+{
+  echo "overlay" > /etc/modules-load.d/containerd.conf
+  echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
+  
+  modprobe overlay
+  modprobe br_netfilter
+
+  sysctl --system
+
+  containerd config default | sudo tee /etc/containerd/config.toml
+
+  # fix for container v1.6.9
+  # sandbox_image = "registry.k8s.io/pause:3.6"
+  def_repo="registry.k8s.io"
+  real_repo=$(echo "$common_image_server" | sed 's/\//\\\//g')
+  # real_repo=${common_image_server/\//\\\/}
+  old_version=$(cat /etc/containerd/config.toml | grep $def_repo | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
+  new_version=$(kubeadm config images list | grep pause | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
+  
+  replace $def_repo $real_repo /etc/containerd/config.toml
+  replace $old_version $new_version /etc/containerd/config.toml
+  
+  start-service containerd
+  restart-service containerd
 }
 
 function yum-docker()
@@ -235,15 +263,17 @@ function yum-docker()
   config-docker
 }
 
-
 function config-docker()
 {
   ## kubernetes >= 1.22 only supports systemd
-  mkdir -p /etc/docker
-  echo "{" > /etc/docker/daemon.json
-  echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
-  echo "}" >> /etc/docker/daemon.json
-  systemctl daemon-reload
+  if [[ $(get-os) == "centos" ]]
+  then
+    mkdir -p /etc/docker
+    echo "{" > /etc/docker/daemon.json
+    echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
+    echo "}" >> /etc/docker/daemon.json
+    systemctl daemon-reload
+  fi
 
   start-service docker
 }
@@ -326,38 +356,6 @@ function apt-containerd-k8s()
   apt-get install containerd.io=$cVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer lvm2 -y
   
   config-containerd
-}
-
-
-function config-containerd()
-{
-  echo "overlay" > /etc/modules-load.d/containerd.conf
-  echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
-  
-  modprobe overlay
-  modprobe br_netfilter
-
-  echo "net.bridge.bridge-nf-call-iptables  = 1" > /etc/sysctl.d/99-kubernetes-cri.conf
-  echo "net.ipv4.ip_forward                 = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
-  echo "net.bridge.bridge-nf-call-ip6tables = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
-
-  sysctl --system
-
-  echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
-
-  containerd config default | sudo tee /etc/containerd/config.toml
-
-  # fix for container v1.6.7
-  # sandbox_image = "registry.k8s.io/pause:3.6"
-  def_repo="registry.k8s.io"
-  real_repo=${common_image_server/\//\\\/}
-  old_version=$(cat /etc/containerd/config.toml | grep "registry.k8s.io" | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
-  new_version=$(kubeadm config images list | grep pause | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
-  sed -ie "s/$def_repo/$real_repo/g" /etc/containerd/config.toml
-  sed -ie "s/$old_version/$new_version/g" /etc/containerd/config.toml
-
-  start-service containerd kubelet
-  restart-service containerd kubelet
 }
 
 
