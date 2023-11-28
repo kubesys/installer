@@ -16,8 +16,8 @@ VERSION="0.1.0"
 ##
 ####################
 
-common_image_server="g-ubjg5602-docker.pkg.coding.net/iscas-system/containers"
-common_file_server="https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files"
+common_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
+coding_file_server="https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files"
 
 
 #####################
@@ -125,7 +125,7 @@ function check-kube()
 
 function yum-from-coding()
 {
-	wget-to-local $common_file_server/$1?version=$2 /etc/yum.repos.d
+	wget-to-local $coding_file_server/$1?version=$2 /etc/yum.repos.d
     mv /etc/yum.repos.d/$1\?version\=$2 /etc/yum.repos.d/$1.repo
 }
 
