@@ -27,9 +27,10 @@ common_file_server="https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files
 #####################
 
 kube_version="1.28.2"
+kube_subnet="10.244.0.0/16"
 
-kube_runtime="runc"                       # runc, or containerd, or docker
-kube_runtime_version="24.0.6"               # runc
+#kube_runtime="runc"                       # runc, or containerd, or docker
+#kube_runtime_version="24.0.6"               # runc
 kube_runtime="containerd"                  # runc, or containerd, or docker
 kube_runtime_version="1.6.25"              # containerd
 #kube_runtime="docker"                       # runc, or containerd, or docker
@@ -40,7 +41,10 @@ pkgMgrs['centos']='yum'
 pkgMgrs['openEuler']='yum'
 pkgMgrs['ubuntu']='apt'
 
-                     
+declare -A endpoints
+endpoints['runc']='/run/crio/crio.sock'
+endpoints['containerd']='/run/containerd/containerd.sock'
+endpoints['docker']='/var/run/cri-dockerd.sock'                
 
 ###############################################
 ##
@@ -73,6 +77,7 @@ function stop-service()
 {
   for ser in "$@"
   do
+    systemctl daemon-reload
     systemctl stop $ser
     systemctl disable $ser
   done 
@@ -82,6 +87,7 @@ function start-service()
 {
   for ser in "$@"
   do
+    systemctl daemon-reload
     systemctl start $ser
     systemctl enable $ser
   done 
@@ -91,6 +97,7 @@ function restart-service()
 {
   for ser in "$@"
   do
+    systemctl daemon-reload
     systemctl restart $ser
   done
 }
@@ -302,102 +309,45 @@ function init-compute()
   fi
  
   osname=$(get-os)
-  install=${pkgMgrs[$osname]}
   
-  add-$osname-repository
-  $install-$kube_runtime
+  setup-$(get-os)-kubernetes
 }
 
-function init-env-container()
+function setup-centos-kubernetes()
 {
-  $1-$kube_runtime-k8s
-}
-
-function yum-docker-k8s()
-{
-  yum install -y wget docker-ce-${kube_runtime_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version} lvm2
-  wget -P /usr/bin/ $cri_dockerd_url/cri-dockerd-$(arch)
-  mv /usr/bin/cri-dockerd-$(arch) /usr/bin/cri-dockerd
-  chmod 777 /usr/bin/cri-dockerd
-  wget -P /etc/systemd/system/ $cri_dockerd_url/cri-docker.service
+  yum install -y kubeadm-${kube_version}
   
-  config-docker 
-}
-
-
-function apt-docker-k8s()
-{
-  dVer=$(apt-cache madison docker-ce | grep $kube_runtime_version | awk -F"|" '{print$2}' | sed 's/ //g' | head -1)
-  kVer=$(apt-cache madison kubelet | grep $kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
-  apt-get update
-  apt-get install docker-ce=$dVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer lvm2 -y
-
-  wget -P /usr/bin/ $cri_dockerd_url/cri-dockerd-$(arch)
-  mv /usr/bin/cri-dockerd-$(arch) /usr/bin/cri-dockerd
-  chmod 777 /usr/bin/cri-dockerd
-  wget -P /etc/systemd/system/ $cri_dockerd_url/cri-docker.service
+  if [[ $(get-os) == "centos" ]]
+  then
+    echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
+  fi
   
-  config-docker
-}
-
-function yum-containerd-k8s()
-{
-  yum install -y wget containerd.io-${kube_runtime_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version} lvm2
+  swapoff -a
+  echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
+  echo "1" > /proc/sys/net/ipv4/ip_forward
   
-  config-containerd
-}
-
-function apt-containerd-k8s()
-{
-
-  cVer=$(apt-cache madison containerd.io | grep $kube_runtime_version | awk -F"|" '{print$2}' | sed 's/ //g')	
-  kVer=$(apt-cache madison kubelet | grep $kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
-  apt-get update
-  apt-get install containerd.io=$cVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer lvm2 -y
+  start-service kubelet
   
-  config-containerd
+  curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kubeadm.yaml?version=23.12" -o /etc/kubernetes/kubeadm.yaml
+  replace "#ENDPOINT#" $(echo "${endpoints[$kube_runtime]}" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
+  replace "#SUBNET#" $(echo "$kube_subnet" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
+  replace "#VERSION#" $kube_version /etc/kubernetes/kubeadm.yaml
+  replace "#REPO#" $(echo "$common_image_server" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
+
+  # [required], see https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta2/
+  kubeadm init --config /etc/kubernetes/kubeadm.yaml
+  rm -rf $HOME/.kube
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  iptables -P FORWARD ACCEPT
 }
 
-
-function init-kubeadm-kubeconfig()
+function setup-openEuler-kubernetes()
 {
-  if [[ ! -d "/etc/kubernetes" ]]
-  then
-    mkdir /etc/kubernetes
-  fi
-  echo -e "apiVersion: kubeadm.k8s.io/v1beta3" > /etc/kubernetes/kubeadm.yaml
-  echo -e "kind: InitConfiguration" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "bootstrapTokens:" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "  - ttl: \"0\"" >> /etc/kubernetes/kubeadm.yaml
-  if [[ $kube_runtime = "containerd" ]]
-  then
-    echo -e "nodeRegistration:" >> /etc/kubernetes/kubeadm.yaml
-    echo -e "  criSocket: unix:///run/containerd/containerd.sock" >> /etc/kubernetes/kubeadm.yaml
-  fi
-  if [[ $kube_runtime = "docker" ]]
-  then
-    echo -e "nodeRegistration:" >> /etc/kubernetes/kubeadm.yaml
-    echo -e "  criSocket: \"/var/run/cri-dockerd.sock\"" >> /etc/kubernetes/kubeadm.yaml
-  fi
-  echo -e "---" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "apiVersion: kubeadm.k8s.io/v1beta3" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "kind: ClusterConfiguration" >> /etc/kubernetes/kubeadm.yaml
-  if [[ -n $kube_fip ]]
-  then
-  echo -e "controlPlaneEndpoint: \"$kube_fip:6443\"" >> /etc/kubernetes/kubeadm.yaml
-  fi
-  echo -e "networking:" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "  podSubnet: \"${kube_pod_subnet}\"" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "kubernetesVersion: \"v${kube_version}\"" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "imageRepository: \"${common_image_server}\"" >> /etc/kubernetes/kubeadm.yaml
-  if [[ $kube_runtime = "docker" ]]
-  then
-    echo -e "---" >> /etc/kubernetes/kubeadm.yaml
-    echo -e "apiVersion: kubelet.config.k8s.io/v1beta1" >> /etc/kubernetes/kubeadm.yaml
-    echo -e "kind: KubeletConfiguration" >> /etc/kubernetes/kubeadm.yaml
-    echo -e "containerRuntimeEndpoint: \"unix:///var/run/cri-dockerd.sock\"" >> /etc/kubernetes/kubeadm.yaml
-  fi
+  setup-centos-kubernetes
 }
+
 
 
 ###########################################################
