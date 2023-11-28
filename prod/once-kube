@@ -17,6 +17,7 @@ VERSION="0.1.0"
 ####################
 
 common_image_server="g-ubjg5602-docker.pkg.coding.net/iscas-system/containers"
+common_file_server="https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files"
 
 
 #####################
@@ -113,6 +114,12 @@ function check-kube()
    fi
 }
 
+function yum-from-coding()
+{
+	wget-to-local $common_file_server/$1?version=$2 /etc/yum.repos.d
+    mv /etc/yum.repos.d/$1\?version\=$2 /etc/yum.repos.d/$1.repo
+}
+
 
 ###########################################################
 ##
@@ -182,7 +189,6 @@ function init-runtime()
   
   add-$osname-repository
   $install-$kube_runtime
-  #init-kubeadm-kubeconfig 
 }
 
 ## add repository
@@ -196,8 +202,7 @@ function add-centos-repository()
 
 function add-openEuler-repository()
 {
-  wget-to-local https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/openEuler-docker?version=23.12 /etc/yum.repos.d
-  mv /etc/yum.repos.d/openEuler-docker\?version\=23.12 /etc/yum.repos.d/openEuler-docker.repo
+  yum-from-coding openEuler-docker 23.12
   yum-config-manager --enable docker-ce-nightly
   yum-config-manager --disable docker-ce-test
 }
@@ -245,9 +250,34 @@ function config-docker()
 
 ###########################################################
 ##
-##  orchestration
+##  compute
 ##
 ###########################################################
+
+function help-compute()
+{
+  cmddesc
+  echo -e "Commands:"
+  echo -e "  init-compute kubernetes   :\t(compute): download kubernetes"
+  echo -e "  init-compute --help       :\t(compute): help"
+}
+
+
+function init-compute()
+{
+  if [[ $# != 2 ]]
+  then
+     help-compute
+     exit
+  fi
+ 
+  osname=$(get-os)
+  install=${pkgMgrs[$osname]}
+  
+  add-$osname-repository
+  $install-$kube_runtime
+}
+
 function init-env-container()
 {
   $1-$kube_runtime-k8s
@@ -297,8 +327,6 @@ function apt-containerd-k8s()
   
   config-containerd
 }
-
-
 
 
 function config-containerd()
@@ -401,9 +429,9 @@ function help()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-env             :disable security configuration"
-  echo -e "  init-runtime         :download runc, or containerd, or docker packages"
-  echo -e "  init-compute         :setup container"
+  echo -e "  init-env             :setup security configuration"
+  echo -e "  init-runtime         :setup runc, or containerd, or docker packages"
+  echo -e "  init-compute         :setup kubernetes"
   echo -e "  --help               :help"
 }
 
