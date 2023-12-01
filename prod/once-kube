@@ -29,12 +29,11 @@ coding_file_server="https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files
 kube_version="1.28.2"
 kube_subnet="10.244.0.0/16"
 
-#kube_runtime="runc"                       # runc, or containerd, or docker
-#kube_runtime_version="24.0.6"               # runc
-kube_runtime="containerd"                  # runc, or containerd, or docker
-kube_runtime_version="1.6.25"              # containerd
-#kube_runtime="docker"                       # runc, or containerd, or docker
-#kube_runtime_version="24.0.6"               # docker
+
+declare -A runtimes
+runtimes['runc']='24.0.6'
+runtimes['containerd']='1.6.25'
+runtimes['docker']='24.0.6'
 
 declare -A pkgMgrs
 pkgMgrs['centos']='yum'
@@ -123,10 +122,23 @@ function check-kube()
    fi
 }
 
-function yum-from-coding()
+function yum-repo-from-coding()
 {
 	wget-to-local $coding_file_server/$1?version=$2 /etc/yum.repos.d
-    mv /etc/yum.repos.d/$1\?version\=$2 /etc/yum.repos.d/$1.repo
+    mv /etc/yum.repos.d/$1\?version\=$2 /etc/yum.repos.d/$1
+}
+
+
+function yum-service-from-coding()
+{
+	wget-to-local $coding_file_server/$1?version=$2 /usr/lib/systemd/system/
+    mv /usr/lib/systemd/system/$1\?version\=$2 /etc/yum.repos.d/$1
+}
+
+function yum-bin-from-coding()
+{
+	wget-to-local $coding_file_server/$1-$(arch)?version=$2 /usr/bin/
+    mv /usr/lib/systemd/system/$1-$(arch)\?version\=$2 /etc/yum.repos.d/$1
 }
 
 
@@ -205,13 +217,13 @@ function init-runtime()
 function add-centos-repository()
 {
   yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-  yum-from-coding kubernetes 23.12
+  yum-repo-from-coding kubernetes.repo 23.12
 }
 
 function add-openEuler-repository()
 {
-  yum-from-coding openEuler-docker 23.12
-  yum-from-coding kubernetes 23.12
+  yum-repo-from-coding openEuler-docker 23.12
+  yum-repo-from-coding kubernetes.repo 23.12
 }
 
 # TODO
@@ -231,9 +243,15 @@ function add-ubuntu-repository()
 
 }
 
+function yum-runc()
+{
+  yum install -y wget containerd.io-${runtimes['containerd']} kubeadm-${kube_version} lvm2
+  config-containerd
+}
+
 function yum-containerd()
 {
-  yum install -y wget containerd.io-${kube_runtime_version} kubeadm-${kube_version} lvm2
+  yum install -y wget containerd.io-${runtimes['containerd']} kubeadm-${kube_version} lvm2
   config-containerd
 }
 
@@ -266,23 +284,24 @@ function config-containerd()
 
 function yum-docker()
 {
-  yum install -y wget docker-ce-${kube_runtime_version}  lvm2
+  yum install -y wget docker-ce-${runtimes['docker']}  lvm2
+  
+  yum-bin-from-coding cri-docker 23.12
+  yum-service-from-coding cri-docker.service 23.12
+  
   config-docker
 }
 
 function config-docker()
 {
   ## kubernetes >= 1.22 only supports systemd
-  if [[ $(get-os) == "centos" ]]
-  then
-    mkdir -p /etc/docker
-    echo "{" > /etc/docker/daemon.json
-    echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
-    echo "}" >> /etc/docker/daemon.json
-    systemctl daemon-reload
-  fi
+  mkdir -p /etc/docker
+  echo "{" > /etc/docker/daemon.json
+  echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
+  echo "}" >> /etc/docker/daemon.json
+  systemctl daemon-reload
 
-  start-service docker
+  start-service docker cri-dockerd
 }
 
 ###########################################################
