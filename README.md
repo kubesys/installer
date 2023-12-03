@@ -3,9 +3,9 @@
 Install Kubernetes and containerized software with a simple and comprehensible way.
 
 ** Note **
-- work well on CentOS/RHEL 7.x, Ubuntu >=18.x, and openEuler >= 20.x.
-- support amd64 (such as intel, amd) and arm64 (such as phytium, kunpeng). 
-- for Kubernetes >= 1.24
+- work well on CentOS/RHEL >= 7.2, Ubuntu >=20.x, and openEuler >= 22.x.
+- support amd64 (such as intel, amd), and arm64 (such as phytium, kunpeng), and RISC-V. 
+- for Kubernetes >= 1.21
 
 ## Supported
 
