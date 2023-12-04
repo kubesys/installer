@@ -209,7 +209,7 @@ function init-runtime()
   
   
   add-$osname-repository
-  $install-$kube_runtime
+  $install-$2
 }
 
 ## add repository
@@ -401,7 +401,7 @@ function help()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-env             :setup security configuration"
+  echo -e "  init-osenv           :setup security configuration"
   echo -e "  init-runtime         :setup runc, or containerd, or docker packages"
   echo -e "  init-compute         :setup kubernetes"
   echo -e "  --help               :help"
