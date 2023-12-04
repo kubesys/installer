@@ -131,14 +131,15 @@ function yum-repo-from-coding()
 
 function yum-service-from-coding()
 {
-	wget-to-local $coding_file_server/$1?version=$2 /usr/lib/systemd/system/
-    mv /usr/lib/systemd/system/$1\?version\=$2 /etc/yum.repos.d/$1
+	wget-to-local $coding_file_server/$1?version=$2 /usr/lib/systemd/system
+    mv -f /usr/lib/systemd/system/$1\?version\=$2 /usr/lib/systemd/system/$1
 }
 
 function yum-bin-from-coding()
 {
-	wget-to-local $coding_file_server/$1-$(arch)?version=$2 /usr/bin/
-    mv /usr/lib/systemd/system/$1-$(arch)\?version\=$2 /etc/yum.repos.d/$1
+	wget-to-local $coding_file_server/$1-$(arch)?version=$2 /usr/bin
+    mv -f /usr/bin/$1-$(arch)\?version\=$2 /usr/bin/$1
+	chmod 777 /usr/bin/$1
 }
 
 
@@ -306,8 +307,9 @@ function yum-docker()
 {
   yum install -y wget docker-ce-${runtimes['docker']}  lvm2
   
-  yum-bin-from-coding cri-docker 23.12
+  yum-bin-from-coding cri-dockerd 23.12
   yum-service-from-coding cri-docker.service 23.12
+  yum-service-from-coding cri-docker.socket 23.12
   
   config-docker
 }
@@ -321,7 +323,7 @@ function config-docker()
   echo "}" >> /etc/docker/daemon.json
   systemctl daemon-reload
 
-  start-service docker cri-dockerd
+  start-service docker cri-docker
 }
 
 ###########################################################
