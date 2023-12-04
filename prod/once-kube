@@ -16,7 +16,7 @@ VERSION="0.1.0"
 ##
 ####################
 
-common_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
+aliyun_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
 coding_file_server="https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files"
 
 
@@ -144,12 +144,12 @@ function yum-bin-from-coding()
 
 ###########################################################
 ##
-##  env
+##  os env
 ##
 ###########################################################
 
 
-function init-env()
+function init-osenv()
 {
   
   disable-$(get-os)-security
@@ -222,7 +222,7 @@ function add-centos-repository()
 
 function add-openEuler-repository()
 {
-  yum-repo-from-coding openEuler-docker 23.12
+  yum-repo-from-coding openEuler-docker.repo 23.12
   yum-repo-from-coding kubernetes.repo 23.12
 }
 
@@ -245,8 +245,16 @@ function add-ubuntu-repository()
 
 function yum-runc()
 {
-  yum install -y wget containerd.io-${runtimes['containerd']} kubeadm-${kube_version} lvm2
+  yum install -y wget cri-o-${runtimes['runc']} lvm2
   config-containerd
+}
+
+function config-runc()
+{
+  start-service crio
+  echo "[crio.image]" >> /etc/crio/crio.conf
+  echo "pause_image = \"registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.9\"" >> /etc/crio/crio.conf
+  restart-service crio
 }
 
 function yum-containerd()
@@ -270,8 +278,8 @@ function config-containerd()
   # fix for container v1.6.9
   # sandbox_image = "registry.k8s.io/pause:3.6"
   def_repo="registry.k8s.io"
-  real_repo=$(echo "$common_image_server" | sed 's/\//\\\//g')
-  # real_repo=${common_image_server/\//\\\/}
+  real_repo=$(echo "$aliyun_image_server" | sed 's/\//\\\//g')
+  # real_repo=${aliyun_image_server/\//\\\/}
   old_version=$(cat /etc/containerd/config.toml | grep $def_repo | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
   new_version=$(kubeadm config images list | grep pause | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
   
@@ -335,11 +343,8 @@ function init-compute()
 function setup-centos-kubernetes()
 {
   yum install -y kubeadm-${kube_version}
-  
-  if [[ $(get-os) == "centos" ]]
-  then
-    echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
-  fi
+
+  echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
   
   swapoff -a
   echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
@@ -351,7 +356,7 @@ function setup-centos-kubernetes()
   replace "#ENDPOINT#" $(echo "${endpoints[$kube_runtime]}" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
   replace "#SUBNET#" $(echo "$kube_subnet" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
   replace "#VERSION#" $kube_version /etc/kubernetes/kubeadm.yaml
-  replace "#REPO#" $(echo "$common_image_server" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
+  replace "#REPO#" $(echo "$aliyun_image_server" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
 
   # [required], see https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta2/
   kubeadm init --config /etc/kubernetes/kubeadm.yaml
@@ -403,8 +408,8 @@ function help()
 }
 
 case $1 in
-  "init-env")
-    init-env $*
+  "init-osenv")
+    init-osenv $*
     ;;
   "init-runtime")
     init-runtime $*
