@@ -5,7 +5,7 @@ Install Kubernetes and containerized software with a simple and comprehensible w
 ** Note **
 - work well on CentOS/RHEL >= 7.2, Ubuntu >=20.x, and openEuler >= 22.x.
 - support amd64 (such as intel, amd), and arm64 (such as phytium, kunpeng), and RISC-V. 
-- for Kubernetes >= 1.21
+- for Kubernetes >= 1.24
 
 ## Supported
 
@@ -20,6 +20,9 @@ Install Kubernetes and containerized software with a simple and comprehensible w
 
 ## Quick start
 
+
+** Note **: using user 'root'
+ 
 ```
 curl --url https://raw.githubusercontent.com/kubesys/installer/master/kubeinst --output /usr/bin/kubeinst
 chmod 777 /usr/bin/kubeinst

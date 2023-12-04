@@ -31,7 +31,7 @@ kube_subnet="10.244.0.0/16"
 
 
 declare -A runtimes
-runtimes['runc']='24.0.6'
+runtimes['runc']='1.23.2'
 runtimes['containerd']='1.6.25'
 runtimes['docker']='24.0.6'
 
@@ -210,6 +210,7 @@ function init-runtime()
   
   add-$osname-repository
   $install-$2
+  echo $2 > /etc/doslab-runtime.conf
 }
 
 ## add repository
@@ -245,15 +246,26 @@ function add-ubuntu-repository()
 
 function yum-runc()
 {
-  yum install -y wget cri-o-${runtimes['runc']} lvm2
-  config-containerd
+  yum install -y wget cri-o-${runtimes['runc']} kubeadm-${kube_version} lvm2
+  config-runc
 }
 
 function config-runc()
 {
-  start-service crio
-  echo "[crio.image]" >> /etc/crio/crio.conf
-  echo "pause_image = \"registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.9\"" >> /etc/crio/crio.conf
+  echo "overlay" > /etc/modules-load.d/containerd.conf
+  echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
+  
+  modprobe overlay
+  modprobe br_netfilter
+
+  sysctl --system
+  
+  if [[ -z $(cat /etc/crio/crio.conf | grep pause_image) ]]
+  then
+    echo "[crio.image]" >> /etc/crio/crio.conf
+	version=$(kubeadm config images list | grep pause | awk -F':' '{print$2}')
+    echo "pause_image = \"registry.cn-hangzhou.aliyuncs.com/google_containers/pause:$version\"" >> /etc/crio/crio.conf
+  fi	
   restart-service crio
 }
 
@@ -352,7 +364,9 @@ function setup-centos-kubernetes()
   
   start-service kubelet
   
+  rm -rf /etc/kubernetes/kubeadm.yaml
   curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kubeadm.yaml?version=23.12" -o /etc/kubernetes/kubeadm.yaml
+  kube_runtime=$(cat /etc/doslab-runtime.conf)
   replace "#ENDPOINT#" $(echo "${endpoints[$kube_runtime]}" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
   replace "#SUBNET#" $(echo "$kube_subnet" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
   replace "#VERSION#" $kube_version /etc/kubernetes/kubeadm.yaml
