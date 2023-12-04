@@ -4,7 +4,7 @@ Install Kubernetes and containerized software with a simple and comprehensible w
 
 ** Note **
 - OS 
-  - CentOS/RHEL >= 7.2
+  - CentOS/RHEL >= 7.3
   - Ubuntu >= 20.x
   - openEuler >= 22.x.
 - CPU 

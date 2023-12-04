@@ -67,7 +67,7 @@ function get-arch()
   then
     echo "arm64"
   else
-    echo "only support x86_64(amd64) and aarch64(arm64)"
+    echo "only support x86_64(amd64), aarch64(arm64) and risc-v"
     exit 1
   fi
 }
@@ -163,6 +163,7 @@ function disable-centos-security()
   replace SELINUX=permissive SELINUX=disabled /etc/selinux/config
   replace SELINUX=enforcing SELINUX=disabled /etc/selinux/config
   stop-service firewalld
+  yum install -y wget
 }
 
 function disable-ubuntu-security()
@@ -218,7 +219,7 @@ function init-runtime()
 
 function add-centos-repository()
 {
-  yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  yum-repo-from-coding centos-docker.repo 23.12
   yum-repo-from-coding kubernetes.repo 23.12
 }
 
@@ -247,7 +248,7 @@ function add-ubuntu-repository()
 
 function yum-runc()
 {
-  yum install -y wget cri-o-${runtimes['runc']} kubeadm-${kube_version} lvm2
+  yum install -y cri-o-${runtimes['runc']} kubeadm-${kube_version} lvm2
   config-runc
 }
 
@@ -272,7 +273,7 @@ function config-runc()
 
 function yum-containerd()
 {
-  yum install -y wget containerd.io-${runtimes['containerd']} kubeadm-${kube_version} lvm2
+  yum install -y containerd.io-${runtimes['containerd']} kubeadm-${kube_version} lvm2
   config-containerd
 }
 
@@ -305,7 +306,7 @@ function config-containerd()
 
 function yum-docker()
 {
-  yum install -y wget docker-ce-${runtimes['docker']}  lvm2
+  yum install -y docker-ce-${runtimes['docker']}  lvm2
   
   yum-bin-from-coding cri-dockerd 23.12
   yum-service-from-coding cri-docker.service 23.12
