@@ -222,6 +222,7 @@ function add-centos-repository()
 {
   yum-repo-from-coding centos-docker.repo $kube_release
   yum-repo-from-coding kubernetes.repo $kube_release
+  yum-repo-from-coding centos-crio.repo $kube_release
 }
 
 function add-openEuler-repository()
