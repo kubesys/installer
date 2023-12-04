@@ -28,6 +28,7 @@ coding_file_server="https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files
 
 kube_version="1.28.2"
 kube_subnet="10.244.0.0/16"
+kube_release="23.12"
 
 
 declare -A runtimes
@@ -219,14 +220,14 @@ function init-runtime()
 
 function add-centos-repository()
 {
-  yum-repo-from-coding centos-docker.repo 23.12
-  yum-repo-from-coding kubernetes.repo 23.12
+  yum-repo-from-coding centos-docker.repo $kube_release
+  yum-repo-from-coding kubernetes.repo $kube_release
 }
 
 function add-openEuler-repository()
 {
-  yum-repo-from-coding openEuler-docker.repo 23.12
-  yum-repo-from-coding kubernetes.repo 23.12
+  yum-repo-from-coding openEuler-docker.repo $kube_release
+  yum-repo-from-coding kubernetes.repo $kube_release
 }
 
 # TODO
@@ -308,9 +309,9 @@ function yum-docker()
 {
   yum install -y docker-ce-${runtimes['docker']}  lvm2
   
-  yum-bin-from-coding cri-dockerd 23.12
-  yum-service-from-coding cri-docker.service 23.12
-  yum-service-from-coding cri-docker.socket 23.12
+  yum-bin-from-coding cri-dockerd $kube_release
+  yum-service-from-coding cri-docker.service $kube_release
+  yum-service-from-coding cri-docker.socket $kube_release
   
   config-docker
 }
@@ -368,8 +369,8 @@ function setup-centos-kubernetes()
   start-service kubelet
   
   rm -rf /etc/kubernetes/kubeadm.yaml
-  curl -fL "$coding_file_server/kubeadm.yaml?version=23.12" -o /etc/kubernetes/kubeadm.yaml
-  #curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kubeadm.yaml?version=23.12" -o /etc/kubernetes/kubeadm.yaml
+  curl -fL "$coding_file_server/kubeadm.yaml?version=$kube_release" -o /etc/kubernetes/kubeadm.yaml
+  #curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kubeadm.yaml?version=$kube_release" -o /etc/kubernetes/kubeadm.yaml
   kube_runtime=$(cat /etc/doslab-runtime.conf)
   replace "#ENDPOINT#" $(echo "${endpoints[$kube_runtime]}" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
   replace "#SUBNET#" $(echo "$kube_subnet" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
