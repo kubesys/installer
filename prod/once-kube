@@ -365,7 +365,8 @@ function setup-centos-kubernetes()
   start-service kubelet
   
   rm -rf /etc/kubernetes/kubeadm.yaml
-  curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kubeadm.yaml?version=23.12" -o /etc/kubernetes/kubeadm.yaml
+  curl -fL "$coding_file_server/kubeadm.yaml?version=23.12" -o /etc/kubernetes/kubeadm.yaml
+  #curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kubeadm.yaml?version=23.12" -o /etc/kubernetes/kubeadm.yaml
   kube_runtime=$(cat /etc/doslab-runtime.conf)
   replace "#ENDPOINT#" $(echo "${endpoints[$kube_runtime]}" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
   replace "#SUBNET#" $(echo "$kube_subnet" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
