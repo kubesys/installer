@@ -468,7 +468,7 @@ function init-network()
      exit
   fi
  
-  url="${network_urls[$2]}/VERSION/${network_names[$2]}"
+  url="${network_urls[$2]/VERSION/${network_names[$2]}}"
   echo $url
   
   if [[ $url == *".yaml" ]]
