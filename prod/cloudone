@@ -471,11 +471,11 @@ function init-network()
   url="${network_urls[$2]/VERSION/${network_names[$2]}}"
   echo $url
   
-  if [[ $url == *".yaml" ]]
+  if [[ $url == *".sh" ]]
   then
-    kubectl apply -f $url
-  else
     curl $url | bash -
+  else
+    kubectl apply -f $url
   fi 
     
 }
