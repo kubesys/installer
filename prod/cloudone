@@ -469,6 +469,7 @@ function init-network()
   fi
  
   url="${network_urls[$2]}/VERSION/${network_names[$2]}"
+  echo $url
   
   if [[ $url == *".yaml" ]]
   then
@@ -497,7 +498,7 @@ function unsupport()
 
 function cmddesc()
 {
-  echo -e "Welcome to ONCE-kube ($VERSION), install Kubernetes-based systems from scratch.\n"
+  echo -e "Welcome to CloudOne ($VERSION), install Kubernetes-based systems from scratch.\n"
 }
 
 
