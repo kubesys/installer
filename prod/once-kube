@@ -28,7 +28,7 @@ coding_file_server="https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files
 
 kube_version="1.28.2"
 kube_subnet="10.244.0.0/16"
-kube_release="2.0.18"
+kube_release="23.12"
 
 declare -A pkgMgrs
 pkgMgrs['centos']='yum'
