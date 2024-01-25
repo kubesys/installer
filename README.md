@@ -4,9 +4,9 @@ Install Kubernetes and containerized software with a simple and comprehensible w
 
 ** Note **
 - OS 
-  - CentOS/RHEL >= 7.3
-  - Ubuntu >= 20.x
-  - openEuler >= 22.x.
+  - CentOS/RHEL >= 7.5
+  - Ubuntu >= 22.04
+  - openEuler >= 23.09
 - CPU 
   - amd64 (such as intel, AMD)
   - arm64 (such as phytium, kunpeng), 
