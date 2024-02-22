@@ -29,6 +29,7 @@ coding_file_server="https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files
 kube_version="1.28.2"
 kube_subnet="10.244.0.0/16"
 kube_release="24.02"
+kube_repo="private"
 
 declare -A pkgMgrs
 pkgMgrs['centos']='yum'
@@ -241,6 +242,7 @@ function add-openEuler-repository()
 {
   yum-repo-from-coding openEuler-docker.repo $kube_release
   yum-repo-from-coding kubernetes.repo $kube_release
+  yum-repo-from-coding container-$kube_repo.repo $kube_release
 }
 
 # TODO
