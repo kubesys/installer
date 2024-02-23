@@ -373,6 +373,7 @@ function help-compute()
   cmddesc
   echo -e "Commands:"
   echo -e "  init-compute kubernetes   :\t(compute): download kubernetes"
+  echo -e "  init-compute k0s          :\t(compute): download k0s"
   echo -e "  init-compute --help       :\t(compute): help"
 }
 
@@ -425,6 +426,10 @@ function setup-openEuler-kubernetes()
   setup-centos-kubernetes
 }
 
+function setup-ubuntu-kubernetes()
+{
+  setup-centos-kubernetes
+}
 
 ###########################################################
 ##
