@@ -388,7 +388,7 @@ function init-compute()
  
   osname=$(get-os)
   
-  setup-$(get-os)-kubernetes
+  setup-$(get-os)-$2
 }
 
 function setup-centos-kubernetes()
@@ -429,6 +429,34 @@ function setup-openEuler-kubernetes()
 function setup-ubuntu-kubernetes()
 {
   setup-centos-kubernetes
+}
+
+function setup-centos-k0s()
+{
+  yum install -y k0s-${kube_version}
+
+  echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
+  
+  swapoff -a
+  
+  echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
+  echo "1" > /proc/sys/net/ipv4/ip_forward
+  
+  k0s install controller --single --force
+  systemctl daemon-reload
+  k0s start
+  
+  iptables -P FORWARD ACCEPT
+}
+
+function setup-openEuler-k0s()
+{
+  setup-centos-k0s
+}
+
+function setup-ubuntu-k0s()
+{
+  setup-centos-k0s
 }
 
 ###########################################################
