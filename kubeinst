@@ -1,14 +1,14 @@
 #! /bin/bash
 ###############################################
 ##
-##  Copyright (2020, ) Institute of Software
+##  Copyright (2023, ) Institute of Software
 ##      Chinese Academy of Sciences
 ##          wuheng@iscas.ac.cn
 ##
 ###############################################
 
 
-VERSION="2.6.0"
+VERSION="0.1.0"
 
 ####################
 ##
@@ -16,20 +16,9 @@ VERSION="2.6.0"
 ##
 ####################
 
-common_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
-common_software_repo="https://gitee.com/syswu/yamls" 
+aliyun_image_server="registry.cn-hangzhou.aliyuncs.com/google_containers"
+coding_file_server="https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files"
 
-centos_docker_ce_url="https://download.docker.com/linux/centos/\$releasever/\$basearch/stable"
-centos_docker_ce_gpg="https://download.docker.com/linux/centos/gpg"
-centos_kuberentes_url="https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-\$basearch/"
-centos_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg"
-
-ubuntu_docker_ce_url="https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/"
-ubuntu_docker_ce_gpg="https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg"
-ubuntu_kuberentes_url="https://mirrors.aliyun.com/kubernetes/apt/"
-ubuntu_kuberentes_gpg="https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg"
-
-cri_dockerd_url="http://139.9.165.93/binary"
 
 #####################
 ##
@@ -37,105 +26,37 @@ cri_dockerd_url="http://139.9.165.93/binary"
 ##
 #####################
 
-#kube_fip="120.46.180.58"                  # if you deploy Kubernetes on a public cloud, the fip is public IP
-kube_pod_subnet="10.244.0.0/16"
-kube_version="1.28.1"
+kube_version="1.28.2"
+kube_subnet="10.244.0.0/16"
+kube_release="24.02"
+kube_repo="private"
 
-#kube_runtime="containerd"                  # containerd or docker
-#kube_runtime_version="1.6.21"              # containerd
-kube_runtime="docker"                       # containerd or docker
-kube_runtime_version="24.0.6"               # docker
+declare -A pkgMgrs
+pkgMgrs['centos']='yum'
+pkgMgrs['openEuler']='yum'
+pkgMgrs['ubuntu']='apt'
 
-                      
+declare -A runtimes
+runtimes['runc']='1.23.2'
+runtimes['containerd']='1.6.25'
+runtimes['docker']='24.0.6'
+runtimes['isulad']='2.1.5'
 
-#####################
-##
-## Virtual Machine
-##
-#####################
+declare -A runtime_endpoints
+runtime_endpoints['runc']='/run/crio/crio.sock'
+runtime_endpoints['containerd']='/run/containerd/containerd.sock'
+runtime_endpoints['docker']='/var/run/cri-dockerd.sock'
+runtime_endpoints['isulad']='/var/run/isulad.sock'      
 
-virt_type="kvm"                      # kvm or kata
-virt_version="rocky"                
-kube_virt="compute/libvirt"
+declare -A network_names
+network_names['kubeovn']='v1.12.4'
+network_names['calico']='v3.27.0'
+network_names['flannel']='v0.24.0'
 
-#####################
-##
-## Baremetal
-##
-#####################
-kube_compute_baremetal="compute/baremetal"
-
-
-#####################
-##
-## Network
-##
-#####################
-#kube_cni_calico_url="https://projectcalico.docs.tigera.io/archive/VERSION/manifests/calico.yaml"
-kube_cni_calico_url="https://github.com/projectcalico/calico/blob/VERSION/manifests/calico.yaml"
-kube_cni_calico_version="v3.26.1"
-kube_cni_calico_yaml="${kube_cni_calico_url/VERSION/$kube_cni_calico_version}"
-
-kube_cni_ovn_url="https://raw.githubusercontent.com/kubeovn/kube-ovn/VERSION/dist/images/install.sh"
-kube_cni_ovn_version="v1.11.8"
-kube_cni_ovn_sh="${kube_cni_ovn_url/VERSION/$kube_cni_ovn_version}"
-
-kube_cni_flannel_url="https://raw.githubusercontent.com/flannel-io/flannel/VERSION/Documentation/kube-flannel.yml"
-kube_cni_flannel_version="v0.21.4"
-kube_cni_flannel_yaml="${kube_cni_flannel_url/VERSION/$kube_cni_flannel_version}"
-
-
-#####################
-##
-## Storage
-##
-#####################
-kube_storage_rook="storage/rook"
-kube_storage_ceph="storage/ceph"
-kube_storage_cephfs="storage/cephfs"
-kube_storage_cephrgw="storage/cephrgw"
-kube_storage_cephrbd="storage/cephrbd"
-kube_storage_nfs="storage/nfs"
-kube_storage_minio="storage/minio"
-
-#####################
-##
-## Tool
-##
-#####################
-kube_tool_helm_version="v3.8.1"
-kube_tool_helm_url="https://get.helm.sh/"
-kube_tool_helm_name="helm-$kube_tool_helm_version-linux-ARCH.tar.gz"
-
-kube_tool_minio_version="4.4.28"
-kube_tool_minio_url="https://github.com/minio/operator/releases/download/v$kube_tool_minio_version/"
-kube_tool_minio_name="kubectl-minio_${kube_tool_minio_version}_linux_ARCH"
-
-#####################
-##
-## addon
-##
-#####################
-kube_addon_prom="addon/prom"
-kube_addon_postgres="addon/postgres"
-kube_addon_loki="addon/loki"
-kube_addon_grafana="addon/grafana"
-kube_addon_superset="addon/superset"
-kube_addon_superset="addon/tokens"
-kube_addon_falco="security/falco"
-
-
-#####################
-##
-## DevOps
-##
-#####################
-kube_devops_harbor="devops/harbor"
-kube_devops_gitlab="devops/gitlab"
-kube_devops_jenkins="devops/jenkins"
-kube_devops_nexus3="devops/nexus3"
-kube_devops_sonar="devops/sonar"
-kube_devops_kanboard="devops/kanboard"
+declare -A network_urls
+network_urls['kubeovn']='https://raw.githubusercontent.com/kubeovn/kube-ovn/VERSION/dist/images/install.sh'
+network_urls['calico']='https://raw.githubusercontent.com/projectcalico/calico/VERSION/manifests/calico.yaml'
+network_urls['flannel']='https://raw.githubusercontent.com/flannel-io/flannel/VERSION/Documentation/kube-flannel.yml'       
 
 ###############################################
 ##
@@ -145,9 +66,9 @@ kube_devops_kanboard="devops/kanboard"
 ##
 ###############################################
 
-function get-token
+function get-os()
 {
-  echo $(kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep kubernetes-client | awk '{print $1}') | grep "token:" | awk -F":" '{print$2}' | sed 's/ //g')
+  echo $(cat /etc/os-release  | grep ID | head -1 | awk -F'"' '{print$2}')
 }
 
 function get-arch()
@@ -159,21 +80,16 @@ function get-arch()
   then
     echo "arm64"
   else
-    echo "only support x86_64(amd64) and aarch64(arm64)"
+    echo "only support x86_64(amd64), aarch64(arm64) and risc-v"
     exit 1
   fi
-}
-
-function get-ip()
-{
-  name=$(hostname | tr '[A-Z]' '[a-z]')
-  echo $(kubectl get no $name -o yaml | grep "\- address:" | head -1 | awk -F":" '{print$2}' | sed  's/^[ \t]*//g')
 }
 
 function stop-service()
 {
   for ser in "$@"
   do
+    systemctl daemon-reload
     systemctl stop $ser
     systemctl disable $ser
   done 
@@ -183,6 +99,7 @@ function start-service()
 {
   for ser in "$@"
   do
+    systemctl daemon-reload
     systemctl start $ser
     systemctl enable $ser
   done 
@@ -192,66 +109,20 @@ function restart-service()
 {
   for ser in "$@"
   do
+    systemctl daemon-reload
     systemctl restart $ser
   done
 }
 
-
-function apply-from()
-{
-  rm -rf /tmp/list
-  wget --no-check-certificate -P /tmp/ $1
-  for line in `cat /tmp/list`
-  do
-    kubectl apply -f $line
-  done
-}
-
-function useage-info()
-{
-  ip=""
-  if [[ -n $kube_fip ]]
-  then 
-    ip=$kube_fip
-  else
-    ip=`get-ip`
-  fi  
-
-  echo -e "\033[41;36m  website: $1://$ip:$2 \n  username: $3, password: $4 \033[0m"
-}
 
 function replace()
 {
    sed -ie "s/$1/$2/g" $3
 }
 
-
-function wait-and-retry()
-{
-  while true
-  do
-    if [[ -f $1 ]]
-    then
-      break
-    fi
-    echo "retry after 5 seconds"
-    sleep 5
-  done
-}
-
-function make-dir()
-{
-  mkdir -p $1
-}
-
 function wget-to-local()
 {
   wget --no-check-certificate -P $2/ $1
-}
-
-function gitlab-url()
-{
-  echo $common_software_repo/raw/master/$1
 }
 
 function check-kube()
@@ -264,129 +135,48 @@ function check-kube()
    fi
 }
 
-function create-namespace()
+function yum-repo-from-coding()
 {
-  ns=$(kubectl get ns $1)
-
-  if [[ -z $ns ]]
-  then
-    kubectl create ns $1
-  fi
+	wget-to-local $coding_file_server/$1?version=$2 /etc/yum.repos.d
+    mv /etc/yum.repos.d/$1\?version\=$2 /etc/yum.repos.d/$1
 }
+
+
+function yum-service-from-coding()
+{
+	wget-to-local $coding_file_server/$1?version=$2 /usr/lib/systemd/system
+    mv -f /usr/lib/systemd/system/$1\?version\=$2 /usr/lib/systemd/system/$1
+}
+
+function yum-bin-from-coding()
+{
+	wget-to-local $coding_file_server/$1-$(arch)?version=$2 /usr/bin
+    mv -f /usr/bin/$1-$(arch)\?version\=$2 /usr/bin/$1
+	chmod 777 /usr/bin/$1
+}
+
 
 ###########################################################
 ##
-##  env
+##  os env
 ##
-##########################################################
+###########################################################
 
-function help-env()
+
+function init-osenv()
 {
-  cmddesc
-  echo -e "Commands:"
-  echo -e "  init-env ctr         :\t(Init): download conatinerd/docker, kubeadm, kubelet and kubectl"
-  echo -e "  init-env rook        :\t(Init): download ceph"
-  echo -e "  init-env vm          :\t(Init): download kvm and libvirt"
-  echo -e "  init-env --help      :\t(Init): help"
+  
+  disable-$(get-os)-security
 }
 
-function init-env()
-{
-  if [[ $# != 2 ]]
-  then
-     help-env
-     exit
-  fi
- 
-  install=""
-  osname=""
-  if [[ -n $(cat /etc/os-release | grep "centos\|openEuler") ]]
-  then
-    install="yum"
-    osname="centos"
-  elif [[ -n $(cat /etc/os-release | grep ubuntu) ]]
-  then
-    install="apt"
-    osname="ubuntu"
-  else
-    echo "only support centos and ubuntu."
-    exit 1
-  fi
-
-  disable-$osname-security
-  add-$install-repository
-  init-kubeadm-kubeconfig 
-
-  if [[ $2 == "ctr" ]]
-  then
-     init-env-container $install
-  elif [[ $2 == "rook" ]]
-  then
-     init-env-rook $install
-  elif [[ $2 == "vm" ]]
-  then
-     init-env-vm $install
-  else
-     unsupport $@
-     help-env
-  fi
-}
-
-function init-env-container()
-{
-  $1-$kube_runtime-k8s
-}
-
-function init-env-rook()
-{
-  add-ceph-$1-repository
-  $1-ceph-install
-}
-
-function init-env-vm()
-{
-  check-kube
-  add-kvm-$1-repository
-  $1-kvm-install
-  start-service libvirtd 
-}
-
-function apt-kvm-install()
-{
-  #apt-get install qemu-kvm libvirt-dev libvirt-daemon libvirt-clients -y
-  apt-get install qemu-kvm libvirt-bin openvswitch  -y
-}
-
-function yum-ceph-install()
-{
-  yum install epel-release -y
-  yum install ceph -y
-  yum install nfs-utils -y
-}
-
-function yum-kvm-install()
-{
-#   yum install qemu-kvm libvirt libvirt-devel cloud-utils usbutils virt-install  python3 python3-devel python3-pip libcurl-devel -y
-   yum install qemu-kvm libvirt cloud-utils usbutils virt-install  python3 python3-devel python3-pip openvswitch  -y
-#  pip3 install --upgrade pip
-#  pip3 install --ignore-installed threadpool prometheus_client kubernetes libvirt-python==5.9.0 xmljson xmltodict watchdog pyyaml grpcio grpcio-tools protobuf psutil
-}
-
-function add-kvm-yum-repository()
-{
-  yum install centos-release-openstack-$virt_version -y
-}
-
-function add-kvm-apt-repository
-{
-  add-apt-repository cloud-archive:$virt_version
-}
+## disable security
 
 function disable-centos-security()
 {
-  sed -ie 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config
-  sed -ie 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+  replace SELINUX=permissive SELINUX=disabled /etc/selinux/config
+  replace SELINUX=enforcing SELINUX=disabled /etc/selinux/config
   stop-service firewalld
+  yum install -y wget
 }
 
 function disable-ubuntu-security()
@@ -394,39 +184,69 @@ function disable-ubuntu-security()
   sudo ufw disable
 }
 
-function add-ceph-yum-repository()
+function disable-openEuler-security()
 {
-cat <<EOF > /etc/yum.repos.d/ceph.repo
-[ceph]
-name=ceph
-baseurl=http://mirrors.aliyun.com/ceph/rpm-nautilus/el7/x86_64/
-gpgcheck=0
-priority=1
-
-[ceph-noarch]
-name=cephnoarch
-baseurl=http://mirrors.aliyun.com/ceph/rpm-nautilus/el7/noarch/
-gpgcheck=0
-priority=1
-
-[ceph-source]
-name=Ceph source packages
-baseurl=http://mirrors.aliyun.com/ceph/rpm-nautilus/el7/SRPMS
-enabled=0
-gpgcheck=1
-type=rpm-md
-gpgkey=http://mirrors.aliyun.com/ceph/keys/release.asc
-priority=1
-EOF
+  disable-centos-security
 }
 
-function add-yum-repository()
+###########################################################
+##
+##  runtime
+##
+###########################################################
+
+function help-runtime()
 {
-  echo -e "[docker-ce-stable]\nname=Docker CE Stable - \$basearch \nbaseurl=$centos_docker_ce_url\nenabled=1 \ngpgcheck=1 \ngpgkey=$centos_docker_ce_gpg" > /etc/yum.repos.d/docker-ce.repo
-  echo -e "[kubernetes] \nname=Kubernetes - \$basearch \nbaseurl=$centos_kuberentes_url \nenabled=1 \ngpgcheck=0 \nrepo_gpgcheck=0 \ngpgkey=$centos_kuberentes_gpg" > /etc/yum.repos.d/kubernetes.repo
+  cmddesc
+  echo -e "Commands:"
+  #echo -e "  init-runtime runc         :\t(runtime): download runc and cri-o"
+  echo -e "  init-runtime containerd   :\t(runtime): download containerd"
+  echo -e "  init-runtime docker       :\t(runtime): download docker and cri-docker"
+  echo -e "  init-runtime isulad       :\t(runtime): download isulad"
+  echo -e "  init-runtime --help       :\t(runtime): help"
 }
 
-function add-apt-repository()
+function init-runtime()
+{
+  if [[ $# != 2 ]]
+  then
+     help-runtime
+     exit
+  fi
+ 
+  osname=$(get-os)
+  install=${pkgMgrs[$osname]}
+
+  if [[ -z $install ]];
+  then
+    unsupport $@
+	help-runtime
+  fi
+  
+  
+  add-$osname-repository
+  $install-$2
+  echo $2 > /etc/doslab-runtime.conf
+}
+
+## add repository
+
+function add-centos-repository()
+{
+  yum-repo-from-coding centos-docker.repo $kube_release
+  yum-repo-from-coding kubernetes.repo $kube_release
+  yum-repo-from-coding centos-crio.repo $kube_release
+}
+
+function add-openEuler-repository()
+{
+  yum-repo-from-coding openEuler-docker.repo $kube_release
+  yum-repo-from-coding kubernetes.repo $kube_release
+  yum-repo-from-coding container-$kube_repo.repo $kube_release
+}
+
+# TODO
+function add-ubuntu-repository()
 {
   arch=`get-arch`
 
@@ -443,62 +263,35 @@ function add-apt-repository()
 }
 
 
-function yum-docker-k8s()
+function yum-runc()
 {
-  yum install -y wget docker-ce-${kube_runtime_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version} lvm2
-  wget -P /usr/bin/ $cri_dockerd_url/cri-dockerd-$(arch)
-  mv /usr/bin/cri-dockerd-$(arch) /usr/bin/cri-dockerd
-  chmod 777 /usr/bin/cri-dockerd
-  wget -P /etc/systemd/system/ $cri_dockerd_url/cri-docker.service
-  
-  config-docker 
+  yum install -y cri-o-${runtimes['runc']} kubeadm-${kube_version} lvm2
+  config-runc
 }
 
-
-function apt-docker-k8s()
+function config-runc()
 {
-  dVer=$(apt-cache madison docker-ce | grep $kube_runtime_version | awk -F"|" '{print$2}' | sed 's/ //g' | head -1)
-  kVer=$(apt-cache madison kubelet | grep $kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
-  apt-get update
-  apt-get install docker-ce=$dVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer lvm2 -y
-
-  wget -P /usr/bin/ $cri_dockerd_url/cri-dockerd-$(arch)
-  mv /usr/bin/cri-dockerd-$(arch) /usr/bin/cri-dockerd
-  chmod 777 /usr/bin/cri-dockerd
-  wget -P /etc/systemd/system/ $cri_dockerd_url/cri-docker.service
+  echo "overlay" > /etc/modules-load.d/containerd.conf
+  echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
   
-  config-docker
+  modprobe overlay
+  modprobe br_netfilter
+
+  sysctl --system
+  
+  if [[ -z $(cat /etc/crio/crio.conf | grep pause_image) ]]
+  then
+    echo "[crio.image]" >> /etc/crio/crio.conf
+	version=$(kubeadm config images list | grep pause | awk -F':' '{print$2}')
+    echo "pause_image = \"registry.cn-hangzhou.aliyuncs.com/google_containers/pause:$version\"" >> /etc/crio/crio.conf
+  fi	
+  restart-service crio
 }
 
-function yum-containerd-k8s()
+function yum-containerd()
 {
-  yum install -y wget containerd.io-${kube_runtime_version} kubectl-${kube_version} kubelet-${kube_version} kubeadm-${kube_version} lvm2
-  
+  yum install -y containerd.io-${runtimes['containerd']} kubeadm-${kube_version} lvm2
   config-containerd
-}
-
-function apt-containerd-k8s()
-{
-
-  cVer=$(apt-cache madison containerd.io | grep $kube_runtime_version | awk -F"|" '{print$2}' | sed 's/ //g')	
-  kVer=$(apt-cache madison kubelet | grep $kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
-  apt-get update
-  apt-get install containerd.io=$cVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer lvm2 -y
-  
-  config-containerd
-}
-
-
-function config-docker()
-{
-  ## kubernetes >= 1.22 only supports systemd
-  mkdir -p /etc/docker
-  echo "{" > /etc/docker/daemon.json
-  echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
-  echo "}" >> /etc/docker/daemon.json
-  systemctl daemon-reload
-
-  start-service docker cri-docker kubelet
 }
 
 function config-containerd()
@@ -509,114 +302,81 @@ function config-containerd()
   modprobe overlay
   modprobe br_netfilter
 
-  echo "net.bridge.bridge-nf-call-iptables  = 1" > /etc/sysctl.d/99-kubernetes-cri.conf
-  echo "net.ipv4.ip_forward                 = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
-  echo "net.bridge.bridge-nf-call-ip6tables = 1" >> /etc/sysctl.d/99-kubernetes-cri.conf
-
   sysctl --system
-
-  echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
 
   containerd config default | sudo tee /etc/containerd/config.toml
 
-  # fix for container v1.6.7鈫抳1.6.9
+  # fix for container v1.6.9
   # sandbox_image = "registry.k8s.io/pause:3.6"
   def_repo="registry.k8s.io"
-  real_repo=${common_image_server/\//\\\/}
-  old_version=$(cat /etc/containerd/config.toml | grep "registry.k8s.io" | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
+  real_repo=$(echo "$aliyun_image_server" | sed 's/\//\\\//g')
+  # real_repo=${aliyun_image_server/\//\\\/}
+  old_version=$(cat /etc/containerd/config.toml | grep $def_repo | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
   new_version=$(kubeadm config images list | grep pause | awk -F"/" '{print$2}' | awk -F"\"" '{print$1}')
-  sed -ie "s/$def_repo/$real_repo/g" /etc/containerd/config.toml
-  sed -ie "s/$old_version/$new_version/g" /etc/containerd/config.toml
-
-  start-service containerd kubelet
-  restart-service containerd kubelet
+  
+  replace $def_repo $real_repo /etc/containerd/config.toml
+  replace $old_version $new_version /etc/containerd/config.toml
+  
+  start-service containerd
+  restart-service containerd
 }
 
-
-function init-kubeadm-kubeconfig()
+function yum-docker()
 {
-  if [[ ! -d "/etc/kubernetes" ]]
-  then
-    mkdir /etc/kubernetes
-  fi
-  echo -e "apiVersion: kubeadm.k8s.io/v1beta3" > /etc/kubernetes/kubeadm.yaml
-  echo -e "kind: InitConfiguration" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "bootstrapTokens:" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "  - ttl: \"0\"" >> /etc/kubernetes/kubeadm.yaml
-  if [[ $kube_runtime = "containerd" ]]
-  then
-    echo -e "nodeRegistration:" >> /etc/kubernetes/kubeadm.yaml
-    echo -e "  criSocket: unix:///run/containerd/containerd.sock" >> /etc/kubernetes/kubeadm.yaml
-  fi
-  if [[ $kube_runtime = "docker" ]]
-  then
-    echo -e "nodeRegistration:" >> /etc/kubernetes/kubeadm.yaml
-    echo -e "  criSocket: \"/var/run/cri-dockerd.sock\"" >> /etc/kubernetes/kubeadm.yaml
-  fi
-  echo -e "---" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "apiVersion: kubeadm.k8s.io/v1beta3" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "kind: ClusterConfiguration" >> /etc/kubernetes/kubeadm.yaml
-  if [[ -n $kube_fip ]]
-  then
-  echo -e "controlPlaneEndpoint: \"$kube_fip:6443\"" >> /etc/kubernetes/kubeadm.yaml
-  fi
-  echo -e "networking:" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "  podSubnet: \"${kube_pod_subnet}\"" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "kubernetesVersion: \"v${kube_version}\"" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "imageRepository: \"${common_image_server}\"" >> /etc/kubernetes/kubeadm.yaml
-  if [[ $kube_runtime = "docker" ]]
-  then
-    echo -e "---" >> /etc/kubernetes/kubeadm.yaml
-    echo -e "apiVersion: kubelet.config.k8s.io/v1beta1" >> /etc/kubernetes/kubeadm.yaml
-    echo -e "kind: KubeletConfiguration" >> /etc/kubernetes/kubeadm.yaml
-    echo -e "containerRuntimeEndpoint: \"unix:///var/run/cri-dockerd.sock\"" >> /etc/kubernetes/kubeadm.yaml
-  fi
+  yum install -y docker-ce-${runtimes['docker']}  lvm2
+  
+  yum-bin-from-coding cri-dockerd $kube_release
+  yum-service-from-coding cri-docker.service $kube_release
+  yum-service-from-coding cri-docker.socket $kube_release
+  
+  config-docker
 }
 
-function init-kubeadm-kubeconfig_v2()
+function config-docker()
 {
-  if [[ ! -d "/etc/kubernetes" ]]
-  then
-    mkdir /etc/kubernetes
-  fi
-  echo -e "apiVersion: kubeadm.k8s.io/v1beta2" > /etc/kubernetes/kubeadm.yaml
-  echo -e "kind: InitConfiguration" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "bootstrapTokens:" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "  - ttl: \"0\"" >> /etc/kubernetes/kubeadm.yaml
-  if [[ $kube_runtime = "containerd" ]]
-  then
-    echo -e "nodeRegistration:" >> /etc/kubernetes/kubeadm.yaml
-    echo -e "  criSocket: unix:///run/containerd/containerd.sock" >> /etc/kubernetes/kubeadm.yaml
-  fi
-  echo -e "---" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "apiVersion: kubeadm.k8s.io/v1beta2" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "kind: ClusterConfiguration" >> /etc/kubernetes/kubeadm.yaml
-  if [[ -n $kube_fip ]]
-  then
-  echo -e "controlPlaneEndpoint: \"$kube_fip:6443\"" >> /etc/kubernetes/kubeadm.yaml
-  fi
-  echo -e "networking:" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "  podSubnet: \"${kube_pod_subnet}\"" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "kubernetesVersion: \"v${kube_version}\"" >> /etc/kubernetes/kubeadm.yaml
-  echo -e "imageRepository: \"${common_image_server}\"" >> /etc/kubernetes/kubeadm.yaml
+  ## kubernetes >= 1.22 only supports systemd
+  mkdir -p /etc/docker
+  echo "{" > /etc/docker/daemon.json
+  echo "  \"exec-opts\": [\"native.cgroupdriver=systemd\"]" >> /etc/docker/daemon.json
+  echo "}" >> /etc/docker/daemon.json
+  systemctl daemon-reload
+
+  start-service docker cri-docker
 }
 
+function yum-isulad()
+{
+  yum install -y iSulad-${runtimes['isulad']}  lvm2
+  
+  config-isulad
+}
+
+function config-isulad()
+{
+  echo "overlay" > /etc/modules-load.d/containerd.conf
+  echo "br_netfilter" >> /etc/modules-load.d/containerd.conf
+  
+  modprobe overlay
+  modprobe br_netfilter
+
+  start-service isulad
+}
 
 ###########################################################
 ##
 ##  compute
 ##
-##########################################################
+###########################################################
 
 function help-compute()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-compute ctr         :\t(Init): setup container runtime"
-  echo -e "  init-compute vm          :\t(Init): setup vm runtime "
-  echo -e "  init-compute baremetal   :\t(Init): setup baremetal runtime "
-  echo -e "  init-compute --help      :\t(Init): help"
+  echo -e "  init-compute kubernetes   :\t(compute): download kubernetes"
+  echo -e "  init-compute k0s          :\t(compute): download k0s"
+  echo -e "  init-compute --help       :\t(compute): help"
 }
+
 
 function init-compute()
 {
@@ -625,80 +385,32 @@ function init-compute()
      help-compute
      exit
   fi
-
-  if [[ $2 == "ctr" ]]
-  then
-     init-compute-container
-  elif [[ $2 == "vm" ]]
-  then
-     init-compute-vm
-elif [[ $2 == "baremetal" ]]
-  then
-     init-compute-baremetal
-else
-     unsupport $@
-     help-compute
-  fi 
  
+  osname=$(get-os)
+  
+  setup-$(get-os)-$2
 }
 
-
-function init-compute-baremetal()
+function setup-centos-kubernetes()
 {
-  check-kube
-  url=$common_software_repo/raw/master/$kube_compute_baremetal/list
-  apply-from $url
-}
+  yum install -y kubeadm-${kube_version}
 
-function init-compute-vm()
-{
-  check-kube
-
-  for name in `kubectl get no  | awk 'NR>1 {print$1}'`
-  do
-    kubectl label no $name doslab/virt.tool=""
-  done
-
-  rm -rf /tmp/node.yaml
-  wget --no-check-certificate -P /tmp/ $common_software_repo/raw/master/$kube_virt/node.yaml
-  # filter master
-  for name in `kubectl get no | grep -v control | awk 'NR>1 {print$1}'`
-  do
-    if [[ -n `echo $name | grep "vm."`  ]]
-    then
-      continue
-    fi
-
-    rm -rf /tmp/$name.yaml
-    cp /tmp/node.yaml /tmp/$name.yaml
-    sed -i "s/#HOST#/$name/g" /tmp/$name.yaml
-    ip=`kubectl get no $name -o wide | awk 'NR>1 {print$6}'`
-    sed -i "s/#IP#/$ip/g" /tmp/$name.yaml
-
-    kubectl apply -f /tmp/$name.yaml
-  done
-
-  rm -rf /tmp/list
-  wget --no-check-certificate -P /tmp/ $common_software_repo/raw/master/$kube_virt/list
-  for line in `cat /tmp/list`
-  do
-    kubectl apply -f $line
-  done
-
-  wget --no-check-certificate -P /usr/bin/ https://gitee.com/syswu/ovnctl/raw/master/src/kubeovn-adm
-  chmod 777 /usr/bin/kubeovn-adm
-
-}
-
-function init-compute-container()
-{
-  # [optional] just consider performance
+  echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
+  
   swapoff -a
-
-  # [required] prerequires
-  systemctl restart kubelet
   echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
   echo "1" > /proc/sys/net/ipv4/ip_forward
+  
+  start-service kubelet
+  
+  rm -rf /etc/kubernetes/kubeadm.yaml
+  curl -fL "$coding_file_server/kubeadm.yaml?version=$kube_release" -o /etc/kubernetes/kubeadm.yaml
+  #curl -fL "https://g-ubjg5602-generic.pkg.coding.net/iscas-system/files/kubeadm.yaml?version=$kube_release" -o /etc/kubernetes/kubeadm.yaml
+  kube_runtime=$(cat /etc/doslab-runtime.conf)
+  replace "#ENDPOINT#" $(echo "${runtime_endpoints[$kube_runtime]}" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
+  replace "#SUBNET#" $(echo "$kube_subnet" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
+  replace "#VERSION#" $kube_version /etc/kubernetes/kubeadm.yaml
+  replace "#REPO#" $(echo "$aliyun_image_server" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
 
   # [required], see https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta2/
   kubeadm init --config /etc/kubernetes/kubeadm.yaml
@@ -709,21 +421,58 @@ function init-compute-container()
   iptables -P FORWARD ACCEPT
 }
 
+function setup-openEuler-kubernetes()
+{
+  setup-centos-kubernetes
+}
+
+function setup-ubuntu-kubernetes()
+{
+  setup-centos-kubernetes
+}
+
+function setup-centos-k0s()
+{
+  yum install -y k0s-${kube_version}
+
+  echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
+  
+  swapoff -a
+  
+  echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
+  echo "1" > /proc/sys/net/ipv4/ip_forward
+  
+  k0s install controller --single --force
+  systemctl daemon-reload
+  k0s start
+  
+  iptables -P FORWARD ACCEPT
+}
+
+function setup-openEuler-k0s()
+{
+  setup-centos-k0s
+}
+
+function setup-ubuntu-k0s()
+{
+  setup-centos-k0s
+}
 
 ###########################################################
 ##
 ##  network
 ##
-##########################################################
+###########################################################
 
 function help-network()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-network kubeovn     :\t(Init): kubeovn"
-  echo -e "  init-network calico      :\t(Init): calico"
-  echo -e "  init-network flannel     :\t(Init): flannel"
-  echo -e "  init-network --help      :\t(Init): help"
+  echo -e "  init-network kubeovn   :\t(compute): apply kubeovn"
+  echo -e "  init-network calico    :\t(compute): apply calico"
+  echo -e "  init-network flannel   :\t(compute): apply flannel"
+  echo -e "  init-network --help       :\t(compute): help"
 }
 
 
@@ -734,452 +483,23 @@ function init-network()
      help-network
      exit
   fi
-
-  if [[ $2 == "calico" ]]
+ 
+  url="${network_urls[$2]/VERSION/${network_names[$2]}}"
+  echo $url
+  
+  if [[ $url == *".sh" ]]
   then
-     init-network-calico
-  elif [[ $2 == "kubeovn" ]]
-  then
-     init-network-kubeovn
-  elif [[ $2 == "flannel" ]]
-  then
-     init-network-flannel
+    curl $url | bash -
   else
-     unsupport $@
-     help-network
-  fi
+    kubectl apply -f $url
+  fi 
+    
 }
-
-function init-network-calico()
-{
-  kubectl apply -f $kube_cni_calico_yaml
-}
-
-
-function init-network-kubeovn()
-{
-  curl $kube_cni_ovn_sh | bash -
-}
-
-function init-network-flannel()
-{
-  kubectl apply -f $kube_cni_flannel_yaml
-}
-
-###########################################################
-##
-##  storage
-##
-##########################################################
-
-
-function help-storage()
-{
-  cmddesc
-  echo -e "Commands:"
-  echo -e "  init-storage minio      :\t(Init): minio"
-  echo -e "  init-storage rook       :\t(Init): rook"
-  echo -e "  init-storage cephfs     :\t(Init): cephfs"
-  echo -e "  init-storage cephrgw    :\t(Init): cephrgw"
-  echo -e "  init-storage cephrbd    :\t(Init): cephrbd"
-  echo -e "  init-storage nfs        :\t(Init): nfs"
-  echo -e "  init-storage --help     :\t(Init): help"
-}
-
-
-function init-storage()
-{
-  if [[ $# != 2 ]]
-  then
-     help-storage
-     exit
-  fi
-
-  if [[ $2 == "rook" ]]
-  then
-    init-storage-rook
-  elif [[ $2 == "cephfs" ]]
-  then
-    init-storage-cephfs
-  elif [[ $2 == "cephrgw" ]]
-  then
-    init-storage-cephrgw
-  elif [[ $2 == "cephrbd" ]]
-  then
-    init-storage-cephrbd
-  elif [[ $2 == "nfs" ]]
-  then
-    init-storage-nfs
-  elif [[ $2 == "minio" ]]
-  then
-    init-storage-minio
-  else
-     unsupport $@
-     help-storage
-  fi
-}
-
-function init-storage-rook()
-{
-  url=$common_software_repo/raw/master/$kube_storage_rook/list
-  apply-from $url
-}
-
-function init-storage-cephfs()
-{
-  url=$common_software_repo/raw/master/$kube_storage_cephfs/list
-  apply-from $url
-}
-
-function init-storage-cephrgw()
-{
-  url=$common_software_repo/raw/master/$kube_storage_cephrgw/list
-  apply-from $url
-}
-
-function init-storage-cephrbd()
-{
-  url=$common_software_repo/raw/master/$kube_storage_cephrbd/list
-  apply-from $url
-}
-
-function init-storage-nfs()
-{
-  # apply rgw + nfs yaml
-  url=$common_software_repo/raw/master/$kube_storage_nfs/list
-  apply-from $url
-
-  # set backend
-  ceph mgr module enable rook
-  ceph mgr module enable nfs
-  ceph orch set backend rook
-
-  # wait for nfs cluster ready
-  for i in `seq 1 20`
-  do
-    res=$(ceph nfs cluster ls | wc -l)
-    if [[ $res != 1 ]]
-    then
-      sleep 3
-    else
-      break
-    fi
-    if [ $i == 20 ]
-    then
-      echo 'fail to start nfs cluster'
-      exit 1
-    fi
-  done
-
-  # wait for rgw ready
-  for i in `seq 1 20`
-  do
-    res=$(kubectl -n rook-ceph get pod -l app=rook-ceph-rgw | grep "2/2" | wc -l)
-    if [[ $res != 1 ]]
-    then
-      sleep 5
-    else
-      break
-    fi
-    if [ $i == 20 ]
-      then
-        echo 'fail to start ceph rgw'
-        exit 1
-      fi
-  done
-
-  # create dir /volumes/share
-  ceph fs subvolumegroup create myfs share
-  ceph nfs export create cephfs my-nfs /share myfs /volumes/share
-}
-
-function init-storage-minio()
-{
-#   generate operator yaml
-#   ---------------------------------------
-#   kubectl minio init --namespace kube-operator --image minio/operator:v4.4.28 --console-image minio/console:v0.19.5 --default-minio-image minio/minio:RELEASE.2022-05-08T23-50-31Z.hotfix.5c13750dd --default-console-image minio/console:v0.19.5 --namespace-to-watch kube-storage --default-kes-image minio/kes:v0.20.0 -o
-#   generate object storage  yaml
-#   ---------------------------------------
-#   kubectl minio tenant create kube-objects --servers 1 --volumes 1 --capacity 20G --namespace kube-storage --output
-    create-namespace kube-storage
-    url=$common_software_repo/raw/master/$kube_storage_minio/list
-    apply-from $url
-    echo "JWT: eyJhbGciOiJSUzI1NiIsImtpZCI6IldvOEhxZm9RUG94azZuRlZkYWVsYTZpM05ud0Z1bDBwSkUxT2ZVU25BTVUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLW9wZXJhdG9yIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImNvbnNvbGUtc2Etc2VjcmV0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImNvbnNvbGUtc2EiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI5ODYxZjE0My0zMGJkLTRkODctYWY0Yy1mOWFmYjVmZmZmY2UiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1vcGVyYXRvcjpjb25zb2xlLXNhIn0.nW91fOwTnDEgE6r-SnfpsNjJRzVmJjjWCROXQA6PaQbmPDGt1up7vcmdVgcBkJdHuHJE_OOChAFvo1zte2OliPIKiQO4dX69cdxhlvXWBiiqw50wstavVG_2BPh_l-8aLeNiu8I5qXkwhOatgk3v5THgYNQptvopXAYAYSXxP-0gQuPOa6OMvMpekTjI6n3uC18QW8nVaYyWJodh4gVmnLarHJgF4192F5tJblfe8J8nTj-on0ZFZec0R4x1vhiuqxbwNt5A0DPtsEeoMD4gZTP40Xv9xSTp1DH0_GnycsU3sAWcoOX8Y73icW-xGIAR3SDzsyNktLYIzmA7CaKlfQ"
-}
-
-###########################################################
-##
-##  command
-##
-##########################################################
-
-
-
-function help-tool()
-{
-  cmddesc
-  echo -e "Commands:"
-  echo -e "  init-tool helm       :\t(Init): helm"
-  echo -e "  init-tool minio       :\t(Init): minio"
-  echo -e "  init-tool --help     :\t(Init): help"
-}
-
-
-function init-tool()
-{
-  if [[ $# != 2 ]]
-  then
-     help-tool
-     exit
-  fi
-
-  if [[ $2 == "helm" ]]
-  then
-     init-tool-helm
-  elif [[ $2 == "minio" ]]
-  then
-     init-tool-minio
-  else
-     unsupport $@
-     help-tool
-  fi
-
-}
-
-
-function init-tool-helm()
-{
-   arch=`get-arch`
-   name="${kube_tool_helm_name/ARCH/$arch}"
-   echo $kube_tool_helm_url$name
-   wget --no-check-certificate $kube_tool_helm_url$name
-   tar zxvf $name
-   mv -f linux-$arch/helm /usr/bin/helm
-   chmod 777 /usr/bin/helm
-   rm -rf linux-$arch
-   rm -rf $name
-}
-
-
-function init-tool-minio()
-{
-   arch=`get-arch`
-   echo $kube_tool_minio_name
-   name="${kube_tool_minio_name/ARCH/$arch}"
-   echo $kube_tool_minio_url$name
-   wget --no-check-certificate $kube_tool_minio_url$name -O kubectl-minio
-   chmod +x kubectl-minio
-   mv kubectl-minio /usr/local/bin/
-}
-
-###########################################################
-##
-##  addon
-##
-##########################################################
-
-
-function help-addon()
-{
-  cmddesc
-  echo -e "Commands:"
-  echo -e "  init-addon prom       :\t(Init): prometheus"
-  echo -e "  init-addon postgres   :\t(Init): postgres"
-  echo -e "  init-addon tokens     :\t(Init): supertokens"
-#  echo -e "  init-addon loki       :\t(Init): loki"
-  echo -e "  init-addon grafana    :\t(Init): grafana"
-  echo -e "  init-addon falco      :\t(Init): falco"
-  echo -e "  init-addon superset   :\t(Init): superset"
-  echo -e "  init-addon --help     :\t(Init): help"
-}
-
-function init-addon()
-{
-  if [[ $# != 2 ]]
-  then
-     help-addon
-     exit
-  fi
-
-  if [[ $2 == "prom" ]]
-  then
-     init-addon-prom
-  elif [[ $2 == "postgres" ]]
-  then
-     init-addon-postgres
-  elif [[ $2 == "tokens" ]]
-  then
-     init-addon-tokens
-  elif [[ $2 == "loki" ]]
-  then
-     init-addon-loki
-  elif [[ $2 == "grafana" ]]
-  then
-     init-addon-grafana
-  elif [[ $2 == "superset" ]]
-  then
-     init-addon-superset
-  elif [[ $2 == "falco" ]]
-  then
-     init-addon-falco
-  else
-     unsupport $@
-     help-addon
-  fi
-}
-
-function init-addon-falco()
-{
-  url=$common_software_repo/raw/master/$kube_addon_falco/list
-  apply-from $url
-}
-
-function init-addon-postgres()
-{
-  url=$common_software_repo/raw/master/$kube_addon_postgres/list
-  apply-from $url
-}
-
-function init-addon-prom()
-{
-  url=$common_software_repo/raw/master/$kube_addon_prom/list
-  apply-from $url
-}
-
-function init-addon-tokens()
-{
-  url=$common_software_repo/raw/master/$kube_addon_tokens/list
-  apply-from $url
-}
-
-
-function init-addon-loki()
-{
-  url=$common_software_repo/raw/master/$kube_addon_loki/list
-  apply-from $url
-}
-
-function init-addon-superset()
-{
-  url=$common_software_repo/raw/master/$kube_addon_superset/list
-  apply-from $url
-}
-
-
-###########################################################
-##
-##  init-devops
-##
-##########################################################
-
-function help-devops()
-{
-  cmddesc
-  echo -e "Commands:"
-  echo -e "  init-devops harbor        :\t(Init): harbor"
-  echo -e "  init-devops gitlab        :\t(Init): gitlab"
-  echo -e "  init-devops jenkins       :\t(Init): jenkins"
-  echo -e "  init-devops nexus3        :\t(Init): nexus3"
-  echo -e "  init-devops sonar         :\t(Init): sonar"
-  echo -e "  init-devops kanboard      :\t(Init): kanboard"
-  echo -e "  init-devops --help        :\t(Init): help"
-}
-
-function init-devops()
-{
-  if [[ $# != 2 ]]
-  then
-     help-devops
-     exit
-  fi
-
-  ns=$(kubectl get ns kube-devops)
-
-  if [[ -z $ns ]]
-  then
-    kubectl create ns kube-devops
-  fi
-
-  if [[ $2 == "gitlab" ]]
-  then
-     init-devops-gitlab
-  elif [[ $2 == "harbor" ]]
-  then
-     init-devops-harbor
-  elif [[ $2 == "jenkins" ]]
-  then
-     init-devops-jenkins
-  elif [[ $2 == "nexus3" ]]
-  then
-     init-devops-nexus3
-  elif [[ $2 == "sonar" ]]
-  then
-     init-devops-sonar
-  elif [[ $2 == "kanboard" ]]
-  then
-     init-devops-kanboard
-  else
-     unsupport $@
-     help-devops
-  fi
-
-}
-
-function init-devops-harbor()
-{
-  url=$common_software_repo/raw/master/$kube_devops_harbor/list
-  apply-from $url
-  useage-info http 31010 admin Harbor12345
-}
-
-function init-devops-gitlab()
-{
-  path="/var/lib/doslab/gitlab/config"
-  make-dir $path
-  url=$(gitlab-url $kube_devops_gitlab)
-  wget-to-local $url/gitlab.rb $path
-  apply-from $url/list
-  useage-info http 31013 root @Devops@
-}
-
-function init-devops-jenkins()
-{
-  url=$common_software_repo/raw/master/$kube_devops_jenkins/list
-  apply-from $url
-  path="/var/lib/doslab/jenkin/secrets/initialAdminPassword"
-  wait-and-retry $path
-  pwd=$(cat $path)
-  useage-info http 31017 default $pwd
-}
-
-function init-devops-nexus3()
-{
-  url=$common_software_repo/raw/master/$kube_devops_nexus3/list
-  apply-from $url
-  path="/var/lib/doslab/nexus3/admin.password"
-  retry $path
-  pwd=$(cat $path)
-  useage-info http 31016 admin $pwd
-}
-
-function init-devops-sonar()
-{
-  url=$common_software_repo/raw/master/$kube_devops_sonar/list
-  apply-from $url
-}
-
-function init-devops-kanboard()
-{
-  url=$common_software_repo/raw/master/$kube_devops_kanboard/list
-  apply-from $url
-}
-
 ###########################################################
 ##
 ##  help
 ##
 ##########################################################
-
 
 function unsupport()
 {
@@ -1194,7 +514,7 @@ function unsupport()
 
 function cmddesc()
 {
-  echo -e "Welcome to kubeinst ($VERSION), install Kubernetes-based systems from scratch.\n"
+  echo -e "Welcome to CloudOne ($VERSION), install Kubernetes-based systems from scratch.\n"
 }
 
 
@@ -1202,39 +522,26 @@ function help()
 {
   cmddesc
   echo -e "Commands:"
-  echo -e "  init-env             :download conatiner-based or vm-based software packages"
-  echo -e "  init-compute         :setup baremetal, or container or vm"
-  echo -e "  init-network         :setup kubernetes network, such as kubeovn, calico or flannel"
-  echo -e "  init-storage         :setup kubernetes storage"
-  echo -e "  init-addon           :setup loki, prometheus/grafana,  superset,falco"
-  echo -e "  init-devops          :setup gitlab, jenkins, nexus3, sonar, kanboard"
+  echo -e "  init-osenv           :setup security configuration"
+  echo -e "  init-runtime         :setup runc, or containerd, or docker packages"
+  echo -e "  init-compute         :setup kubernetes"
+  echo -e "  init-network         :setup kubeovn, calico, flannel"
   echo -e "  --help               :help"
-#  echo -e "  init-tool            :\t(Init): install helm, etc"
 }
 
-
 case $1 in
-  "init-env")
-    init-env $*
+  "init-osenv")
+    init-osenv $*
     ;;
+  "init-runtime")
+    init-runtime $*
+    ;;	
   "init-compute")
     init-compute $*
     ;;
   "init-network")
     init-network $*
     ;;
-  "init-storage")
-    init-storage $*
-    ;;
-  "init-addon")
-    init-addon $*
-    ;;
-  "init-devops")
-    init-devops $*
-    ;;
-#  "init-tool")
-#    init-tool $*
-#    ;;
   "--help")
     help
     ;;

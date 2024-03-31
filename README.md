@@ -33,10 +33,10 @@ Install Kubernetes and containerized software with a simple and comprehensible w
 ```
 curl --url https://raw.githubusercontent.com/kubesys/installer/master/kubeinst --output /usr/bin/kubeinst
 chmod 777 /usr/bin/kubeinst
-kubeinst init-env ctr
-kubeinst init-compute ctr
+kubeinst init-osenv
+kubeinst init-runtime containerd
+kubeinst init-compute kubernetes
 kubeinst init-network kubeovn
-kubeinst init-addon postgres
 ```
 
 ### Optional(kubevm)
