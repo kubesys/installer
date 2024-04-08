@@ -30,6 +30,7 @@ kube_version="1.28.2"
 kube_subnet="10.244.0.0/16"
 kube_release="24.02"
 kube_repo="private"
+kube_fip="1.95.7.100"  
 
 declare -A pkgMgrs
 pkgMgrs['centos']='yum'
@@ -68,7 +69,8 @@ network_urls['flannel']='https://raw.githubusercontent.com/flannel-io/flannel/VE
 
 function get-os()
 {
-  echo $(cat /etc/os-release  | grep ID | head -1 | awk -F'"' '{print$2}')
+  #echo $(cat /etc/os-release  | grep ID | head -1 | awk -F'=' '{print$2}')
+  echo $(cat /etc/os-release  | grep ^NAME | awk -F'=' '{print$2}' | awk -F '"' '{print$2}')
 }
 
 function get-arch()
@@ -288,6 +290,15 @@ function config-runc()
   restart-service crio
 }
 
+function apt-containerd()
+{
+  cVer=$(apt-cache madison containerd.io | grep ${runtimes['containerd']} | awk -F"|" '{print$2}' | sed 's/ //g')	
+  kVer=$(apt-cache madison kubelet | grep $kube_version | awk -F"|" '{print$2}' | sed 's/ //g')
+  apt-get update
+  apt-get install containerd.io=$cVer kubectl=$kVer kubelet=$kVer kubeadm=$kVer lvm2 -y
+  config-containerd
+}
+
 function yum-containerd()
 {
   yum install -y containerd.io-${runtimes['containerd']} kubeadm-${kube_version} lvm2
@@ -428,7 +439,29 @@ function setup-openEuler-kubernetes()
 
 function setup-ubuntu-kubernetes()
 {
-  setup-centos-kubernetes
+  echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" > /etc/default/kubelet
+  swapoff -a
+  echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
+  echo "1" > /proc/sys/net/ipv4/ip_forward
+  start-service kubelet
+	      
+  rm -rf /etc/kubernetes/kubeadm.yaml
+  curl -fL "$coding_file_server/kubeadm.yaml?version=$kube_release" -o /etc/kubernetes/kubeadm.yaml
+
+  kube_runtime=$(cat /etc/doslab-runtime.conf)
+
+  replace "#ENDPOINT#" $(echo "${runtime_endpoints[$kube_runtime]}" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
+  replace "#SUBNET#" $(echo "$kube_subnet" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
+  replace "#VERSION#" $kube_version /etc/kubernetes/kubeadm.yaml
+  replace "#REPO#" $(echo "$aliyun_image_server" | sed 's/\//\\\//g') /etc/kubernetes/kubeadm.yaml
+
+  # [required], see https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta2/
+  kubeadm init --config /etc/kubernetes/kubeadm.yaml
+  rm -rf $HOME/.kube
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  iptables -P FORWARD ACCEPT
 }
 
 function setup-centos-k0s()
