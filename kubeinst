@@ -70,7 +70,7 @@ network_urls['flannel']='https://raw.githubusercontent.com/flannel-io/flannel/VE
 function get-os()
 {
   #echo $(cat /etc/os-release  | grep ID | head -1 | awk -F'=' '{print$2}')
-  echo $(cat /etc/os-release  | grep ^NAME | awk -F'=' '{print$2}' | awk -F '"' '{print$2}')
+  echo $(cat /etc/os-release  | grep ^NAME | awk -F'=' '{print$2}' | awk -F '"' '{print$2}' | awk '{print$1}')
 }
 
 function get-arch()
