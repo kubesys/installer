@@ -191,6 +191,11 @@ function disable-openEuler-security()
   disable-centos-security
 }
 
+function disable-Kylin-security()
+{
+  disable-centos-security
+}
+
 ###########################################################
 ##
 ##  runtime
