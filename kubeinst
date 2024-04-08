@@ -222,7 +222,7 @@ function init-runtime()
   if [[ -z $install ]];
   then
     unsupport $@
-	help-runtime
+    help-runtime
   fi
   
   
@@ -246,6 +246,12 @@ function add-openEuler-repository()
   yum-repo-from-coding kubernetes.repo $kube_release
   yum-repo-from-coding container-$kube_repo.repo $kube_release
 }
+
+function add-Kylin-repository()
+{
+  add-openEuler-repository
+}
+
 
 # TODO
 function add-ubuntu-repository()
